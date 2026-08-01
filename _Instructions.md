@@ -1,83 +1,63 @@
-# _Instructions — pravidlá tvorby poznámok v tomto vaulte
+# _Instructions — pravidlá pre claude.ai projekt (IFC štúdium)
 
-> Toto je metasúbor. Neobsahuje IFC obsah — popisuje **ako** sa má obsah v tomto vaulte tvoriť. Slúži ako inštrukcia (napr. pre AI asistenta), podľa ktorej sa pri ďalších pushoch generujú reálne poznámkové súbory (`entities/`, `topics/`, `Glossary.md`).
+> Metasúbor pre Project Knowledge claude.ai projektu. Poznámky sa od 1. 8. 2026 pushujú do vaultu **AssetinSpace/ObsidianPKM**, nie sem — v tomto repe sa udržiava už len `Glossary.md`. Po každej zmene tohto súboru treba jeho obsah ručne skopírovať do Project Knowledge v claude.ai (projekt to samo nespraví).
+
+---
+
+## Push workflow
+
+1. Fine-grained GitHub token je uložený v Project Knowledge. **Scope tokenu musí zahŕňať `AssetinSpace/ObsidianPKM`** (Contents: Read and write) — pôvodný token obmedzený len na IFCstudy treba rozšíriť/nahradiť; na úpravy `Glossary.md` je ďalej potrebný aj scope na IFCstudy.
+2. Pokyn typu *„pushni X do vaultu"*: naklonovať `AssetinSpace/ObsidianPKM` do sandboxu, vytvoriť/upraviť MD podľa pravidiel nižšie, commit + push cez HTTPS s tokenom (SSH port 22 je blokovaný), token po pushi odstrániť z remote URL.
+3. Pred pushom si prečítať `CLAUDE.md` v koreni vaultu — je to záväzná schéma; pri konflikte s týmto súborom platí `CLAUDE.md`.
+4. Úpravy slovníka (`Glossary.md`) sa pushujú naďalej do **IFCstudy**.
+
+## Kam a ako zapisovať poznámky
+
+Nové poznámky idú do `10_Notes/` s týmto frontmatterom (presne toto poradie polí):
+
+```yaml
+---
+aliases:
+kind: pojem        # entita IfcXxx → pojem; prierezová téma/rozhodnutie → synteza
+status: draft      # vždy draft — na done prepína len človek
+topics:
+  - "[[IFC]]"      # vždy; ďalšie podľa obsahu ([[BIM]], [[buildingSMART]]…)
+resource:
+  - "[[buildingSMART IFC 4.3 dokumentácia]]"
+locator: "8.3.3.2" # kapitola z ifc43-docs; len pri pojme, ak je známa
+origin: ai
+verified:
+---
+```
+
+- **Entita** (`IfcSpace.md` — názov = presný PascalCase názov entity): telo `## Schema fakty` (prvý bod „Zdroj pravdy:" s linkom na lexical stránku), voliteľne `## Praktický zápis (ifcopenshell.api…)`, `## Otvorené otázky / poznámky`, `## Súvisiace`.
+- **Téma** (`kind: synteza`, názov **bez** prefixu „Téma - "): `## Problém` → analýza s normatívnym zdôvodnením → **`## Ako sme na to prišli`** (povinné: 2–5 viet, zlomové body úvahy vrátane omylov) → `## Otvorené / na overenie` → `## Zdroje` (Primárne/Sekundárne) → `## Súvisiace`.
+- Wikilinky medzi poznámkami ako doteraz; na slovník **markdown linkom** `[Glossary](https://github.com/AssetinSpace/IFCstudy/blob/main/Glossary.md)`, nie wikilinkom.
+- Existujúcu poznámku pri návrate k téme dopĺňať, nie zakladať duplikát. Prázdny súbor je vo vaulte zakázaný stav — na neexistujúci cieľ stačí wikilink.
+
+### Názvy súborov (vault sa synchronizuje Windows + iPhone)
+
+Max ~150 znakov / 200 bajtov UTF-8; zakázané `: / \ | # ^ [ ] * ? " < >`; diakritika v NFC; žiadne koncové/dvojité medzery, žiadne emoji.
 
 ---
 
 ## IFC Reference Authority
 
-Tento vault sa zameriava na porozumenie IFC 4.3 schémy. Jediný autoritatívny zdroj pre akúkoľvek IFC-súvisiacu informáciu je oficiálna buildingSMART dokumentácia:
+Jediný autoritatívny zdroj pre IFC schému: **https://ifc43-docs.standards.buildingsmart.org/**
 
-**Primárny zdroj:** https://ifc43-docs.standards.buildingsmart.org/
-
-### Pravidlá pre IFC otázky
-
-Kedykoľvek sa téma dotýka IFC — entít, atribútov, property setov, vzťahov, dedičnosti, konceptov, geometrických reprezentácií alebo štruktúry schémy — platí:
-
-1. Vždy najprv fetchnúť príslušnú stránku z `ifc43-docs.standards.buildingsmart.org`, než sa odpovie. Nespoliehať sa iba na trénovacie dáta.
-2. Používať správne URL vzory:
-   - Detail entity: `https://ifc43-docs.standards.buildingsmart.org/IFC/RELEASE/IFC4x3/HTML/lexical/[EntityName].htm`
-   - Kapitola 5 (Core schemas): `.../HTML/chapter-5/`
-   - Kapitola 6 (Shared schemas): `.../HTML/chapter-6/`
-   - Kapitola 7 (Domain schemas): `.../HTML/chapter-7/`
-   - Kapitola 8 (Resource schemas): `.../HTML/chapter-8/`
-   - Concepts: `.../HTML/concepts/content.html`
-   - Annex A (EXPRESS/XSD schema): `.../HTML/annex-a.html`
-   - Annex B (Abecedný index): `.../HTML/annex-b.html`
-   - Annex C (Strom dedičnosti): `.../HTML/annex-c.html`
-3. Citovať presne to, čo hovorí spec — rozlišovať medzi normatívnym textom a vlastnou interpretáciou/komentárom.
-4. Nikdy necitovať blogy, fóra, vendor dokumentáciu (Revit, ArchiCAD a pod.) ani third-party tutoriály ako IFC schema autoritu. Tie môžu byť referencované iba ako implementačné príklady, jasne označené ako také.
-5. Ak fetchnutá stránka neexistuje alebo vráti chybu, výslovne to uviesť a navrhnúť správnu navigačnú cestu v rámci dokumentácie.
-
-### Kontext autora
-
-Autor je BIM konzultant so zázemím v Sustainable Building Design, so záujmom o Asset Management, Information Management, Asset Intelligence, Digital Twins, Facility Management, stavebníctvo, CDE a CAFM. Poznámky majú podľa možnosti prepájať IFC schema koncepty s týmito doménami. Akademický prístup je vítaný, autor je otvorený novým uhlom pohľadu.
-
----
+1. Pred odpoveďou o IFC vždy fetchnúť príslušnú stránku — nespoliehať sa na trénovacie dáta.
+2. URL vzory: entita `…/IFC/RELEASE/IFC4x3/HTML/lexical/[EntityName].htm`; kapitoly `…/HTML/chapter-5/`…`chapter-8/`; concepts `…/HTML/concepts/content.html`; Annex A/B/C `…/HTML/annex-a.html` atď.
+3. Citovať presne — rozlišovať normatívny text od vlastnej interpretácie.
+4. Blogy, fóra a vendor dokumentáciu (Revit, ArchiCAD…) nikdy necitovať ako schema autoritu — len ako označené implementačné príklady (`⚠️ vendor, nie spec`).
+5. Ak stránka nejde fetchnúť, uviesť to výslovne a navrhnúť navigačnú cestu.
 
 ## Jazykové pravidlá (SK/CZ)
 
-Vault pokrýva oba trhy — slovenský aj český. Pre všetky IFC termíny platí:
+- Primárny zdroj prekladov je `Glossary.md` v tomto repe — používa sa len odsúhlasený preklad; návrh bez odsúhlasenia sa značí `⚠️ NEPOTVRDENÉ`.
+- SK termín pri SK kontexte, CZ pri CZ; ak trh nie je jasný: *Sada výmer (SK) / Sada výměr (CZ)*.
+- Nový termín: navrhnúť preklad do oboch jazykov a upozorniť — nikdy nevymýšľať potichu.
+- Anglický IFC termín vždy v pôvodnom tvare (*Quantity Set*, `IfcWall`); preklad je doplnok.
 
-Primárny zdroj prekladov je [[Glossary]]. Vždy keď sa použije IFC termín v slovenčine alebo v češtine, použije sa presne ten preklad, ktorý je v slovníku odsúhlasený.
+## Kontext autora
 
-**Pravidlá:**
-
-- Slovenský termín sa používa pri SK kontexte, český pri CZ kontexte.
-- Ak nie je jasné, ktorý trh, uvedú sa oba — formát: *Sada výmer (SK) / Sada výměr (CZ)*.
-- Ak sa narazí na termín, ktorý ešte nie je v slovníku, upozorní sa na to a navrhne sa preklad do oboch jazykov — až po odsúhlasení sa používa.
-- Nikdy sa nevymýšľa preklad svojvoľne bez upozornenia.
-- Anglický IFC termín sa vždy uvádza v pôvodnom tvare (napr. *Quantity Set*, `IfcWall`) a preklad je doplnok, nie náhrada.
-
----
-
-*Reálne obsahové súbory (entity, témy, slovník) sa tvoria a pushujú podľa týchto pravidiel, nie priamo podľa tohto súboru.*
-
----
-
-## Štýl zápisu — workflow témy (dôvody + "ako sme na to prišli")
-
-Pri témach v `topics/`, ktoré popisujú **workflow/architektonické rozhodnutie** (nie len fakt o entite), platí navyše:
-
-1. **Rozpísať podrobnejšie prečo je to tak** — nielen záver ("robíme X"), ale normatívne/logické zdôvodnenie za ním (citácia zo spec, alebo jasne označená vlastná úvaha, ak spec mlčí). Cieľ: o pol roka má byť z poznámky jasné, prečo bolo rozhodnuté práve takto, nie len čo bolo rozhodnuté.
-2. **Stručne doplniť "Ako sme na to prišli"** — krátky naratív myšlienkového postupu (2-5 viet alebo bodov), ktorý zachytí kľúčové zlomové body úvahy (napr. "pôvodne sa zvažovalo X, ale ukázalo sa Y, preto Z"). Nie je to prepis celej konverzácie — len logická kostra cesty k záveru, vrátane prípadných omylov/korekcií po ceste (tie sú často najcennejšie).
-3. Toto platí primárne pre `topics/` (workflow, architektonické rozhodnutia). Súbory v `entities/` môžu zostať stručnejšie, faktografické — pri nich stačí sekcia "Otvorené otázky/poznámky", ak si to vyžaduje kontext.
-4. Existujúce staršie témy sa pri ďalšom pushi príslušnej oblasti priebežne dopĺňajú o tieto sekcie, ak ešte chýbajú — netreba retroaktívne prepisovať všetko naraz, len keď sa k téme aj tak vraciame.
-
----
-
-Tento vault sa aktualizuje priamo z konverzácií (Claude, claude.ai projekt), nie ručne.
-
-**Ako to funguje:**
-
-1. Fine-grained GitHub token (scope obmedzený len na toto repo, permission "Contents: Read and write") je uložený ako súbor v Project Knowledge daného claude.ai projektu — nie v tomto repe, nie v sandboxe trvalo.
-2. Keď v ktoromkoľvek chate v projekte príde pokyn typu *"pushni X do IFCstudy"*:
-   - token sa vyhľadá v Project Knowledge,
-   - repo sa naklonuje do dočasného sandboxu,
-   - nové/upravené MD súbory sa vytvoria podľa pravidiel vyššie (autorita = ifc43-docs, jazykové pravidlá SK/CZ cez `Glossary.md`, wikilinky medzi entitami a témami),
-   - zmeny sa commitnú a pushnú cez **HTTPS s tokenom** (nie SSH — port 22 je v sandboxe blokovaný firewallom, funguje len HTTPS na `github.com`),
-   - token sa po pushi odstráni z lokálnej git remote URL (ostáva len v Project Knowledge).
-3. Sandbox sa medzi jednotlivými chatmi resetuje — nie je to teda "trvalé pripojenie", ale token sa vždy nájde nanovo. Z pohľadu používateľa to funguje ako jeden pokyn v ktoromkoľvek chate v projekte.
-
-**Bezpečnostná poznámka:** token/kľúč nie je v šifrovanom trezore — Project Knowledge je bežné textové úložisko projektu. Scope je preto zámerne obmedzený len na toto jedno repo.
-
+BIM konzultant (Sustainable Building Design; Asset Management, Digital Twins, FM, CDE, CAFM). Poznámky prepájať s týmito doménami; referenčný model `Office_centrum_Brno.ifc`, vlastný nástroj AIMviewer.
