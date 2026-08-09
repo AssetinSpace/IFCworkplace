@@ -130,10 +130,10 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 ### Strata a nekonzistencia dát
 | # | | vec |
 |---|---|---|
-| A | O | 28 prvkov stratilo `Status` — presne množina `IfcWall → IfcCovering` (`FS03.01` 9, `ST01.32` 8, `FS01.10` 4, `FS01.11` 4, `FS01.12` 3) |
-| B | O | 17 `IfcSlab` nesie `Pset_WallCommon` (`ZD02.02` 9, `DZ02` 8) |
+| A | **H** | ~~28 prvkov stratilo `Status`~~ — vrátené do `Pset_CoveringCommon`, `70d17af`. Pôvodne: — presne množina `IfcWall → IfcCovering` (`FS03.01` 9, `ST01.32` 8, `FS01.10` 4, `FS01.11` 4, `FS01.12` 3) |
+| B | **H** | ~~17 `IfcSlab` nesie `Pset_WallCommon`~~ → `Pset_SlabCommon`, `70d17af` |
 | C | **H** | ~~`IfcSpaceType` = `NOTDEFINED` / `USERDEFINED`~~ |
-| E | O | `Pset_SpaceCommon` na 10 `IfcSpatialZone` |
+| E | **H** | ~~`Pset_SpaceCommon` na 10 `IfcSpatialZone`~~ → `Pset_SpatialZoneCommon`, `70d17af` |
 | F | O | 48 osirelých entít (31 `IfcLocalPlacement`, 16 profilov, 1 `IfcSurfaceStyle`) — potvrdené do kusa |
 | AY | O | `#16` `IfcGeometricRepresentationSubContext` „Box" nepoužitý (0 reprezentácií). Má 0 inverzov, lebo väzbu na rodiča drží **dopredný** `ParentContext`, nie inverzný `HasSubContexts` — do whitelistu invariantu 4 patrí alebo sa má zmazať |
 | AJ | O | 2653 hodnôt s FP šumom (2502 `Qto`, 145 `Overall*`, 18 property) |
@@ -153,22 +153,22 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 ### Typy a identita
 | # | | vec |
 |---|---|---|
-| AE | O | `OK01` — 25 `IfcPlateType` s rovnakým menom aj popisom, 126 occurrences, 13 rozmerov |
-| O | O | `LP01` — 151 kusov, 151 kódov, UOT zneužitý ako počítadlo, pretečenie do `LP01.0100`–`.0153` |
-| AK | O | `LP01` kryje 125 `IfcPlate` (typované `OK01`) + 26 `IfcWindow` |
-| AF | O | `IfcRoot.Name` nie je jednoznačný kľúč: 46 typových entít / 12 mien |
-| AA | O | tretie `SC01` (3NP): 8 prvkov netypovaných, ramená a podesty pomenované `SC01` |
+| AE | **H** | ~~`OK01` — 25 `IfcPlateType`~~ → 1 typ, 50 `RepresentationMaps`, `bddef62` |
+| O | **H** | ~~`LP01` — UOT zneužitý ako počítadlo~~ — 125 `IfcPlate` → `OK01`, INST nanovo, `bddef62` + `7ea9241` |
+| AK | **H** | ~~`LP01` kryje 125 `IfcPlate` + 26 `IfcWindow`~~ — rozdelené, typy `LP01.44`/`.69` zlúčené, `bddef62` |
+| AF | O | `IfcRoot.Name` nie je jednoznačný kľúč. `OK01` a `LP01` vyriešené (`bddef62`), ale fáza 1 pridala 4 dvojice rovnomenných `IfcCoveringType` (`ST01.10a`, `.20`, `.21`, `.31`) — ten istý výrobok bol raz `IfcRoof` a raz `IfcSlab` |
+| AA | **H** | ~~tretie `SC01` (3NP): 8 prvkov netypovaných~~ — prekódované na `SD03`/`SD04`, dotypované, `bddef62` |
 
 ### Názvoslovie
 | # | | vec |
 |---|---|---|
-| M | O | INST chýba na 2491 z 2645; existujúcich 154 v troch konvenciách |
-| N | O | 17 kódov bez UOT (1474 occurrences, `LOP02` 1292) |
-| P | O | 203 occurrences má `ObjectPlacement` v (0,0,0) — triediť z geometrie |
+| M | **H** | ~~INST chýba na 2491 z 2645~~ — pridelený 2460 occurrences, šírka 4, `7ea9241` |
+| N | **H** | ~~`LOP02`~~ → `LP02` (1292 occ + 1 typ), `7ea9241`. Kódov bez UOT je v modeli 18, nie 17 |
+| P | **H** | ~~occurrences s `ObjectPlacement` v (0,0,0)~~ — poradie INST sa počíta z geometrie, `7ea9241`. Nameraných 149, nie 203 |
 | S | — | čísla dverí `DD*` sú výkresovo autoritatívne, kotvy v `build_1np_spaces.py` |
-| Y | O | `Openspace - Západ` (2NP) vs `Openspace - Zapad` (3NP) |
-| AP | O | `DD01.05.01` a `.02` existujú dvakrát — rieši sa spolu s #6 |
-| AX | O | **rovnaká vada aj na `DD01.02.01`, `.02`, `.03`** — každý 2×, všetky 1NP, vždy dvojica dvojkrídlové + jednokrídlové. Rozhodnutie 6 ich nepokrýva. Duplicita je aj vo výkrese `D.1.1.01` (39 tagov, 33 unikátnych); model je verný podkladu |
+| Y | **H** | ~~`Openspace - Zapad`~~ → `Západ`, aj `Vychod` → `Východ`, `7ea9241` |
+| AP | **H** | ~~`DD01.05.01` a `.02` dvakrát~~ — sklenené dvojkrídlové na `DD01.04`, `7ea9241` |
+| AX | **H** | ~~rovnaká vada aj na `DD01.02.01`, `.02`, `.03`~~ — **nešlo o vadu kódu.** SNIM kód nesie užitie, nie krídlovosť, takže `DD01.02` je pre obe varianty správny; bola to kolízia `INST`, vyriešená štandardným pravidlom poradia, `7ea9241`. Pôvodný nález: — každý 2×, všetky 1NP, vždy dvojica dvojkrídlové + jednokrídlové. Rozhodnutie 6 ich nepokrýva. Duplicita je aj vo výkrese `D.1.1.01` (39 tagov, 33 unikátnych); model je verný podkladu |
 
 ### Priestory a vzťahy
 | # | | vec |
@@ -187,8 +187,8 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 ### Materiály a skladby
 | # | | vec |
 |---|---|---|
-| AH | O | 164 `IfcMaterialConstituent` bez zodpovedajúceho `IfcShapeAspect`; rieši sa rozhodnutím 27 |
-| AI | O | „Dřevo obecné" na krídle LOP — **vyrieši sa sám** rozhodnutím 27, zdedí sa `Frame/Mullion` + `Glass` |
+| AH | **H** | ~~164 `IfcMaterialConstituent` bez `IfcShapeAspect`~~ — 0 na occurrence úrovni, `70d17af` |
+| AI | **H** | ~~„Dřevo obecné" na krídle LOP~~ — vyriešilo sa rozhodnutím 27, `70d17af` |
 | AQ | O | layer sety nesedia s výpisom: `ST01.10` chýbajú spádové kliny, ETICS majú 1 zo 6 vrstiev |
 | AU | O | deklarovaná vs geometrická hrúbka: `FS01.10` 210/180, `FS01.11` 141/120, `FS01.12` 80/50, `FS01.20` 210/180, `ST01.10` 234–354/204 |
 | AS | O | materiál „Výchozí" ako dutinová podlaha v `PD03.*` |
@@ -386,3 +386,44 @@ Idempotencia oboch skriptov overená (druhý beh 0 zmien).
   fázy 3, ktorá rieši len `OK01`, `LP01` a `SC01`;
 * nové `IfcRoof` dostali `Name = 'ST01'` — kód nadradenej skladby. V AUDIT
   pre ne meno určené nebolo, treba potvrdiť.
+
+---
+
+## 11. Fázy 2–4 — výsledok brán
+
+`ASR_v3.ifc` → `ASR_v4.ifc` (`70d17af`) → `ASR_v5.ifc` (`bddef62`)
+→ `ASR_v6.ifc` (`7ea9241`).
+
+| | fáza 2 | fáza 3 | fáza 4 |
+|---|---|---|---|
+| 1 geometria | 0 zmenených | 0 zmenených | 0 zmenených |
+| 2 EXPRESS | 0 | 0 | 0 |
+| 3 GUID | 117 zruš. / 0 nov. | 51 / 0 | 0 / 0 |
+| 4 osirelé | 48 (#F) | 48 (#F) | 48 (#F) |
+| 5 prázdne SET | 0 | 0 | 0 |
+| 6 jednoznačnosť | 5 kódov | 5 kódov | **0 — prešlo** |
+| 7 kontajnment | 0 mimo #AW | 0 mimo #AW | 0 mimo #AW |
+
+Ďalšie merania brán: `Status` na 209 prvkoch (bolo 181); 0
+`IfcMaterialConstituent` bez `IfcShapeAspect` na occurrence úrovni;
+`IfcTypeObject` 149 → 124; 0 `IfcMappedItem` mimo máp vlastného typu;
+netypovaných occurrences 44 → 2; 2611 z 2611 occurrences má plný SNIM
+kód a žiadny nie je duplicitný. Idempotencia všetkých skriptov overená.
+
+**Čísla, ktoré sa oproti zadaniu posunuli, a prečo**
+
+| zadanie | skutočnosť | dôvod |
+|---|---|---|
+| INST na 2491 occurrences | **2460** | fáza 1 zrušila 36 strešných obalov a pridala 2 `IfcRoof`; 2491 − 36 + 2 = 2457, plus 3 prečíslované pri kolízii |
+| netypovaných 44 → 36 | **44 → 2** | tých 36 boli práve strešné obaly, ktoré zanikli vo fáze 1 |
+| `PredefinedType` na 383 occurrences | **314** | 383 = 314 `NOTDEFINED` + 69 `IfcFlowTerminal`, ktoré atribút v IFC4X3 nemajú |
+| 203 occurrences v (0,0,0) | **149** | po fáze 1; na závere nič nemení, poradie sa aj tak počíta z geometrie |
+
+**Otvorené po fáze 4**
+
+* #F — 48 osirelých entít, sweep vo fáze 9;
+* #AW — 85 častí fasády agregovaných aj kontajnovaných, fáza 6/7;
+* #AM — 67 occurrences bez pravidla pre `PredefinedType` v §5;
+* #AO — fasádne zateplenia, fáza 6;
+* #AF — 4 nové dvojice rovnomenných `IfcCoveringType` z fázy 1;
+* #G — jedna `ST01.10` v 3NP mimo strešnej agregácie.
