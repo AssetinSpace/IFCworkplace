@@ -1,6 +1,6 @@
 """Fáza 4 — názvoslovie a INST.
 
-Register: #M #N #P #S #Y #AP (#AX čaká na čísla), rozhodnutia 2, 4, 6, 19.
+Register: #M #N #P #S #Y #AP #AX, rozhodnutia 2, 4, 6, 19.
 
     python src/18_snim_inst.py           # dry-run
     python src/18_snim_inst.py --apply   # zapíše out/ASR_v6.ifc
@@ -10,7 +10,7 @@ Register: #M #N #P #S #Y #AP (#AX čaká na čísla), rozhodnutia 2, 4, 6, 19.
 A  #N   ``LOP02`` → ``LP02`` (1292 occurrences + 1 ``IfcMemberType``)
 B  #6   3NP: mená dverí ``DD03.04`` ↔ ``DD03.05`` (12 ↔ 3)
 C  #AP  2 sklenené dvojkrídlové ``DD01.05.01/.02`` → ``DD01.04.01/.02``
-D  #AX  ``DD01.02.01/.02/.03`` — čaká na rozhodnutie, viď ``AX_RENAME``
+D  #AX  kolízia ``INST`` v rámci kódu — číslo si nechá geometricky prvý
 E  #Y   diakritika v ``LongName`` priestorov
 F  #M   ``INST`` na occurrences bez neho, pevná šírka 4
 
@@ -74,9 +74,22 @@ DOOR_SWAP_3NP = ("DD03.04", "DD03.05")
 #: #AP rozhodnutie 6 — sklenené dvojkrídlové z DD01.05 na voľné DD01.04
 GLASS_DOUBLE = {"DD01.05.01": "DD01.04.01", "DD01.05.02": "DD01.04.02"}
 
-#: #AX — duplicitné DD01.02.01/.02/.03. PRÁZDNE, kým Samuel nedodá čísla.
-#: Formát: {GlobalId: nové_meno}. Bez toho invariant 6 ostane na 3 kódoch.
-AX_RENAME: dict[str, str] = {}
+#: #AX — kolízia INST v rámci jedného kódu.
+#:
+#: Rozhodnutie Samuela po fáze 3: **SNIM kód nesie užitie, nie krídlovosť.**
+#: ``DD01.02`` = „Vstupy do CHÚC" platí pre dvojkrídlové aj jednokrídlové
+#: rovnako; krídlovosť ide do ``Description`` (rozhodnutie 7) a neskôr do
+#: psetov. Kód sa teda **nedelí** — tri dvojice nie sú zle zatriedené, len
+#: si šesť dverí rovnakého užitia delí tri čísla.
+#:
+#: Rieši sa preto tým istým pravidlom ako všetky ostatné INST: pri kolízii
+#: si číslo nechá geometricky prvý prvok a ostatné dostanú ďalšie voľné
+#: v poradí podlažie → Y → X → Z. Žiadne ručné čísla, žiadne hádanie.
+#:
+#: Pozn.: #AP je iný prípad a ostáva — tam ``DD01.05`` („SDK priečky") vs
+#: ``DD01.04`` („sklenené priečky") rozlišuje konštrukciu priečky, teda
+#: práve to užitie, ktoré kód nesie. Rozhodnutie 6 preto platí.
+RESOLVE_INST_COLLISIONS = True
 
 #: #Y diakritika v LongName priestorov
 DIACRITICS = {
@@ -168,21 +181,25 @@ def main() -> int:
                    % (n["occ"], n["typ"]))
 
     # ---- B · #6 swap dverí na 3NP ---------------------------------------
-    a, b = DOOR_SWAP_3NP
+    # Formulované ako „meno musí sedieť s typom", nie ako slepý swap —
+    # slepý swap je sám sebe inverzný a druhý beh by ho vrátil späť.
     plan = []
     for d in list(m.by_type("IfcDoor")):
         st = storey_of(d)
         if not d.Name or st is None or st.Name != "3NP":
             continue
-        if d.Name.startswith(a + "."):
-            plan.append((d, b + d.Name[len(a):]))
-        elif d.Name.startswith(b + "."):
-            plan.append((d, a + d.Name[len(b):]))
+        code, inst = parse_snim(d.Name)
+        if code not in DOOR_SWAP_3NP or inst is None:
+            continue
+        t = d.IsTypedBy[0].RelatingType if d.IsTypedBy else None
+        if t is None or t.Name == code:
+            continue                                   # už sedí
+        plan.append((d, "%s.%s" % (t.Name, inst)))
     if plan:
         for d, new in plan:            # naraz, až po výpočte všetkých
             d.Name = new
-        log.append("#6   3NP swap %s ↔ %s: %d dverí"
-                   % (a, b, len(plan)))
+        log.append("#6   3NP meno zrovnané s typom (%s ↔ %s): %d dverí"
+                   % (DOOR_SWAP_3NP[0], DOOR_SWAP_3NP[1], len(plan)))
 
     # ---- C · #AP sklenené dvojkrídlové ----------------------------------
     n_ap = 0
@@ -193,14 +210,6 @@ def main() -> int:
             n_ap += 1
     if n_ap:
         log.append("#AP  sklenené dvojkrídlové DD01.05 → DD01.04: %d" % n_ap)
-
-    # ---- D · #AX --------------------------------------------------------
-    n_ax = 0
-    for gid, new in AX_RENAME.items():
-        m.by_guid(gid).Name = new
-        n_ax += 1
-    if n_ax:
-        log.append("#AX  prečíslovaných duplicitných dverí: %d" % n_ax)
 
     # ---- E · #Y diakritika ----------------------------------------------
     n_y = collections.Counter()
@@ -218,17 +227,6 @@ def main() -> int:
                      key=lambda s: (s.Elevation if s.Elevation is not None else 0))
     order = {s.id(): i for i, s in enumerate(storeys)}
 
-    used = collections.defaultdict(set)      # kód → obsadené INST
-    todo = collections.defaultdict(list)     # kód → prvky bez INST
-    for e in elements:
-        code, inst = parse_snim(e.Name)
-        if code is None:
-            continue
-        if inst is not None and (e.Name or "").startswith(AUTHORITATIVE):
-            used[code].add(inst.zfill(INST_WIDTH))   # autoritatívne, nemení sa
-        else:
-            todo[code].append(e)
-
     def key(e):
         bb = effective_box(e, box)
         st = storey_of(e)
@@ -237,6 +235,31 @@ def main() -> int:
             return (si, float("inf"), float("inf"), float("inf"), e.GlobalId)
         return (si, snap((bb[1] + bb[4]) / 2), snap((bb[0] + bb[3]) / 2),
                 snap((bb[2] + bb[5]) / 2), e.GlobalId)
+
+    # autoritatívne INST si prvky nechávajú (#S), ale pri kolízii si číslo
+    # udrží len geometricky prvý — ostatné idú prečíslovať (#AX)
+    used = collections.defaultdict(set)       # kód → obsadené INST
+    todo = collections.defaultdict(list)      # kód → prvky na pridelenie
+    keeps = collections.defaultdict(list)     # (kód, INST) → autoritatívne prvky
+    for e in elements:
+        code, inst = parse_snim(e.Name)
+        if code is None:
+            continue
+        if inst is not None and (e.Name or "").startswith(AUTHORITATIVE):
+            keeps[(code, inst.zfill(INST_WIDTH))].append(e)
+        else:
+            todo[code].append(e)
+
+    collisions = []
+    for (code, inst), group in keeps.items():
+        group.sort(key=key)
+        used[code].add(inst)                  # číslo si nechá prvý
+        for e in group[1:]:                   # ostatní ho stratia
+            collisions.append(e.Name)
+            todo[code].append(e)
+    if collisions:
+        log.append("#AX  kolízia INST v rámci kódu, prečísluje sa %d prvkov: %s"
+                   % (len(collisions), sorted(collisions)))
 
     assigned = 0
     for code, items in todo.items():
@@ -276,9 +299,6 @@ def main() -> int:
           % (len(no_inst), dict(collections.Counter(e.Name for e in no_inst))))
     print("  duplicitných plných kódov      : %d %s   (očakávané 0)"
           % (len(dups), dups))
-    if not AX_RENAME:
-        print("  POZNÁMKA: #AX nie je vyriešené — chýbajú čísla pre "
-              "DD01.02.01/.02/.03")
 
     if dry:
         print("\nDRY-RUN — nič sa nezapísalo. Spusti s --apply.")
