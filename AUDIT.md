@@ -541,16 +541,27 @@ ktorý orezáva všetko — „inak by tam diera nebola".
   `PZ01`–`PZ10`; ani jedna nemá `ObjectType` z hodnôt odporúčaných spec a ani
   jedna neobsahuje šachtový priestor.
 
-| stĺpec | pôdorys mm | plocha | priestor je na | čo to je |
-|--:|---|--:|---|---|
-| 1 | 1700 × 1700 | 2.89 m² | 2NP, 3NP | **výťah `VT01 02`** |
-| 2 | 2050 × 600 | 1.23 m² | 2NP | inštalačná šachta |
-| 3 | 550 × 2350 | 1.29 m² | 2NP, 3NP | inštalačná šachta |
-| 4 | 2150 × 2350 | 5.05 m² | 2NP, 3NP | **výťah `VT01 01`** |
-| 5 | 330 × 2270 | 0.75 m² | 2NP, 3NP | inštalačná šachta, **bez otvoru** |
-| 6 | 550 × 2700 | 1.48 m² | 3NP, 4NP | inštalačná šachta |
+Stĺpce sa nesmú hľadať len podľa priestorov — šachta, ktorá priestor nemá na
+žiadnom podlaží, by tak zostala neviditeľná. Semienkom je preto aj zvislý
+otvor. Zlučovať sa musí podľa **podobnosti** pôdorysov (prienik voči väčšiemu),
+nie podľa vnorenia, inak schodiskový otvor pohltí šachtu, ktorá v ňom leží.
 
-**Na 1NP nemá priestor ani jeden zo šiestich stĺpcov.**
+| stĺpec | pôdorys mm | plocha | priestor je na | prerazí dosku 1NP | čo to je |
+|--:|---|--:|---|:-:|---|
+| 1 | 7300 × 2700 | 19.71 m² | — | áno | schodiskový otvor, nie šachta |
+| 2 | 2150 × 2350 | 5.05 m² | 2NP, 3NP | áno | **výťah `VT01 01`** |
+| 3 | 1700 × 1700 | 2.89 m² | 2NP, 3NP | áno | **výťah `VT01 02`** |
+| 4 | 3450 × 800 | 2.76 m² | **nikde** | áno | inštalačná šachta |
+| 5 | 550 × 2700 | 1.48 m² | 3NP, 4NP | nie | inštalačná šachta, bez otvoru |
+| 6 | 550 × 2350 | 1.29 m² | 2NP, 3NP | áno | inštalačná šachta |
+| 7 | 2050 × 600 | 1.23 m² | 2NP | áno | inštalačná šachta |
+| 8 | 330 × 2270 | 0.75 m² | 2NP, 3NP | nie | inštalačná šachta, bez otvoru |
+
+Ďalších 8 zvislých prestupov pod 0.10 m² (160 × 160) sú prestupy potrubia,
+nie šachty — z výpočtu vynechané.
+
+**Na 1NP nemá priestor ani jeden stĺpec.** Inštalačných šácht je päť (4–8),
+výťahové sú dve (2, 3).
 
 ### Ako sa v tomto modeli modeluje teleso priestoru
 
@@ -565,7 +576,7 @@ priestor sa riadi susedmi, nie knihou.
 | vec | rozhodnutie |
 |---|---|
 | #J rozsah | dokresliť **len inštalačné šachty** na 1NP; výťahové nie |
-| #J pôdorys | orezať z existujúceho otvoru `SD02` na pásmo 1NP — nefabrikuje sa, void v modeli už je |
+| #J pôdorys | prevziať z existujúceho otvoru `SD02`, ktorý má **presne pôdorys šachty**, a orezať na pásmo 1NP (`0 … 4600`) — nefabrikuje sa, void v modeli už je |
 | #J názvy | `2.15`, `2.18`, `3.15`, `3.17` → `LongName` **„Výťahová šachta"** podľa výkresu |
 | #Q | vnorený `IfcZone` s 11 nájomnými priestormi 3NP do `IfcZone` `Pronajmutelné` |
 
@@ -577,9 +588,23 @@ bez akejkoľvek geometrie — vrátane výťahových, ktoré nekreslíme. Zoznam
 v spec uvedený vetou *„in case of a zone denoting a (fire) compartment"*, takže
 rámec je požiarny; do BEP to treba napísať tak, ako to je.
 
-Otvorené aj: stĺpec 2 nemá priestor na 3NP a stĺpec 6 na 2NP; stĺpec 5 nemá
-otvor vôbec. Pred kreslením 1NP treba pri každom overiť obvodové steny na 1NP,
-inak by skript vyrobil priestor tam, kde šachta nepokračuje.
+**Nový nález, ktorý mení rozsah #J.** Sonda odhalila vec, ktorú pohľad cez
+priestory nevidel: **stĺpec 4 (3450 × 800, 2.76 m²) nemá `IfcSpace` na žiadnom
+podlaží**, hoci prerazí každú dosku vrátane 1NP. Na výkresoch je to ten
+čiarkočiarkový box severne od `1.05` a `2.14`, ktorý sa pri prvom čítaní
+legendy nedal priradiť k žiadnemu číslu miestnosti — legenda ho nemá, lebo
+miestnosť to nie je. Otázka teda už nie je len „doplniť 1NP", ale aj **či
+tento stĺpec dostane priestory na všetkých podlažiach**. To je rozhodnutie
+navyše, nie súčasť pôvodného #J.
+
+Kandidáti na 1NP sú preto tri inštalačné šachty, ktorých void 1NP doskou
+naozaj prechádza: **stĺpce 4 (2.76 m²), 6 (1.29 m²) a 7 (1.23 m²)**. Stĺpce 5
+a 8 dosku neprerážajú vôbec — pre ne dôkaz o pokračovaní na 1NP neexistuje
+a bez neho sa priestor nekreslí. Čísla nadviažu na rad 1NP od `1.24`.
+
+Pred kreslením musí skript pri každom kandidátovi overiť obvodové steny na
+1NP a zastať, ak nesedia — inak by vyrobil priestor tam, kde šachta
+nepokračuje.
 
 ### Brána `ASR_v8.ifc` pred fázou 6
 

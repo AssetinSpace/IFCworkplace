@@ -58,6 +58,9 @@ SHAFT_OBJECTTYPES = ("elevatorshaft", "risingduct", "runningduct", "firecompartm
 #: prekryv pôdorysov, od ktorého ich považujeme za ten istý zvislý stĺpec
 OVERLAP = 0.5
 
+#: pôdorys pod touto plochou je prestup potrubia, nie šachta (mm²)
+MIN_AREA = 100_000.0
+
 
 # --------------------------------------------------------------------------
 # pomôcky
@@ -103,14 +106,34 @@ def bboxes(model, products):
     return out
 
 
-def xy_overlap(a, b):
-    """Podiel prekryvu pôdorysov voči menšiemu z nich, 0..1."""
+def _inter(a, b):
     ix = max(0.0, min(a[3], b[3]) - max(a[0], b[0]))
     iy = max(0.0, min(a[4], b[4]) - max(a[1], b[1]))
-    aa = (a[3] - a[0]) * (a[4] - a[1])
-    bb = (b[3] - b[0]) * (b[4] - b[1])
-    m = min(aa, bb)
-    return (ix * iy / m) if m > 0 else 0.0
+    return ix * iy
+
+
+def _area(a):
+    return (a[3] - a[0]) * (a[4] - a[1])
+
+
+def xy_inside(a, b):
+    """Prekryv voči **menšiemu** — „prechádza jeden druhým".
+
+    Malá šachta vnorená do veľkého otvoru dá 1.0, preto sa týmto testom
+    nesmú zlučovať stĺpce, len sa ním hľadá, čo daný pôdorys prerazí.
+    """
+    m = min(_area(a), _area(b))
+    return (_inter(a, b) / m) if m > 0 else 0.0
+
+
+def xy_similar(a, b):
+    """Prekryv voči **väčšiemu** — „je to ten istý pôdorys".
+
+    Vnorenie tu dá malé číslo, takže schodiskový otvor nepohltí šachtu,
+    ktorá v ňom leží.
+    """
+    m = max(_area(a), _area(b))
+    return (_inter(a, b) / m) if m > 0 else 0.0
 
 
 # --------------------------------------------------------------------------
@@ -183,49 +206,72 @@ def main() -> int:
     feat_bb = bboxes(m, features)
     by_gid = {e.GlobalId: e for e in spaces + features}
 
-    columns: list[list] = []
-    for s in sorted(shafts, key=lambda x: (x.Name or "")):
-        bb = space_bb.get(s.GlobalId)
-        if not bb:
+    # Stĺpce sa nesmú hľadať len podľa priestorov — šachta, ktorá priestor
+    # nemá na žiadnom podlaží, by tak zostala neviditeľná. Semienkom je preto
+    # aj **zvislý otvor**: prerazí viac než jedno podlažie a jeho pôdorys je
+    # presne pôdorysom šachty (overené, viď §14).
+    span = (max(s.Elevation for s in storeys if s.Elevation is not None)
+            - min(s.Elevation for s in storeys if s.Elevation is not None))
+    seeds = [(s, space_bb[s.GlobalId]) for s in shafts if s.GlobalId in space_bb]
+    drobne = 0
+    for gid, fbb in feat_bb.items():
+        if fbb[5] - fbb[2] <= span:         # neprerazí viac podlaží
             continue
+        if _area(fbb) < MIN_AREA:           # prestupy potrubí, nie šachty
+            drobne += 1
+            continue
+        seeds.append((by_gid[gid], fbb))
+    if drobne:
+        print("   (vynechaných %d zvislých prestupov pod %.2f m²)"
+              % (drobne, MIN_AREA / 1e6))
+
+    columns: list[list] = []
+    for e, bb in sorted(seeds, key=lambda x: -_area(x[1])):
         for col in columns:
-            if xy_overlap(col[0][1], bb) >= OVERLAP:
-                col.append((s, bb))
+            if xy_similar(col[0][1], bb) >= OVERLAP:
+                col.append((e, bb))
                 break
         else:
-            columns.append([(s, bb)])
+            columns.append([(e, bb)])
 
     for n, col in enumerate(columns, 1):
         ref = col[0][1]
         w, d = ref[3] - ref[0], ref[4] - ref[1]
         print("\n   stĺpec %d — pôdorys %.0f × %.0f mm, %.2f m²"
               % (n, w, d, w * d / 1e6))
+        cols_spaces = [(e, bb) for e, bb in col if e.is_a("IfcSpace")]
+        cols_feats = [(e, bb) for e, bb in col if not e.is_a("IfcSpace")]
+
         have = set()
-        for s, bb in sorted(col, key=lambda x: x[1][2]):
+        for s, bb in sorted(cols_spaces, key=lambda x: x[1][2]):
             st = storey_of(s)
             have.add(st.Name if st else None)
-            print("      %-8s %-10s %-22s z %8.0f … %8.0f"
+            print("      priestor %-8s %-10s %-22s z %8.0f … %8.0f"
                   % (st.Name if st else "?", s.Name, s.LongName, bb[2], bb[5]))
+        if not cols_spaces:
+            print("      priestor NEEXISTUJE na žiadnom podlaží")
         chybajuce = [s.Name for s in storeys if s.Name not in have]
-        if chybajuce:
+        if chybajuce and cols_spaces:
             print("      CHÝBA priestor na: %s" % ", ".join(chybajuce))
-        # čo tam reže dieru
-        cutters = []
-        for gid, fbb in feat_bb.items():
-            if xy_overlap(ref, fbb) >= OVERLAP:
-                cutters.append((by_gid[gid], fbb))
-        if cutters:
-            print("      otvory nad týmto pôdorysom: %d" % len(cutters))
-            for f, fbb in sorted(cutters, key=lambda x: x[1][2])[: args.show]:
-                h = host_of(f)
-                hs = storey_of(h) if h is not None else None
-                print("         %-22s %-10s z %8.0f … %8.0f  hostiteľ %s %r (%s)"
-                      % (f.is_a(), f.Name, fbb[2], fbb[5],
-                         h.is_a() if h is not None else "?",
-                         h.Name if h is not None else None,
-                         hs.Name if hs is not None else "?"))
+
+        # otvory, ktoré tento pôdorys prerážajú — kde a v čom
+        hosts = collections.Counter()
+        zr = set()
+        for f, fbb in cols_feats:
+            h = host_of(f)
+            hs = storey_of(h) if h is not None else None
+            hosts["%s %s (%s)" % (h.is_a().replace("Ifc", "") if h is not None else "?",
+                                  h.Name if h is not None else None,
+                                  hs.Name if hs is not None else "?")] += 1
+            zr.add((fbb[2], fbb[5]))
+        if cols_feats:
+            print("      otvory: %d, zvislý rozsah %s"
+                  % (len(cols_feats),
+                     ", ".join("%.0f…%.0f" % z for z in sorted(zr))))
+            for h, c in hosts.most_common(args.show):
+                print("         %d× v %s" % (c, h))
         else:
-            print("      otvory nad týmto pôdorysom: žiadne")
+            print("      otvory: žiadne — šachta neprerazí dosku")
 
     # ---- E · ako ďaleko siaha teleso priestoru ---------------------------
     print("\nE · ZVISLÝ ROZSAH TELIES PRIESTOROV")
