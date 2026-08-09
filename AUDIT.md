@@ -179,7 +179,8 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 | H | **H** | ~~1NP: 2 prvky z 247 v miestnostiach~~ — fáza 6a, kontajnment prepočítaný z geometrie. Prvkov v miestnostiach 93 → **136**, presunutých 95 |
 | G | **H** | ~~16 z 18 strešných vpustí v `IfcSpace` na 3NP; `ST01.10` v zlom podlaží~~ — fáza 6a: 17 `OV04` von z openspace do podlaží podľa geometrie; `ST01.10.0001` doplnená do agregácie `ST01.0001` (66 dielov) |
 | K | **H** | ~~10 dverí bez priestorového kontajnera~~ — namerané **0** už na `ASR_v9`; vyriešili to skoršie fázy, register bol zastaraný |
-| L | O | `IfcRelSpaceBoundary` 0× |
+| L | **H** | ~~`IfcRelSpaceBoundary` 0×~~ — fáza 6b, **649** `IfcRelSpaceBoundary1stLevel` na všetkých 75 priestoroch, bez `ConnectionGeometry`, `ParentBoundary` na 83 výplniach |
+| AZ | O | **80 z 97 `IfcDoor` nemá `FillsVoids`** — dvere nie sú zviazané s otvorom, takže hostiteľskú stenu nemožno prečítať zo vzťahu. Fáza 6b ju pri 52 dverách odvodila z polohy a overila proti hraniciam tej istej miestnosti; 20 dverí zostáva bez `ParentBoundary`. Oprava väzby je samostatná vec |
 | Z | **H** | ~~22 rekonštruovaných priestorov bez `Qto_BodyGeometryValidation`~~ — dopočítané z geometrie, `20_fix_spaces.py` |
 | Q | **H** | ~~3NP nemá prenajímateľnú zónu~~ — fáza 5c, §15. **Premisa „nová zóna = vyrobiť geometriu" bola nesprávna** — `IfcZone` je podtyp `IfcSystem`/`IfcGroup`, nie `IfcProduct`, a spec hovorí doslova *„A zone does not have its own shape representation"* a *„it can not define an own geometric representation and placement"*. Rozhodnuté — vnorený `IfcZone` s 11 nájomnými priestormi 3NP (584.06 m² podľa legendy `D.1.1.03`) vložený do `IfcZone` `Pronajmutelné`. WR1 `IfcSpace` aj `IfcZone` ako členov výslovne povoľuje |
 | Q2 | O | `PZ01`–`PZ10` majú vlastnú geometriu a `PredefinedType = OCCUPANCY`, ale **nereferencujú ani jeden prvok či priestor** (`IfcRelReferencedInSpatialStructure` 0×). Prenajímateľnosť tak dnes nesie iba objem, nie väzba na miestnosti. Nájdené sondou §14 |
@@ -774,3 +775,77 @@ Idempotencia overená: druhý beh 0 zmien, 0 nových GlobalId.
 **Zostáva vo fáze 6:** #L `IfcRelSpaceBoundary` — `23_space_boundaries.py`,
 rozhodnutie 23 (1. úroveň, bez `ConnectionGeometry`, `ParentBoundary` pre
 dvere a okná).
+
+---
+
+## 17. Fáza 6b — hranice priestorov
+
+`out/ASR_v10.ifc` → `out/ASR_v11.ifc`, `src/23_space_boundaries.py`.
+
+**649 `IfcRelSpaceBoundary1stLevel` na všetkých 75 priestoroch**, bez
+`ConnectionGeometry`, podľa rozhodnutia 23. 2. úroveň sa nerobí —
+energetické zónovanie je mimo rozsah.
+
+| trieda | hraníc |
+|---|--:|
+| `IfcWall` | 345 |
+| `IfcSlab` | 108 |
+| `IfcDoor` | 103 |
+| `IfcColumn` | 65 |
+| `IfcCurtainWall` | 28 |
+
+Na priestor medián 7, minimum 5, maximum 26. `ParentBoundary` napojený na
+83 výplní, z toho **52 s hostiteľom odvodeným z polohy** (viď #AZ nižšie).
+
+### Ako sa hranica hľadá
+
+Hranica odpovedá na otázku „čo stojí tesne za touto stenou miestnosti".
+Z každého trojuholníka obalu priestoru sa vystrelí lúč von po normále
+a berie sa **najbližší** zásah. Tri veci, na ktorých to najprv stálo zle:
+
+* **lúč, nie bod.** Test „bod je vnútri bboxu" priradil jednej stene
+  miestnosti tri prvky naraz, lebo bbox veľkej dosky obsahuje aj body,
+  ktoré v doske nie sú. Lúč berie prvý zásah, čo je presne to, čo slovo
+  hranica znamená.
+* **plocha, nie počet trojuholníkov.** Prah „aspoň 3 trojuholníky" zmazal
+  hranice 30 priestorov — kvádrová miestnosť má na stenu presne dva.
+  Prah je preto plošný (0.05 m²) a na tvare nezávislý.
+* **zásah sa mapuje na celok.** Lúč trafí konkrétny panel fasády, ale
+  hranicou je `IfcCurtainWall`; bez toho mal openspace 79 hraníc na tú
+  istú fasádu. Výnimkou sú dvere a okná — tie zostávajú samy sebou,
+  pretože celok je ich `ParentBoundary`.
+
+Krytiny, nábytok a zariaďovacie predmety hranicou nie sú. Ich vzťah
+k miestnosti nesie kontajnment z fázy 6a a druhý raz by to bola duplicita.
+Hranica hovorí, čo miestnosť uzatvára, nie čo v nej stojí.
+
+### Čo sa pritom našlo
+
+**Okná nemajú ani jednu hranicu.** Všetkých 26 `IfcWindow` je agregovaných
+do `IfcCurtainWall` bez `FillsVoids`, takže z miestnosti lúč trafí najprv
+panely fasády. Geometricky je to pravda a spec to nezakazuje, ale znamená
+to, že okenné hranice v modeli nebudú, kým sa fasáda nerozdelí na polia
+(fáza 7).
+
+### Brána
+
+| inv | výsledok |
+|---|---|
+| 1 geometria | **0 zmenených** (referencia = `ASR_v10.ifc`) |
+| 2 EXPRESS | **0 hlásení** |
+| 3 GUID | 649 nových, 0 zrušených, všetky v allowliste kroku |
+| 4 osirelé | 48 (#F) — rozpad nezmenený |
+| 5 prázdne SET | 0 |
+| 6 jednoznačnosť | 0 |
+| 7 kontajnment | 0 |
+
+Kontrola zápisu: 649 `IfcRelSpaceBoundary1stLevel`, `ConnectionGeometry`
+nenulových **0**, všetky `PHYSICAL`, 587 `INTERNAL` / 62 `EXTERNAL`,
+83 s `ParentBoundary` a funkčným inverzom `InnerBoundaries`. Priestor
+`1.05` je ohraničený 6 stenami, doskou pod (`ZD02.01.0001`) aj nad
+(`SD02.03.0001`) a dverami — sedí s výkresom. Idempotencia: druhý beh
+hranice našiel a skončil bez zmeny.
+
+**Fáza 6 je tým uzavretá.** Ďalej je fáza 7 — `24_lop_fields.py`, 48
+vnorených `IfcCurtainWall`, `Ucw` a `Qto`. Tá zároveň otvorí okenné
+hranice, ktoré dnes chýbajú.
