@@ -173,15 +173,15 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 ### Priestory a vzťahy
 | # | | vec |
 |---|---|---|
-| I | O | 14 MEP priestorov s `LongName = 'Space'` a číslom o podlažie nižšie; +78.83 m² |
+| I | **H** | ~~14 MEP priestorov s `LongName = 'Space'`~~ — prečíslované podľa §6, `20_fix_spaces.py`. Namerané 78.84 m² |
 | J | O | schodisko a 2 šachty existujú na 2NP–4NP nepomenované; §5 #1 pôvodného handoveru uzavretá zle; na 1NP chýbajú |
 | H | O | 1NP: 2 prvky z 247 v miestnostiach |
 | G | O | 16 z 18 strešných vpustí v `IfcSpace` na 3NP; 2 `ST01.10` v zlom podlaží |
 | K | O | 10 dverí bez priestorového kontajnera |
 | L | O | `IfcRelSpaceBoundary` 0× |
-| Z | O | 22 rekonštruovaných priestorov bez `Qto_BodyGeometryValidation` |
-| Q | O | 3NP nemá prenajímateľnú zónu |
-| R | O | súčet plôch 2012.88 m² vs 2031.95 z handoveru — rozdiel 19.07 m² |
+| Z | **H** | ~~22 rekonštruovaných priestorov bez `Qto_BodyGeometryValidation`~~ — dopočítané z geometrie, `20_fix_spaces.py` |
+| Q | O | 3NP nemá prenajímateľnú zónu. Prenajímateľnosť nesú `IfcSpatialZone` `PZ01`–`PZ10` zoskupené do `IfcZone` Pronajmutelné — nová zóna pre 3NP by znamenala **vyrobiť geometriu**, čo §8 zakazuje. Potrebuje rozhodnutie |
+| R | **H** | ~~súčet plôch vs 2031.95 z handoveru~~ — zosúhlasené: 1NP 613.55 + 2NP 665.74 + 3NP 664.11 + 4NP 69.47 = **2012.88 m²** na 69 priestoroch. Rozdiel 19.07 m² je v handoveri, nie v modeli |
 | AW | O | **85 častí fasády je súčasne agregovaných aj kontajnovaných** — 70 `IfcMember` `LOP02` a 9 `AZ01`, 6 `IfcPlate` `TI06.01`. Časti sedia o podlažie vyššie než ich `IfcCurtainWall` (`PL01` v 3NP → časti v 4NP; `LP03.01` v 4NP → časti v 5NP). Invariant 7 na základni zlyháva, nie až po fáze 1 |
 
 ### Materiály a skladby
@@ -463,3 +463,24 @@ lebo by samo vyrobilo nové duplicity. Treba rozhodnutie:
 
 Brána: inv 1 geometria 0 zmenených, inv 2 EXPRESS 0, inv 3 GUID 8/0,
 inv 5 OK, inv 6 OK, inv 7 OK; inv 4 = 48 (#F). Idempotencia 0/0.
+
+---
+
+## 13. Fáza 5b — priestory
+
+`out/ASR_v7.ifc` → `out/ASR_v8.ifc`.
+
+* **#I** — 14 MEP priestorov prečíslovaných podľa §6. Každý presun overený
+  proti kontrolnej ploche z tabuľky (tolerancia 0.02 m²), inak by skript
+  zastal. Umiestnenie sa nemenilo, len `Name` a `LongName`.
+* **#Z** — `Qto_BodyGeometryValidation` (`NetSurfaceArea`, `NetVolume`)
+  doplnený na 22 priestorov 1NP z ich vlastnej trianguláce. Výpočet
+  overený proti 47 priestorom, ktoré ten `Qto` už mali — zhoda na dve
+  desatinné miesta.
+* **#R** — zosúhlasené, viď register.
+
+Brána: inv 1 geometria 0 zmenených, inv 2 EXPRESS 0, inv 3 GUID 0 zrušených
+a 44 nových, inv 5 OK, inv 6 OK, inv 7 OK; inv 4 = 48 (#F). Idempotencia 0/0.
+
+**Zostáva pred fázou 6:** #J (šachty na 1NP) a #Q (zóna pre 3NP) — obe
+vyžadujú rozhodnutie a obe sa dotýkajú tvorby geometrie.
