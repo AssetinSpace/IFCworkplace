@@ -1,0 +1,18 @@
+﻿type_name;snim_kod;popis;# ifc_class;# poc_inst
+Obdélníková příčel:Vnitřní prosklená 50x250;LOP02;Obdélníková příčel, vnitřní prosklená, 50x250 mm;IfcMember;1292
+Rectangular Mullion:Profil zástena;AZ01;H-profil, nosný, pro akustickou zástěnu;IfcMember;84
+WC Zavěšené.CCEDU:WC Zavěšené.CCEDU;WC04;WC Závěsné;IfcFlowTerminal;14
+Umyvadlo.CCEDU:Umyvadlo.CCEDU;WC05;Umyvadlo;IfcFlowTerminal;12
+Invalida_Madlo_Sklop.CC:Invalida Madlo Sklop;VP02;Bezbariérové WC - madlo sklopné;IfcFurniture;12
+Nástavec střešní vpusti TWN:TWN BIT;WC06;Nástavec střešní vpusti TWN:TWN BIT;IfcFlowTerminal;9
+Invalida_Umyvadlo.CC :Invalida Umyvadlo;WC03;Bezbariérové WC – umyvadlo;IfcFlowTerminal;6
+Invalida_WC závěsné.CC:Invalida WC závěsné;WC02;Bezbariérové WC – WC závěsné;IfcFlowTerminal;6
+WC_Pisoár se zadním přívodem vody se sifonem.CCEDU:WC_Pisoár se zadním přívodem vody se sifonem.CCEDU;WC01;Pisoár se zadním přívodem vody se sifonem;IfcFlowTerminal;5
+Monolithic Landing:Tloušťka 300 mm;SD03;ŽB. podesta tl. 300 mm;IfcSlab;4
+Monolithic Run:Monolitické rameno;SD04;ŽB. schodišťové rameno ;IfcStairFlight;4
+Výlevka(AS).CC:Výlevka;WC07;Výlevka;IfcFlowTerminal;3
+Fascia:Atika;KV01;Oplechovanie atiky;IfcCovering;2
+Railing:Madlo 900;KV02;Madlo – kovové;IfcRailing;2
+Precast Stair:ŽB Prefabrikované schodiště;SC01;Prefabrikované schodiště;IfcStair;2
+Systémový panel:LOP_Zasklenie_50;OK01;Zasklenie LOP hr. 50 mm;IfcPlate;1
+Schodiskový_blok1:Schodiskový_blok;ZD02;Schodiskový blok základového systému;IfcStair;1

@@ -1,0 +1,330 @@
+# OCB — audit, rozhodnutia a plán opravy
+
+Nahrádza pôvodný handover a všetky predchádzajúce verzie tohto dokumentu.
+Vzniklo nezávislým overením každého tvrdenia pôvodného handoveru proti
+`ASR.ifc` a `ASR_final.ifc` (`ifcopenshell` 0.8.5) a konfrontáciou modelu
+s projektovou dokumentáciou.
+
+## 0. Rámec
+
+**Vstupný súbor:** `ASR_final_v2.ifc`
+
+**K dispozícii máme len IFC súbory, výkresy a Clauda.** Revit nie je dostupný.
+SNIM excel `MOC_BEP_05` **neexistuje**. To mení dve veci oproti pôvodnému §7:
+
+1. **Autoritou pre `IFCclass` a `PredefinedType` už nie je excel**, ale
+   projektová dokumentácia a rozhodnutia Samuela. Každé rozhodnutie o triede
+   ide do BEP s odôvodnením zo špecifikácie alebo z výkresu.
+2. **Kategória „patrí do Revitu" zaniká.** Každá vada sa buď opraví v IFC,
+   alebo sa zdokumentuje ako známa medzera. Nefabrikujeme geometriu, ktorá
+   v modeli nie je.
+
+**Autoritatívne podklady:**
+
+| dokument | čo určuje |
+|---|---|
+| `D.1.1.09 Výpis skladieb` | zloženie skladieb S1–S9, hrúbky, funkcie vrstiev |
+| `D.1.1.08 Členenie LOP` | delenie fasády na polia `[písmeno][číslo]-[orientácia]` |
+| `3 – Tepelná technika LOP` | `Ucw`, rozmery a plochy 48 polí, Σ 1603.63 m² |
+| `D.1.1.07 Technické pohľady` | kódy prvkov v pohľadoch |
+| `D.1.1.01 Pôdorys 1NP` | legenda miestností (autorita pre plochy 1NP) |
+| `snim_mapovanie.csv` | ručné priradenie SNIM kódov k 17 Revit typom |
+
+Jediný autoritatívny zdroj pre IFC schému:
+<https://ifc43-docs.standards.buildingsmart.org/> — fetchnúť pred odpoveďou,
+necitovať z trénovacích dát.
+
+---
+
+## 1. Čo z pôvodného handoveru platí
+
+Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
+(2495 `IfcBuiltElement`, 0 zmenených bboxov, 0 stratených tvarov); GlobalId
+účtovníctvo sedí do kusa; dedup typov bez chyby (0 typov s >1 rel, 0
+`IfcMappedItem` mimo vlastných máp); `Reference` 0×; prázdne psety 0; SNIM na
+2645/2645 occurrences; `IfcSpatialZone` správne deklarované a viazané;
+1NP 23 miestností, 613.55 m².
+
+---
+
+## 2. Rozhodnutia
+
+### Názvoslovie a SNIM
+
+| # | vec | rozhodnutie | opora |
+|---|---|---|---|
+| 1 | 17 kódov bez UOT | zostávajú dvojúrovňové, INST hneď za kód | Samuel |
+| 2 | výplň INST | pevná šírka 4 (`LP02.0001`) | Samuel |
+| 3 | INST na typoch | **nie** | `IfcTypeObject` je „spoločný pre všetky occurrences", `IfcTypeProduct` „bez umiestnenia" |
+| 4 | `LOP02` | → **`LP02`**. Rodina: `LP01` krídlo okna, `LP02` príčeľ, `LP03` akustická zástena | Samuel |
+| 6 | dvere UOT 04/05 | swap **len na 3NP**; 2NP je správne; 2 sklenené z `DD01.05` → `DD01.04` (rieši aj duplicitu #AP) | dáta |
+| 7 | krídlovosť dverí | do `Description` | Samuel |
+| — | INST počítadlo | po kóde globálne, poradie z geometrie: podlažie → Y → X → Z, zaokrúhlenie 10 mm | Samuel |
+| — | základový blok | **`ZD02.05`**, „Základový blok pod schodiskom". Rad `ZD02` zostáva: `.01`–`.04` dosky, `.05` blok | Samuel |
+
+### Triedny model
+
+| # | vec | rozhodnutie | opora |
+|---|---|---|---|
+| 8 | `IH01.01` | `IfcCovering / MEMBRANE` | `MEMBRANE` = „nepriepustná vrstva… hydroizolačný materiál" |
+| 9 | atika `ST01.30/.31/.32` + `KV01` | agregovať do `SN02.01`; tá dostane `PARAPET` | `IfcRelCoversBldgElements` DEPRECATED → `IfcRelAggregates` |
+| 10 | `ST01.31` OSB | `IfcCovering / TOPPING` | `TOPPING` = „vrstva na vyrovnanie povrchu" |
+| 11 | strecha | dve `IfcRoof / FLAT_ROOF` (4NP 73 prvkov, 5NP 19) | geometria |
+| 12 | `ZD02.01` | `IfcSlab` je správne pomenovaný → premenovať **typ** `ZD02.04` → `ZD02.01`; `ZD02.03/.04` → `BASESLAB`; blok → `ZD02.05` `IfcFooting / PAD_FOOTING` | „základové dosky sa neinštancujú ako `IfcFooting`, ale ako `IfcSlab / BASESLAB`" |
+| 13 | `SN11.01/.02` | zostáva `IfcWall`, doplniť `PARTITIONING` | test „nie je prevažne zvislý → `IfcPlate`" neplatí |
+| 14 | `KV01` | `IfcCovering / COPING` | `COPING` = „ochranné zakončenie steny či atiky" |
+| 15 | `PredefinedType` 383× | doplniť z popisov podľa tabuľky §5 | dokumentácia + schéma |
+| 20 | tretie `SC01` (3NP) | prekódovať na `SD03`/`SD04`, dotypovať. `SH04.03` (nerez + drevo, 4NP→5NP) **nechať** | geometria a materiály |
+| AO | fasádne zateplenia | `IfcRelAggregates` do pokrývanej steny, odobrať z kontajnmentu | tá istá deprecation ako #9 |
+
+### Typy a identita
+
+| # | vec | rozhodnutie |
+|---|---|---|
+| 17 | `OK01` | zlúčiť 25 typov do jedného, prevziať 50 `RepresentationMaps` |
+| 18 | fasáda | **kód = výrobok**, rozmer nesie geometria a `Qto` |
+| 19 | `LP01` | 125 `IfcPlate` → `OK01.0001`–`.0126`; 26 `IfcWindow` → `LP01.0001`–`.0026`; typy `LP01.44`/`.69` zlúčiť |
+
+### Priestory
+
+| # | vec | rozhodnutie |
+|---|---|---|
+| 21 | 14 MEP priestorov | **prerobiť na riadne miestnosti**, nemazať. Prečíslovať a pomenovať podľa tabuľky §6 |
+| 22 | typová vrstva priestorov | žiadna — po oprave #C sú všetky netypované a je to konzistentné |
+| 23 | `IfcRelSpaceBoundary` | **1. úroveň, bez `ConnectionGeometry`** + `ParentBoundary` pre dvere a okná |
+| 24 | krok 10 nanovo | do miestností `IfcCovering`, `IfcFlowTerminal`, `IfcSanitaryTerminal`, `IfcFurniture`, `IfcRailing`; **so Z-filtrom**. Dvere a steny nie — kontajnment je exkluzívny |
+| — | energetické zónovanie | **mimo rozsah.** Tým padá aj `IfcRelSpaceBoundary` 2. úrovne |
+| — | šachty na 1NP | v rozsahu, tou istou metódou ako `build_1np_spaces.py` |
+
+### Materiály a skladby
+
+| # | vec | rozhodnutie | opora |
+|---|---|---|---|
+| 27 | konštituenty bez väzby | **zmazať 117 occurrence setov** (91 `IfcDoor` + 26 `IfcWindow`), zdediť typové. Overené: všetkých 117 má funkčný typový set. Terminály (41) a zábradlia (4) nechať | occurrence asociácia prebíja typovú |
+| — | skladby | `IfcMaterialLayerSet` **na typoch**; `IfcMaterialLayerSetUsage` len tam, kde hrúbka sedí | „Usage je pre prvky s konštantnou hrúbkou"; „`TotalThickness` musí byť rovná hrúbke prvku" |
+| — | agregácia vrstiev | **len pri fyzicky zviazaných vrstvách** (viď test §4) | agregácia je vzťah celok–časť |
+| — | kódy S1–S9 | **`IfcGroup`** + `IfcRelAssignsToGroup`. Nie `IfcRelAssociatesDocument`, nie `IfcClassification` | Samuel |
+| — | vzduchová medzera | nemodeluje sa; `IsVentilated` platí len vnútri jedného prvku. Rozdiel v súčte hrúbok sa dokumentuje | schéma |
+| — | fyzika materiálov (λ, ρ, c, μ) | samostatná fáza neskôr | Samuel |
+
+### Fasáda LOP
+
+| vec | rozhodnutie |
+|---|---|
+| 48 polí | vnorený `IfcCurtainWall` pod existujúcich 12 `PL01`. Legálne, ale nedokumentované → **do BEP ako odchýlka** |
+| názvy polí | `E3-V` atď. z výkresu `D.1.1.08` |
+| `Ucw` a plochy | `Pset_CurtainWallCommon.ThermalTransmittance` + `Qto_CurtainWallQuantities` |
+
+### Hotové
+
+| # | vec |
+|---|---|
+| C | dva prázdne `IfcSpaceType` s enum literálmi v `Name` zmazané → `ASR_final_v2.ifc` |
+
+---
+
+## 3. Register vád
+
+**O** otvorené, **H** hotové, **D** zdokumentovať (nedá sa opraviť bez Revitu), **V** AIM Viewer.
+
+### Strata a nekonzistencia dát
+| # | | vec |
+|---|---|---|
+| A | O | 28 prvkov stratilo `Status` — presne množina `IfcWall → IfcCovering` (`FS03.01` 9, `ST01.32` 8, `FS01.10` 4, `FS01.11` 4, `FS01.12` 3) |
+| B | O | 17 `IfcSlab` nesie `Pset_WallCommon` (`ZD02.02` 9, `DZ02` 8) |
+| C | **H** | ~~`IfcSpaceType` = `NOTDEFINED` / `USERDEFINED`~~ |
+| E | O | `Pset_SpaceCommon` na 10 `IfcSpatialZone` |
+| F | O | 48 osirelých entít (31 `IfcLocalPlacement`, 16 profilov, 1 `IfcSurfaceStyle`) |
+| AJ | O | 2653 hodnôt s FP šumom (2502 `Qto`, 145 `Overall*`, 18 property) |
+
+### Triedny model
+| # | | vec |
+|---|---|---|
+| T | O | `ST01.*` vrstvy skladby vedené ako `IfcRoof` (84×); `ST01.30/.31` nekonzistentné s `.32` |
+| V | O | 36 prázdnych `IfcRoof` obalov 1:1 nad `IfcSlab` |
+| AL | O | `IH01.01` hydroizolácia ako `IfcWall / STANDARD`, hrúbka 8 mm |
+| AB | O | blok 0.41×1.25×0.30 v z −0.30…0.00 vedený ako `IfcStair` s menom `ZD02.01` |
+| AC | O | `ZD02.03/.04` `FLOOR` namiesto `BASESLAB`; occurrence `ZD02.01` typovaná `ZD02.04` |
+| AM | O | `PredefinedType = NOTDEFINED` na 383 occurrences; 12 `IfcWallType` má Revit default `STANDARD` |
+| AN | O | `KV01` `MOLDING` → `COPING` |
+| AO | O | 112 `IfcCovering` bez agregácie; 22 fasádnych + `KV01` patrí k prvkom |
+
+### Typy a identita
+| # | | vec |
+|---|---|---|
+| AE | O | `OK01` — 25 `IfcPlateType` s rovnakým menom aj popisom, 126 occurrences, 13 rozmerov |
+| O | O | `LP01` — 151 kusov, 151 kódov, UOT zneužitý ako počítadlo, pretečenie do `LP01.0100`–`.0153` |
+| AK | O | `LP01` kryje 125 `IfcPlate` (typované `OK01`) + 26 `IfcWindow` |
+| AF | O | `IfcRoot.Name` nie je jednoznačný kľúč: 46 typových entít / 12 mien |
+| AA | O | tretie `SC01` (3NP): 8 prvkov netypovaných, ramená a podesty pomenované `SC01` |
+
+### Názvoslovie
+| # | | vec |
+|---|---|---|
+| M | O | INST chýba na 2491 z 2645; existujúcich 154 v troch konvenciách |
+| N | O | 17 kódov bez UOT (1474 occurrences, `LOP02` 1292) |
+| P | O | 203 occurrences má `ObjectPlacement` v (0,0,0) — triediť z geometrie |
+| S | — | čísla dverí `DD*` sú výkresovo autoritatívne, kotvy v `build_1np_spaces.py` |
+| Y | O | `Openspace - Západ` (2NP) vs `Openspace - Zapad` (3NP) |
+| AP | O | `DD01.05.01` a `.02` existujú dvakrát — rieši sa spolu s #6 |
+
+### Priestory a vzťahy
+| # | | vec |
+|---|---|---|
+| I | O | 14 MEP priestorov s `LongName = 'Space'` a číslom o podlažie nižšie; +78.83 m² |
+| J | O | schodisko a 2 šachty existujú na 2NP–4NP nepomenované; §5 #1 pôvodného handoveru uzavretá zle; na 1NP chýbajú |
+| H | O | 1NP: 2 prvky z 247 v miestnostiach |
+| G | O | 16 z 18 strešných vpustí v `IfcSpace` na 3NP; 2 `ST01.10` v zlom podlaží |
+| K | O | 10 dverí bez priestorového kontajnera |
+| L | O | `IfcRelSpaceBoundary` 0× |
+| Z | O | 22 rekonštruovaných priestorov bez `Qto_BodyGeometryValidation` |
+| Q | O | 3NP nemá prenajímateľnú zónu |
+| R | O | súčet plôch 2012.88 m² vs 2031.95 z handoveru — rozdiel 19.07 m² |
+
+### Materiály a skladby
+| # | | vec |
+|---|---|---|
+| AH | O | 164 `IfcMaterialConstituent` bez zodpovedajúceho `IfcShapeAspect`; rieši sa rozhodnutím 27 |
+| AI | O | „Dřevo obecné" na krídle LOP — **vyrieši sa sám** rozhodnutím 27, zdedí sa `Frame/Mullion` + `Glass` |
+| AQ | O | layer sety nesedia s výpisom: `ST01.10` chýbajú spádové kliny, ETICS majú 1 zo 6 vrstiev |
+| AU | O | deklarovaná vs geometrická hrúbka: `FS01.10` 210/180, `FS01.11` 141/120, `FS01.12` 80/50, `FS01.20` 210/180, `ST01.10` 234–354/204 |
+| AS | O | materiál „Výchozí" ako dutinová podlaha v `PD03.*` |
+| AT | O | λ, ρ, c, μ z výpisu nie sú v `Pset_Material*` — samostatná fáza |
+
+### Zdokumentovať, neopraviť
+| # | | vec |
+|---|---|---|
+| AR | **D** | `IH01` — chýba vodorovná plocha pod doskou. Doska končí na −0.800, podkladný betón začína na −0.800; na 8.2 mm nie je miesto. Vytvoriť ju by znamenalo posunúť existujúcu geometriu |
+| — | **D** | 9 prvkov s degenerovanou extrúziou (nulová výška) |
+| AV | **D** | výpis skladieb `S8` uvádza `SD02` tam, kde má byť `SN05.01` |
+| — | **D** | legenda 1NP: `PD02.31` vs `.30`; `1.17 WC Muži` má skopírovaný riadok elektrorozvodne |
+| — | **D** | súčet hrúbok prvkov skladby nikdy nedá hodnotu z výpisu (vzduchové medzery sa nemodelujú) |
+
+### AIM Viewer
+| # | | vec |
+|---|---|---|
+| AG | **V** | neprechádza `IfcRelAggregates` — chýba 2051 prvkov fasády, 8 schodiska, 36 strechy |
+| AG2 | **V** | počítadlo ráta vykresliteľné tvary, nie occurrences → zostavy ukazujú 0 |
+| AG3 | **V** | pri konštituente bez `IfcShapeAspect` nehádať farbu |
+
+---
+
+## 4. Kedy agregovať a kedy nie
+
+Test: **je časť fyzicky zviazaná s celkom a bez neho neexistuje?**
+
+| skladba | vrstva | agregát | prečo |
+|---|---|---|---|
+| S4, S5, S8, S9 | ETICS na `SN02` / `SN05` | **áno** | mechanicky kotvené a lepené |
+| atika | `ST01.30/.31/.32`, `KV01` na `SN02.01` | **áno** | to isté |
+| S1, S2 | `ST01.10` + `ST01.20/.21` do `IfcRoof` | **áno** | súvrstvia natavené na seba |
+| S3 | `PD02` na doske, `IH01` pod doskou | **áno** | lepené, natavené celoplošne |
+| S3 | `DZ01` podkladný betón | **nie** | samostatná konštrukcia |
+| S1, S2, S6 | `PH01` podhľad | **nie** | zavesený, vzduchová medzera |
+| S6 | `PD03.30` dutinová podlaha | **nie** | na rektifikovateľných stojkách |
+
+Nezviazané vrstvy sa spájajú do `IfcGroup` pomenovanej `S1`…`S9` cez
+`IfcRelAssignsToGroup`. Skupina a agregácia sa nevylučujú — prvok môže byť
+časťou agregátu a zároveň členom skupiny.
+
+**Vrstva nie je podprvok.** `IfcWall` agregujúci `IfcWall` ako „vrstvy" je zlý
+vzor — vrstvy sú `IfcMaterialLayerSet`, podprvky sú pre panelizované
+konštrukcie. IFC4.3 zrušilo `IfcWallElementedCase` aj `IfcSlabElementedCase`,
+teda práve tie entity, ktoré ten vzor pomenúvali.
+
+---
+
+## 5. Návrh `PredefinedType` pre `IfcWall`
+
+| kód | popis | návrh |
+|---|---|---|
+| `SN07.01–.05` | Stěna_SDK_100…320 | `PARTITIONING` |
+| `SN02.01` | Atika 150 | `PARAPET` |
+| `SN02.02/.03` | JADRO ŽB | `SHEAR` |
+| `SN05.01` | Stena keramická 250 | `SOLIDWALL` |
+| `SN11.01/.02` | Skleněná deska 100 mm | `PARTITIONING` |
+
+---
+
+## 6. Prečíslovanie 14 MEP priestorov
+
+Poradie určené pravidlom podlažie → Y → X. Čísla nadväzujú na existujúci rad
+podlažia bez medzier.
+
+| podlažie | staré | **nové** | plocha m² | šírka × dĺžka | `LongName` |
+|---|---|---|--:|---|---|
+| 2NP | `1.31` | **`2.15`** | 2.89 | 1.70 × 1.70 | Inštalačná šachta |
+| 2NP | `1.34` | **`2.16`** | 1.23 | 0.60 × 2.05 | Inštalačná šachta |
+| 2NP | `1.36` | **`2.17`** | 1.29 | 0.55 × 2.35 | Inštalačná šachta |
+| 2NP | `1.35` | **`2.18`** | 5.05 | 2.15 × 2.35 | Inštalačná šachta |
+| 2NP | `1.28` | **`2.19`** | 0.75 | 0.33 × 2.27 | Inštalačná šachta |
+| 2NP | `1.29` | **`2.20`** | 19.71 | 2.70 × 7.30 | Schodiskový priestor |
+| 3NP | `2.22` | **`3.15`** | 2.89 | 1.70 × 1.70 | Inštalačná šachta |
+| 3NP | `2.29` | **`3.16`** | 1.29 | 0.55 × 2.35 | Inštalačná šachta |
+| 3NP | `2.28` | **`3.17`** | 5.05 | 2.15 × 2.35 | Inštalačná šachta |
+| 3NP | `2.20` | **`3.18`** | 0.75 | 0.33 × 2.27 | Inštalačná šachta |
+| 3NP | `2.27` | **`3.19`** | 1.48 | 0.55 × 2.70 | Inštalačná šachta |
+| 3NP | `2.26` | **`3.20`** | 17.82 | 2.70 × 6.60 | Schodiskový priestor |
+| 4NP | `3.21` | **`4.05`** | 1.48 | 0.55 × 2.70 | Inštalačná šachta |
+| 4NP | `3.20` | **`4.06`** | 17.15 | 2.70 × 6.35 | Schodiskový priestor |
+
+Umiestnenie sa **nemení**, mení sa len `Name` a `LongName`. `PredefinedType`
+zostáva `INTERNAL`. Chýbajúci `Pset_SpaceCoveringRequirements` sa nedopĺňa —
+tieto priestory skladby podláh nemajú.
+
+Kompromis, ktorý stojí za zmienku: schodisko dostane na každom podlaží iné
+číslo (`1.23`, `2.20`, `3.20`, `4.06`). Alternatíva je rezervovať pevnú
+pozíciu, napr. `x.20` na všetkých podlažiach, za cenu medzier v rade 4NP.
+Zvolený je súvislý rad.
+
+---
+
+## 7. Plán
+
+Poradie nie je ľubovoľné: triedy pred psetmi, zlúčenie typov pred INST,
+rozhodnutie o UOT pred INST, čistenie priestorov pred kontajnmentom
+a boundaries, sweep a zaokrúhlenie posledné.
+
+| fáza | skript | obsah |
+|---|---|---|
+| **0** | — | testy invariantov, `AUDIT.md` a `BEP_ANNEX.md` do repa |
+| **1** | `14_fix_classes.py`, `15_fix_roof_assembly.py` | #T #V #AL #AB #AC #AN #AM; dve `FLAT_ROOF`; atika do `SN02.01` |
+| **2** | `16_fix_psets.py` | #A #B #E #AH #AI (117 occurrence setov) |
+| **3** | `17_dedup_types.py` | #AE #O #AK #AA #AF |
+| **4** | `18_snim_inst.py` | #M #N #P #S #Y #AP; `LOP02` → `LP02`; swap dverí na 3NP |
+| **5** | `19_fix_spaces.py` | #I #J (prečíslovanie §6, šachty na 1NP) #Z #Q #R |
+| **6** | `20_fix_containment.py`, `21_space_boundaries.py` | #G #H #K #L #AO; agregáty skladieb |
+| **7** | `22_lop_fields.py` | 48 vnorených `IfcCurtainWall`, `Ucw`, `Qto` |
+| **8** | `23_layer_sets.py` | #AQ #AU #AS; layer sety na typoch; `IfcGroup` S1–S9 |
+| **9** | `24_fix_numeric.py`, `25_sweep_orphans.py` | #AJ #F + finálna kontrola |
+| **10** | `26_sanitary.py` | pôvodný krok 13 |
+| neskôr | | #AT fyzika materiálov |
+
+**Fáza 10, rozsah:** v modeli **nie je ani jeden kus potrubia**. Jediný podtyp
+`IfcDistributionElement` je `IfcFlowTerminal` (69). `IfcRelConnectsPorts` nie je
+vykonateľné (51 portov, 0 segmentov), `DOMESTICCOLDWATER` nemá oporu (všetkých
+51 portov je `SOURCE`/`SEWAGE`), 18 terminálov nemá port vôbec. Systémy budú
+zoskupením zariadení, nie sieťou, a treba to tak pomenovať.
+Mapovanie: `WC01` `URINAL` 5, `WC02`/`WC04` `TOILETPAN` 20, `WC03`/`WC05`
+`WASHHANDBASIN` 18, `WC07` `SINK` 3, `OV01.01` `IfcWasteTerminal` 5,
+`OV04.*` `ROOFDRAIN` 18.
+
+---
+
+## 8. Pravidlá práce
+
+- Autoritou pre triedu a `PredefinedType` je **dokumentácia a rozhodnutie
+  Samuela**, nie excel — ten neexistuje. Každé rozhodnutie do BEP s odôvodnením.
+- Jediný autoritatívny zdroj pre schému: **ifc43-docs**, fetchnúť pred odpoveďou.
+- Vendor dokumentáciu označovať `⚠️ vendor, nie spec`.
+- **Nefabrikovať geometriu**, ktorá v modeli nie je. Chýbajúce prvky sa
+  dokumentujú, nedopĺňajú. Výnimka: priestory, kde už precedens existuje
+  (`build_1np_spaces.py`).
+- **Každý skript overí, čo tvrdí.** Pôvodný handover uvádzal 0 osirelých entít,
+  0 stratených dát a konvertovaný `Status` — ani jedno neplatilo, lebo kontrola
+  merala zámer. Testy merajú výsledok.
+- Skripty: `DRY_RUN` default, vstup sa neprepisuje, idempotentné.
+- Odchýlky od dokumentovaného IFC vzoru do BEP. Zatiaľ dve: vnorený
+  `IfcCurtainWall` a agregácia krytiny do steny s vlastným tvarom celku.
+- Register je živý. Uzavretá položka dostane odkaz na commit a na výsledok
+  kontroly.
