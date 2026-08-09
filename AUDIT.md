@@ -67,9 +67,9 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 | # | vec | rozhodnutie | opora |
 |---|---|---|---|
 | 8 | `IH01.01` | `IfcCovering / MEMBRANE` | `MEMBRANE` = „nepriepustná vrstva… hydroizolačný materiál" |
-| 9 | atika `ST01.30/.31/.32` + `KV01` | agregovať do `SN02.01`; tá dostane `PARAPET` | `IfcRelCoversBldgElements` DEPRECATED → `IfcRelAggregates` |
+| 9 | atika | do `SN02.01` idú **zvislé** vrstvy `ST01.32`, OSB `ST01.31` a oplechovanie `KV01` (18 dielov); **vodorovné** `ST01.30` ide do strechy. `SN02.01` dostane `PARAPET` | `IfcRelCoversBldgElements` DEPRECATED → `IfcRelAggregates` |
 | 10 | `ST01.31` OSB | `IfcCovering / TOPPING` | `TOPPING` = „vrstva na vyrovnanie povrchu" |
-| 11 | strecha | dve `IfcRoof / FLAT_ROOF` (4NP 73 prvkov, 5NP 19) | geometria |
+| 11 | strecha | dve `IfcRoof / FLAT_ROOF` — **4NP 65, 5NP 10** (pôvodne uvedené 73/19 rátalo aj vrstvy atiky, ktoré si nárokuje #9; `Decomposes` je `SET[0:1]`) | geometria |
 | 12 | `ZD02.01` | `IfcSlab` je správne pomenovaný → premenovať **typ** `ZD02.04` → `ZD02.01`; `ZD02.03/.04` → `BASESLAB`; blok → `ZD02.05` `IfcFooting / PAD_FOOTING` | „základové dosky sa neinštancujú ako `IfcFooting`, ale ako `IfcSlab / BASESLAB`" |
 | 13 | `SN11.01/.02` | zostáva `IfcWall`, doplniť `PARTITIONING` | test „nie je prevažne zvislý → `IfcPlate`" neplatí |
 | 14 | `KV01` | `IfcCovering / COPING` | `COPING` = „ochranné zakončenie steny či atiky" |
@@ -141,14 +141,14 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 ### Triedny model
 | # | | vec |
 |---|---|---|
-| T | O | `ST01.*` vrstvy skladby vedené ako `IfcRoof` (84×); `ST01.30/.31` nekonzistentné s `.32` |
-| V | O | 36 prázdnych `IfcRoof` obalov 1:1 nad `IfcSlab` |
-| AL | O | `IH01.01` hydroizolácia ako `IfcWall / STANDARD`, hrúbka 8 mm |
-| AB | O | blok 0.41×1.25×0.30 v z −0.30…0.00 vedený ako `IfcStair` s menom `ZD02.01` |
-| AC | O | `ZD02.03/.04` `FLOOR` namiesto `BASESLAB`; occurrence `ZD02.01` typovaná `ZD02.04` |
-| AM | O | `PredefinedType = NOTDEFINED` na 383 occurrences; 12 `IfcWallType` má Revit default `STANDARD` |
-| AN | O | `KV01` `MOLDING` → `COPING` |
-| AO | O | 112 `IfcCovering` bez agregácie; 22 fasádnych + `KV01` patrí k prvkom |
+| T | **H** | ~~`ST01.*` vrstvy skladby vedené ako `IfcRoof`~~ — 92 vrstiev + 10 typov na `IfcCovering`, `50c26c5` |
+| V | **H** | ~~36 prázdnych `IfcRoof` obalov 1:1 nad `IfcSlab`~~ — zrušené, `50c26c5` |
+| AL | **H** | ~~`IH01.01` ako `IfcWall / STANDARD`~~ → `IfcCovering / MEMBRANE`, 4 occ + typ, `45ea35d` |
+| AB | **H** | ~~blok 0.41×1.25×0.30 ako `IfcStair`~~ → `IfcFooting / PAD_FOOTING`, `ZD02.05`, `45ea35d` |
+| AC | **H** | ~~`ZD02.03/.04` `FLOOR`; occurrence `ZD02.01` typovaná `ZD02.04`~~ — typ premenovaný, `BASESLAB`, `45ea35d` |
+| AM | O | `PredefinedType` — steny hotové (`45ea35d`): 159 occ podľa §5 + všetkých 12 `IfcWallType`. Číslo 383 = **314** `NOTDEFINED` + **69** `IfcFlowTerminal`, ktoré atribút v IFC4X3 nemajú vôbec (fáza 10). Otvorených ostáva **67** occurrences bez pravidla v §5: 8 `IfcSlab DZ02`, 19 `IfcCurtainWall`, 22 `IfcFurniture`, 12 `IfcRailing`, 5 `SC01` |
+| AN | **H** | ~~`KV01` `MOLDING`~~ → `COPING`, 2 occ + typ, `45ea35d` |
+| AO | O | atika hotová (`50c26c5`): 8× `IfcRelAggregates` na `SN02.01`, 18 dielov, časti odobrané z kontajnmentu. Fasádne zateplenia zostávajú — fáza 6 |
 
 ### Typy a identita
 | # | | vec |
@@ -356,3 +356,33 @@ INST = 154 `DD*`/`PD*`/`OV*` (149 unikátnych + 5 duplicít) + 151 `LP01`
 
 Otvorené otázky pred fázou 1: chýbajúca referencia geometrie, whitelist #AY,
 rozhodnutie o #AX, rozhodnutie o #AW.
+
+---
+
+## 10. Fáza 1 — výsledok brány
+
+`out/ASR_final_v2.ifc` → `out/ASR_v3_a.ifc` (`45ea35d`) → `out/ASR_v3.ifc` (`50c26c5`).
+Dotknutých 45 SNIM kódov, tabuľka „pred → po" cez `src/report_diff.py`.
+
+| inv | výsledok |
+|---|---|
+| 1 geometria | **0 zmenených** (referencia = vstup fázy) |
+| 2 EXPRESS | 0 hlásení |
+| 3 GUID | 360 zrušených a 12 nových, všetky vysvetlené v `out/ASR_v3.ifc.allowlist.json` |
+| 4 osirelé | 48 — #F nezmenené, sweep nepridal ani jednu |
+| 5 prázdne SET | 0 |
+| 6 jednoznačnosť | 5 kódov — #AP + #AX nezmenené, rieši fáza 4 |
+| 7 kontajnment | 0 mimo #AW |
+
+Idempotencia oboch skriptov overená (druhý beh 0 zmien).
+
+**Zámerne neurobené vo fáze 1**
+
+* jedna `ST01.10` v 3NP (z 13250–13454, tesne pod doskou 4NP) ostáva mimo
+  strešnej agregácie — je to #G a patrí do fázy 6;
+* prekvalifikovaním vznikli 4 dvojice rovnomenných `IfcCoveringType`
+  (`ST01.10a`, `.20`, `.21`, `.31`) — ten istý výrobok bol modelovaný raz ako
+  `IfcRoof` a raz ako `IfcSlab`. Patrí to k #AF; zlúčenie nie je v rozsahu
+  fázy 3, ktorá rieši len `OK01`, `LP01` a `SC01`;
+* nové `IfcRoof` dostali `Name = 'ST01'` — kód nadradenej skladby. V AUDIT
+  pre ne meno určené nebolo, treba potvrdiť.
