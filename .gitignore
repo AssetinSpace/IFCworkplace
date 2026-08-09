@@ -1,0 +1,12 @@
+# IFC medzivýstupy — veľké binárne súbory, mimo gitu
+out/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# reporty a dočasné výstupy
+reports/
+*.log

@@ -1,0 +1,8 @@
+# PIN — ifcopenshell 0.8.5 (AUDIT.md §0, celý audit vznikol proti tejto verzii)
+ifcopenshell==0.8.5
+shapely
+numpy
+pandas
+openpyxl
+pytest          # nutný pre validate(express_rules=True)
+pypdf           # čítanie kódov z výkresov

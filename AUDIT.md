@@ -134,7 +134,8 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 | B | O | 17 `IfcSlab` nesie `Pset_WallCommon` (`ZD02.02` 9, `DZ02` 8) |
 | C | **H** | ~~`IfcSpaceType` = `NOTDEFINED` / `USERDEFINED`~~ |
 | E | O | `Pset_SpaceCommon` na 10 `IfcSpatialZone` |
-| F | O | 48 osirelých entít (31 `IfcLocalPlacement`, 16 profilov, 1 `IfcSurfaceStyle`) |
+| F | O | 48 osirelých entít (31 `IfcLocalPlacement`, 16 profilov, 1 `IfcSurfaceStyle`) — potvrdené do kusa |
+| AY | O | `#16` `IfcGeometricRepresentationSubContext` „Box" nepoužitý (0 reprezentácií). Má 0 inverzov, lebo väzbu na rodiča drží **dopredný** `ParentContext`, nie inverzný `HasSubContexts` — do whitelistu invariantu 4 patrí alebo sa má zmazať |
 | AJ | O | 2653 hodnôt s FP šumom (2502 `Qto`, 145 `Overall*`, 18 property) |
 
 ### Triedny model
@@ -167,6 +168,7 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 | S | — | čísla dverí `DD*` sú výkresovo autoritatívne, kotvy v `build_1np_spaces.py` |
 | Y | O | `Openspace - Západ` (2NP) vs `Openspace - Zapad` (3NP) |
 | AP | O | `DD01.05.01` a `.02` existujú dvakrát — rieši sa spolu s #6 |
+| AX | O | **rovnaká vada aj na `DD01.02.01`, `.02`, `.03`** — každý 2×, všetky 1NP, vždy dvojica dvojkrídlové + jednokrídlové. Rozhodnutie 6 ich nepokrýva. Duplicita je aj vo výkrese `D.1.1.01` (39 tagov, 33 unikátnych); model je verný podkladu |
 
 ### Priestory a vzťahy
 | # | | vec |
@@ -180,6 +182,7 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 | Z | O | 22 rekonštruovaných priestorov bez `Qto_BodyGeometryValidation` |
 | Q | O | 3NP nemá prenajímateľnú zónu |
 | R | O | súčet plôch 2012.88 m² vs 2031.95 z handoveru — rozdiel 19.07 m² |
+| AW | O | **85 častí fasády je súčasne agregovaných aj kontajnovaných** — 70 `IfcMember` `LOP02` a 9 `AZ01`, 6 `IfcPlate` `TI06.01`. Časti sedia o podlažie vyššie než ich `IfcCurtainWall` (`PL01` v 3NP → časti v 4NP; `LP03.01` v 4NP → časti v 5NP). Invariant 7 na základni zlyháva, nie až po fáze 1 |
 
 ### Materiály a skladby
 | # | | vec |
@@ -287,7 +290,7 @@ a boundaries, sweep a zaokrúhlenie posledné.
 
 | fáza | skript | obsah |
 |---|---|---|
-| **0** | — | testy invariantov, `AUDIT.md` a `BEP_ANNEX.md` do repa |
+| **0** | `tests/test_invariants.py` | testy invariantov, `AUDIT.md` a `BEP_ANNEX.md` do repa — **brána nesplnená**, viď §9 |
 | **1** | `14_fix_classes.py`, `15_fix_roof_assembly.py` | #T #V #AL #AB #AC #AN #AM; dve `FLAT_ROOF`; atika do `SN02.01` |
 | **2** | `16_fix_psets.py` | #A #B #E #AH #AI (117 occurrence setov) |
 | **3** | `17_dedup_types.py` | #AE #O #AK #AA #AF |
@@ -328,3 +331,28 @@ Mapovanie: `WC01` `URINAL` 5, `WC02`/`WC04` `TOILETPAN` 20, `WC03`/`WC05`
   `IfcCurtainWall` a agregácia krytiny do steny s vlastným tvarom celku.
 - Register je živý. Uzavretá položka dostane odkaz na commit a na výsledok
   kontroly.
+
+---
+
+## 9. Fáza 0 — výsledok brány
+
+Merané `tests/test_invariants.py` proti `out/ASR_final_v2.ifc`,
+`ifcopenshell` 0.8.5. **Brána nesplnená, fáza 1 nezačatá.**
+
+| inv | | očakávané | namerané |
+|---|---|---|---|
+| 1 geometria | ⛔ | prejde | **nedá sa spustiť** — `data/ASR.ifc` v repe nie je |
+| 2 EXPRESS | ✅ | prejde | 0 hlásení (71 s) |
+| 3 GUID | ⚠️ | prejde | 0 duplicít z 24 268 `IfcRoot`; polovica proti referencii nespustená (viď inv 1) |
+| 4 osirelé | ⚠️ | 48 | **49** — 48 sedí do kusa, navyše `#16` (#AY) |
+| 5 prázdne SET | ✅ | prejde | 0 |
+| 6 jednoznačnosť | ⛔ | zlyhá na 2 | **zlyhá na 5** — + `DD01.02.01/.02/.03` (#AX) |
+| 7 kontajnment | ⛔ | prejde | **85 porušení** (#AW) |
+
+Zosúhlasenie, ktoré sedí a potvrdzuje čítanie SNIM kódu: 305 occurrences nesie
+INST = 154 `DD*`/`PD*`/`OV*` (149 unikátnych + 5 duplicít) + 151 `LP01`
+(#O, UOT zneužitý ako počítadlo). Netypovaných occurrences 44 = 36 `IfcRoof`
++ 8 prvkov tretieho `SC01` (#AA), otvory sa nerátajú.
+
+Otvorené otázky pred fázou 1: chýbajúca referencia geometrie, whitelist #AY,
+rozhodnutie o #AX, rozhodnutie o #AW.
