@@ -40,7 +40,9 @@ import ifcopenshell
 import ifcopenshell.guid
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from ifcutil import detach_object_from_rels, drop_rel, sweep_orphans  # noqa: E402
+from ifcutil import (  # noqa: E402
+    detach_object_from_rels, drop_rel, merge_types, sweep_orphans,
+)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 IN = os.path.join(ROOT, "out", "ASR_v4.ifc")
@@ -56,77 +58,6 @@ SC01_RETYPE = [
     ("IfcRailing", "ZV01.01", "ZV01.01", "ZV01.01"),
     ("IfcRailing", "ZV01.02", "ZV01.02", "ZV01.02"),
 ]
-
-
-def merge_types(model, types, new_name, removed, cand, dead, log, tag):
-    """Zlúči rovnomenné typy do jedného. Vráti prežívajúci typ."""
-    types = sorted(types, key=lambda t: t.id())
-    survivor, others = types[0], types[1:]
-    if not others:
-        return survivor
-
-    # kontrola, že sa nezlučuje nič, čo sa líši v podstatnom
-    differing = {a: {getattr(t, a) for t in types}
-                 for a in ("Description", "PredefinedType", "ApplicableOccurrence",
-                           "ElementType")}
-    for a, vals in differing.items():
-        if len(vals) > 1:
-            raise SystemExit("STOP: typy %r sa líšia v %s: %s"
-                             % (new_name, a, vals))
-
-    # 1 · RepresentationMaps → prežívajúci (occurrences si nechajú IfcMappedItem)
-    maps = []
-    for t in types:
-        maps.extend(t.RepresentationMaps or ())
-    survivor.RepresentationMaps = tuple(maps)
-
-    # 2 · HasPropertySets — priamy atribút, get_inverse ho nepokrýva
-    psets, seen = list(survivor.HasPropertySets or ()), set()
-    seen = {p.id() for p in psets}
-    for t in others:
-        for p in (t.HasPropertySets or ()):
-            if p.id() not in seen:
-                psets.append(p)
-                seen.add(p.id())
-    survivor.HasPropertySets = tuple(psets) or None
-
-    # 3 · occurrences do JEDNÉHO IfcRelDefinesByType (Types : SET[0:1])
-    occs, seen_occ = [], set()
-    for t in types:
-        for r in t.Types:
-            for o in r.RelatedObjects:
-                if o.id() not in seen_occ:
-                    occs.append(o)
-                    seen_occ.add(o.id())
-    if survivor.Types:
-        survivor.Types[0].RelatedObjects = tuple(occs)
-    elif occs:
-        rel = model.create_entity(
-            "IfcRelDefinesByType",
-            GlobalId=ifcopenshell.guid.new(),
-            OwnerHistory=survivor.OwnerHistory,
-            RelatedObjects=tuple(occs),
-            RelatingType=survivor,
-        )
-        del rel
-
-    # 4 · rušené typy: najprv im vyprázdniť mapy (LIST[1:?] → None), potom
-    #     odpojiť od všetkých vzťahov a zmazať
-    n_maps = len(maps)
-    for t in others:
-        t.RepresentationMaps = None
-        t.HasPropertySets = None
-        for r in list(t.Types):
-            drop_rel(model, r, removed, cand, dead)
-        detach_object_from_rels(model, t, removed, cand, dead)
-        removed.append(t.GlobalId)
-        dead.add(t.id())
-        model.remove(t)
-
-    survivor.Name = new_name
-    log.append("%-4s %-8s %d typov → 1, %d RepresentationMaps, %d occurrences"
-               % (tag, new_name, len(types), n_maps, len(occs)))
-    return survivor
 
 
 def type_by_name(model, name, cls=None):

@@ -156,7 +156,7 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 | AE | **H** | ~~`OK01` — 25 `IfcPlateType`~~ → 1 typ, 50 `RepresentationMaps`, `bddef62` |
 | O | **H** | ~~`LP01` — UOT zneužitý ako počítadlo~~ — 125 `IfcPlate` → `OK01`, INST nanovo, `bddef62` + `7ea9241` |
 | AK | **H** | ~~`LP01` kryje 125 `IfcPlate` + 26 `IfcWindow`~~ — rozdelené, typy `LP01.44`/`.69` zlúčené, `bddef62` |
-| AF | O | `IfcRoot.Name` nie je jednoznačný kľúč. `OK01` a `LP01` vyriešené (`bddef62`), ale fáza 1 pridala 4 dvojice rovnomenných `IfcCoveringType` (`ST01.10a`, `.20`, `.21`, `.31`) — ten istý výrobok bol raz `IfcRoof` a raz `IfcSlab` |
+| AF | **H** | ~~`IfcRoot.Name` nie je jednoznačný kľúč~~ — `OK01` a `LP01` (`bddef62`), 4 dvojice `IfcCoveringType` z fázy 1 zlúčené a typ `DD01.05` → `DD01.04` (`19_fix_type_names.py`). Zostáva 5 rovnomenných skupín **zámerne**: `DD01.02`, `DD02.03`, `DD03.03`, `DD04.03` (dvojkrídlové vs jednokrídlové) a `DD01.06` — rôzne výrobky pod jedným kódom sú podľa princípu „kód nesie užitie" legitímne |
 | AA | **H** | ~~tretie `SC01` (3NP): 8 prvkov netypovaných~~ — prekódované na `SD03`/`SD04`, dotypované, `bddef62` |
 
 ### Názvoslovie
@@ -295,12 +295,13 @@ a boundaries, sweep a zaokrúhlenie posledné.
 | **2** | `16_fix_psets.py` | #A #B #E #AH #AI (117 occurrence setov) |
 | **3** | `17_dedup_types.py` | #AE #O #AK #AA #AF |
 | **4** | `18_snim_inst.py` | #M #N #P #S #Y #AP; `LOP02` → `LP02`; swap dverí na 3NP |
-| **5** | `19_fix_spaces.py` | #I #J (prečíslovanie §6, šachty na 1NP) #Z #Q #R |
-| **6** | `20_fix_containment.py`, `21_space_boundaries.py` | #G #H #K #L #AO; agregáty skladieb |
-| **7** | `22_lop_fields.py` | 48 vnorených `IfcCurtainWall`, `Ucw`, `Qto` |
-| **8** | `23_layer_sets.py` | #AQ #AU #AS; layer sety na typoch; `IfcGroup` S1–S9 |
-| **9** | `24_fix_numeric.py`, `25_sweep_orphans.py` | #AJ #F + finálna kontrola |
-| **10** | `26_sanitary.py` | pôvodný krok 13 |
+| **5a** | `19_fix_type_names.py` | #AF — zlúčenie 4 dvojíc `IfcCoveringType`, typ `DD01.05` → `DD01.04` |
+| **5b** | `20_fix_spaces.py` | #I #J (prečíslovanie §6, šachty na 1NP) #Z #Q #R |
+| **6** | `21_fix_containment.py`, `22_space_boundaries.py` | #G #H #K #L #AO; agregáty skladieb |
+| **7** | `23_lop_fields.py` | 48 vnorených `IfcCurtainWall`, `Ucw`, `Qto` |
+| **8** | `24_layer_sets.py` | #AQ #AU #AS; layer sety na typoch; `IfcGroup` S1–S9 |
+| **9** | `25_fix_numeric.py`, `26_sweep_orphans.py` | #AJ #F + finálna kontrola |
+| **10** | `27_sanitary.py` | pôvodný krok 13 |
 | neskôr | | #AT fyzika materiálov |
 
 **Fáza 10, rozsah:** v modeli **nie je ani jeden kus potrubia**. Jediný podtyp
@@ -427,3 +428,38 @@ kód a žiadny nie je duplicitný. Idempotencia všetkých skriptov overená.
 * #AO — fasádne zateplenia, fáza 6;
 * #AF — 4 nové dvojice rovnomenných `IfcCoveringType` z fázy 1;
 * #G — jedna `ST01.10` v 3NP mimo strešnej agregácie.
+
+---
+
+## 12. Fáza 5a — identita typov
+
+`out/ASR_v6.ifc` → `out/ASR_v7.ifc`. `IfcTypeObject` 124 → 120.
+
+Zlúčené 4 dvojice `IfcCoveringType`, ktoré vznikli vo fáze 1
+prekvalifikovaním toho istého výrobku raz z `IfcRoof` a raz z `IfcSlab`:
+`ST01.10a` (23 occ), `ST01.20` (18), `ST01.21` (25), `ST01.31` (8).
+Zhodovali sa v triede, popise, `PredefinedType` aj materiáli a žiadny
+nemal `RepresentationMap`.
+
+Typ `DD01.05` → `DD01.04` — nedotiahnutý koniec #AP: fáza 4 premenovala
+occurrences sklenených dvojkrídlových dverí, typ ostal starý.
+
+**Zámerne nezlúčené**, lebo kód nesie užitie a nie výrobok:
+`DD01.02`, `DD02.03`, `DD03.03`, `DD04.03` (dvojkrídlové vs
+jednokrídlové) a `DD01.06` (dva `Exteriér_Retail` s inou geometriou,
+4 vs 1 `RepresentationMap`, plus `Exteriér_Chodba`).
+
+**Otvorené — meno typu sa nezhoduje s kódom occurrences (5).**
+Všeobecné pravidlo „typ sa volá podľa kódu occurrences" sa **nepoužilo**,
+lebo by samo vyrobilo nové duplicity. Treba rozhodnutie:
+
+| typ | occurrences | ks | prečo to nejde mechanicky |
+|---|---|--:|---|
+| `ST01.10a` | `ST01.10` | 23 | `ST01.10b` má tie isté occurrences → kolízia |
+| `ST01.10b` | `ST01.10` | 2 | to isté |
+| `ZD02.03` | `ZD02.02` | 2 | typ `ZD02.02` už existuje → kolízia |
+| `IH01` | `IH01.01` | 4 | bez kolízie, ale mimo zadania |
+| `DZ01` | `DZ01.01` | 3 | bez kolízie, ale mimo zadania |
+
+Brána: inv 1 geometria 0 zmenených, inv 2 EXPRESS 0, inv 3 GUID 8/0,
+inv 5 OK, inv 6 OK, inv 7 OK; inv 4 = 48 (#F). Idempotencia 0/0.
