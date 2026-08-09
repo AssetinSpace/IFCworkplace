@@ -94,7 +94,8 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 | 23 | `IfcRelSpaceBoundary` | **1. úroveň, bez `ConnectionGeometry`** + `ParentBoundary` pre dvere a okná |
 | 24 | krok 10 nanovo | do miestností `IfcCovering`, `IfcFlowTerminal`, `IfcSanitaryTerminal`, `IfcFurniture`, `IfcRailing`; **so Z-filtrom**. Dvere a steny nie — kontajnment je exkluzívny |
 | — | energetické zónovanie | **mimo rozsah.** Tým padá aj `IfcRelSpaceBoundary` 2. úrovne |
-| — | šachty na 1NP | v rozsahu, tou istou metódou ako `build_1np_spaces.py` |
+| — | šachty na 1NP | v rozsahu. **Výťahové šachty sa nekreslia**, len inštalačné. Pôdorys sa neodhaduje — orezáva sa z existujúceho otvoru, viď §14 | Samuel |
+| — | #Q zóna pre 3NP | **vnorený `IfcZone`** s 11 nájomnými priestormi 3NP, vložený do `IfcZone` `Pronajmutelné`. Žiadna geometria — `IfcZone` ju niesť nemôže | Samuel + spec |
 
 ### Materiály a skladby
 
@@ -174,13 +175,14 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 | # | | vec |
 |---|---|---|
 | I | **H** | ~~14 MEP priestorov s `LongName = 'Space'`~~ — prečíslované podľa §6, `20_fix_spaces.py`. Namerané 78.84 m² |
-| J | O | schodisko a 2 šachty existujú na 2NP–4NP nepomenované; §5 #1 pôvodného handoveru uzavretá zle; na 1NP chýbajú |
+| J | O | pôvodné znenie bolo v dvoch bodoch nepresné, viď §14: schodisko na 1NP **existuje** (`1.23`, legenda `D.1.1.01`, 18.36 m²) a šácht nie je 2, ale 6 zvislých stĺpcov. Nepomenovanosť na 2NP–4NP vyriešila fáza 5b (#I). Otvorené zostáva jediné: **na 1NP nemá priestor ani jeden zo 6 stĺpcov.** Rozhodnuté — dokreslia sa 3 inštalačné šachty, výťahové nie |
 | H | O | 1NP: 2 prvky z 247 v miestnostiach |
 | G | O | 16 z 18 strešných vpustí v `IfcSpace` na 3NP; 2 `ST01.10` v zlom podlaží |
 | K | O | 10 dverí bez priestorového kontajnera |
 | L | O | `IfcRelSpaceBoundary` 0× |
 | Z | **H** | ~~22 rekonštruovaných priestorov bez `Qto_BodyGeometryValidation`~~ — dopočítané z geometrie, `20_fix_spaces.py` |
-| Q | O | 3NP nemá prenajímateľnú zónu. Prenajímateľnosť nesú `IfcSpatialZone` `PZ01`–`PZ10` zoskupené do `IfcZone` Pronajmutelné — nová zóna pre 3NP by znamenala **vyrobiť geometriu**, čo §8 zakazuje. Potrebuje rozhodnutie |
+| Q | O | 3NP nemá prenajímateľnú zónu. **Premisa „nová zóna = vyrobiť geometriu" je nesprávna** — `IfcZone` je podtyp `IfcSystem`/`IfcGroup`, nie `IfcProduct`, a spec hovorí doslova *„A zone does not have its own shape representation"* a *„it can not define an own geometric representation and placement"*. Rozhodnuté — vnorený `IfcZone` s 11 nájomnými priestormi 3NP (584.06 m² podľa legendy `D.1.1.03`) vložený do `IfcZone` `Pronajmutelné`. WR1 `IfcSpace` aj `IfcZone` ako členov výslovne povoľuje |
+| Q2 | O | `PZ01`–`PZ10` majú vlastnú geometriu a `PredefinedType = OCCUPANCY`, ale **nereferencujú ani jeden prvok či priestor** (`IfcRelReferencedInSpatialStructure` 0×). Prenajímateľnosť tak dnes nesie iba objem, nie väzba na miestnosti. Nájdené sondou §14 |
 | R | **H** | ~~súčet plôch vs 2031.95 z handoveru~~ — zosúhlasené: 1NP 613.55 + 2NP 665.74 + 3NP 664.11 + 4NP 69.47 = **2012.88 m²** na 69 priestoroch. Rozdiel 19.07 m² je v handoveri, nie v modeli |
 | AW | O | **85 častí fasády je súčasne agregovaných aj kontajnovaných** — 70 `IfcMember` `LOP02` a 9 `AZ01`, 6 `IfcPlate` `TI06.01`. Časti sedia o podlažie vyššie než ich `IfcCurtainWall` (`PL01` v 3NP → časti v 4NP; `LP03.01` v 4NP → časti v 5NP). Invariant 7 na základni zlyháva, nie až po fáze 1 |
 
@@ -256,20 +258,27 @@ podlažia bez medzier.
 
 | podlažie | staré | **nové** | plocha m² | šírka × dĺžka | `LongName` |
 |---|---|---|--:|---|---|
-| 2NP | `1.31` | **`2.15`** | 2.89 | 1.70 × 1.70 | Inštalačná šachta |
+| 2NP | `1.31` | **`2.15`** | 2.89 | 1.70 × 1.70 | **Výťahová šachta** |
 | 2NP | `1.34` | **`2.16`** | 1.23 | 0.60 × 2.05 | Inštalačná šachta |
 | 2NP | `1.36` | **`2.17`** | 1.29 | 0.55 × 2.35 | Inštalačná šachta |
-| 2NP | `1.35` | **`2.18`** | 5.05 | 2.15 × 2.35 | Inštalačná šachta |
+| 2NP | `1.35` | **`2.18`** | 5.05 | 2.15 × 2.35 | **Výťahová šachta** |
 | 2NP | `1.28` | **`2.19`** | 0.75 | 0.33 × 2.27 | Inštalačná šachta |
 | 2NP | `1.29` | **`2.20`** | 19.71 | 2.70 × 7.30 | Schodiskový priestor |
-| 3NP | `2.22` | **`3.15`** | 2.89 | 1.70 × 1.70 | Inštalačná šachta |
+| 3NP | `2.22` | **`3.15`** | 2.89 | 1.70 × 1.70 | **Výťahová šachta** |
 | 3NP | `2.29` | **`3.16`** | 1.29 | 0.55 × 2.35 | Inštalačná šachta |
-| 3NP | `2.28` | **`3.17`** | 5.05 | 2.15 × 2.35 | Inštalačná šachta |
+| 3NP | `2.28` | **`3.17`** | 5.05 | 2.15 × 2.35 | **Výťahová šachta** |
 | 3NP | `2.20` | **`3.18`** | 0.75 | 0.33 × 2.27 | Inštalačná šachta |
 | 3NP | `2.27` | **`3.19`** | 1.48 | 0.55 × 2.70 | Inštalačná šachta |
 | 3NP | `2.26` | **`3.20`** | 17.82 | 2.70 × 6.60 | Schodiskový priestor |
 | 4NP | `3.21` | **`4.05`** | 1.48 | 0.55 × 2.70 | Inštalačná šachta |
 | 4NP | `3.20` | **`4.06`** | 17.15 | 2.70 × 6.35 | Schodiskový priestor |
+
+**Oprava po fáze 5b:** štyri zvýraznené riadky dostali pôvodne `LongName`
+„Inštalačná šachta", ale výkresy `D.1.1.01` aj `D.1.1.02` ich značia `VT01 02`
+(1700 × 1700) a `VT01 01` (2150 × 2350) — sú to **výťahové šachty**, nie
+inštalačné. Rozmery sedia na milimeter. `Name` ani umiestnenie sa nemení,
+opravuje sa len `LongName` na štyroch priestoroch (`2.15`, `2.18`, `3.15`,
+`3.17`). Rozhodnutie Samuela; opora: výkres.
 
 Umiestnenie sa **nemení**, mení sa len `Name` a `LongName`. `PredefinedType`
 zostáva `INTERNAL`. Chýbajúci `Pset_SpaceCoveringRequirements` sa nedopĺňa —
@@ -320,6 +329,14 @@ Mapovanie: `WC01` `URINAL` 5, `WC02`/`WC04` `TOILETPAN` 20, `WC03`/`WC05`
 - Autoritou pre triedu a `PredefinedType` je **dokumentácia a rozhodnutie
   Samuela**, nie excel — ten neexistuje. Každé rozhodnutie do BEP s odôvodnením.
 - Jediný autoritatívny zdroj pre schému: **ifc43-docs**, fetchnúť pred odpoveďou.
+  Sieťová politika prostredia však `standards.buildingsmart.org` blokuje už na
+  `CONNECT` (403). Náhrada, ktorá je tým istým textom: publikované docs
+  z `github.com/buildingSMART/IFC4.3.x-output-2`, adresár
+  `IFC/RELEASE/IFC4_3/lexical` — git proxy verejné repo pustí. Sparse klon robí
+  `.claude/hooks/session-start.sh` pri štarte session, cesta je v `$IFC_DOCS`.
+  Pozor na rozdiel: `IFC4.3.x-development` je podľa vlastnej LICENSE *vývojová*
+  verzia, autorita je tá publikovaná. Overené citácie sa medzi nimi zhodujú
+  slovo za slovom, ale citovať treba publikovanú.
 - Vendor dokumentáciu označovať `⚠️ vendor, nie spec`.
 - **Nefabrikovať geometriu**, ktorá v modeli nie je. Chýbajúce prvky sa
   dokumentujú, nedopĺňajú. Výnimka: priestory, kde už precedens existuje
@@ -483,4 +500,89 @@ Brána: inv 1 geometria 0 zmenených, inv 2 EXPRESS 0, inv 3 GUID 0 zrušených
 a 44 nových, inv 5 OK, inv 6 OK, inv 7 OK; inv 4 = 48 (#F). Idempotencia 0/0.
 
 **Zostáva pred fázou 6:** #J (šachty na 1NP) a #Q (zóna pre 3NP) — obe
-vyžadujú rozhodnutie a obe sa dotýkajú tvorby geometrie.
+vyžadujú rozhodnutie. Rozhodnuté, viď §14; ani jedno nakoniec geometriu
+nevyrába tak, ako sa pôvodne predpokladalo.
+
+---
+
+## 14. Pred fázou 6 — #J a #Q
+
+### Zosúhlasenie, ktoré overuje inventár priestorov
+
+Súčty legiend výkresov proti plochám z registra. Sedí to natoľko, že inventár
+priestorov v modeli je tým doložený nezávisle od modelu:
+
+| podlažie | legenda | + MEP z §6 | = | register | Δ |
+|---|--:|--:|--:|--:|--:|
+| 2NP | 634.82 (14 miest.) | 30.92 (6) | 665.74 | 665.74 | **0.00** |
+| 3NP | 634.82 (14 miest.) | 29.28 (6) | 664.10 | 664.11 | 0.01 |
+| 1NP | 613.09 (23 miest.) | — | 613.09 | 613.55 | 0.46 |
+
+Počet 23 + 20 + 20 + 6 = **69**, presne ako §13. Na 1NP má teda legenda aj
+model 23 miestností a **ani jednu šachtu**.
+
+### Sonda `src/probe_shafts.py` — čo v modeli naozaj je
+
+Otázka znela, či šachty nie sú v modeli ako jeden priestor cez celý objekt,
+ktorý orezáva všetko — „inak by tam diera nebola".
+
+**Diera tam je, ale nereže ju priestor, reže ju otvor.**
+
+* **Žiadny `IfcSpace` nepresahuje jedno podlažie** a žiadny nevisí mimo
+  podlažia. Teória „jeden vysoký priestor" neplatí.
+* Dieru reže **`IfcOpeningElement` `SD02` s rozsahom 0 … 21000 mm**, teda cez
+  celú výšku objektu, po jednom na každú prerazenú dosku
+  (`SD02.03.0001`–`.0004`). To je vzor Revit „Shaft Opening".
+* Pri oboch výťahových šachtách ide otvor **aj pod základovú škáru**:
+  `ZD02.01` −800 … −300 (základová doska) a `DZ01.01` −900 … −800 (podkladný
+  betón). Hypotéza „prelieza pod základy" teda platí — len to nesie otvor.
+* **Žiadna zóna šachty nedrží.** V modeli je 5 `IfcZone` (`Pronajmutelné`,
+  `Nájomný priestor`, `Zóna 1`, `Zóna 4`, `Zóna 5`) a 10 `IfcSpatialZone`
+  `PZ01`–`PZ10`; ani jedna nemá `ObjectType` z hodnôt odporúčaných spec a ani
+  jedna neobsahuje šachtový priestor.
+
+| stĺpec | pôdorys mm | plocha | priestor je na | čo to je |
+|--:|---|--:|---|---|
+| 1 | 1700 × 1700 | 2.89 m² | 2NP, 3NP | **výťah `VT01 02`** |
+| 2 | 2050 × 600 | 1.23 m² | 2NP | inštalačná šachta |
+| 3 | 550 × 2350 | 1.29 m² | 2NP, 3NP | inštalačná šachta |
+| 4 | 2150 × 2350 | 5.05 m² | 2NP, 3NP | **výťah `VT01 01`** |
+| 5 | 330 × 2270 | 0.75 m² | 2NP, 3NP | inštalačná šachta, **bez otvoru** |
+| 6 | 550 × 2700 | 1.48 m² | 3NP, 4NP | inštalačná šachta |
+
+**Na 1NP nemá priestor ani jeden zo šiestich stĺpcov.**
+
+### Ako sa v tomto modeli modeluje teleso priestoru
+
+Spodok priestoru sedí na úrovni podlažia (medián 0 mm), výška je slab-to-slab:
+šachty na 2NP `5000 … 8800`, na 3NP `9200 … 13000` — konštrukčná výška 4200
+mínus doska 400. Pre 1NP (`0 … 5000`) tomu zodpovedá `0 … 4600`. Spec
+geometrický rozsah `IfcSpace` **nemandátuje** (je to vec MVD), takže nový
+priestor sa riadi susedmi, nie knihou.
+
+### Rozhodnutia
+
+| vec | rozhodnutie |
+|---|---|
+| #J rozsah | dokresliť **len inštalačné šachty** na 1NP; výťahové nie |
+| #J pôdorys | orezať z existujúceho otvoru `SD02` na pásmo 1NP — nefabrikuje sa, void v modeli už je |
+| #J názvy | `2.15`, `2.18`, `3.15`, `3.17` → `LongName` **„Výťahová šachta"** podľa výkresu |
+| #Q | vnorený `IfcZone` s 11 nájomnými priestormi 3NP do `IfcZone` `Pronajmutelné` |
+
+**Čaká na rozhodnutie:** spec ponúka pre zvislé zoskupenie priestorov
+`IfcZone` s `ObjectType` `'RisingDuct'` („A collection of vertical airspaces")
+a `'ElevatorShaft'` („a collection of spaces within an elevator, **potentially
+going through many storeys**"). Tým by sa každý zo 6 stĺpcov stal jednou vecou
+bez akejkoľvek geometrie — vrátane výťahových, ktoré nekreslíme. Zoznam je
+v spec uvedený vetou *„in case of a zone denoting a (fire) compartment"*, takže
+rámec je požiarny; do BEP to treba napísať tak, ako to je.
+
+Otvorené aj: stĺpec 2 nemá priestor na 3NP a stĺpec 6 na 2NP; stĺpec 5 nemá
+otvor vôbec. Pred kreslením 1NP treba pri každom overiť obvodové steny na 1NP,
+inak by skript vyrobil priestor tam, kde šachta nepokračuje.
+
+### Brána `ASR_v8.ifc` pred fázou 6
+
+inv 2 EXPRESS 0, inv 3 GUID OK, inv 5 OK, inv 6 OK, inv 7 OK (mimo #AW,
+85 menovite); inv 4 = 48 (#F). inv 1 sa nedá spustiť — `data/ASR.ifc` v repe
+stále nie je.
