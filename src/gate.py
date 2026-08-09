@@ -44,6 +44,8 @@ def main() -> int:
     ap.add_argument("--allow", default="")
     ap.add_argument("--known", default="",
                     help="položky registra zo známych vád základne, napr. AW")
+    ap.add_argument("--allow-file", default="",
+                    help="JSON s {'removed': [...], 'added': [...]} od skriptu kroku")
     ap.add_argument("--show", type=int, default=8)
     args = ap.parse_args()
 
@@ -52,6 +54,11 @@ def main() -> int:
     known = [k.strip() for k in args.known.split(",") if k.strip()]
     if known:
         allow |= known_baseline(*known)
+    if args.allow_file:
+        import json
+        with open(args.allow_file, encoding="utf-8") as fh:
+            d = json.load(fh)
+        allow |= set(d.get("removed", [])) | set(d.get("added", []))
 
     print("subject   :", args.subject)
     print("reference :", args.reference,
