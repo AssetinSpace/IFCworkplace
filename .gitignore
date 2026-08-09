@@ -1,5 +1,10 @@
-# IFC medzivýstupy — veľké binárne súbory, mimo gitu
-out/
+# IFC modely v out/ sú SLEDOVANÉ gitom zámerne.
+#
+# Pôvodne tu bolo `out/`, čo bola chyba: kontajner je dočasný, takže bez
+# modelu v repe nemá nový chat na čom pracovať. Reťazec ASR_final_v2 → v8
+# je pracovný stav, nie jednorazový medzivýsledok — patrí do repa.
+# IFC je text a zbalí sa na ~21 %, teda ~4 MB na súbor. GitHub varuje
+# až nad 50 MB na súbor, takže je to bezpečne pod limitom.
 
 # Python
 .venv/
@@ -7,6 +12,6 @@ __pycache__/
 *.pyc
 .pytest_cache/
 
-# reporty a dočasné výstupy
+# dočasné výstupy
 reports/
 *.log
