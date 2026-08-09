@@ -14,6 +14,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from tests.test_invariants import (  # noqa: E402
     REFERENCE,
+    known_baseline,
     inv1_geometry,
     inv2_express,
     inv3_guid_accounting,
@@ -41,16 +42,22 @@ def main() -> int:
     ap.add_argument("--reference", default=REFERENCE)
     ap.add_argument("--skip", default="")
     ap.add_argument("--allow", default="")
+    ap.add_argument("--known", default="",
+                    help="položky registra zo známych vád základne, napr. AW")
     ap.add_argument("--show", type=int, default=8)
     args = ap.parse_args()
 
     skip = {int(x) for x in args.skip.split(",") if x.strip()}
     allow = {x for x in args.allow.split(",") if x.strip()}
+    known = [k.strip() for k in args.known.split(",") if k.strip()]
+    if known:
+        allow |= known_baseline(*known)
 
     print("subject   :", args.subject)
     print("reference :", args.reference,
           "" if os.path.exists(args.reference) else "  ← CHÝBA")
-    print("allowlist :", len(allow), "GlobalId")
+    print("allowlist :", len(allow), "GlobalId",
+          ("(známe vady: %s)" % ", ".join(known)) if known else "")
     print()
 
     results: dict[int, list] = {}
