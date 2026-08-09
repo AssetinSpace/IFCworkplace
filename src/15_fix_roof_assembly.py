@@ -39,11 +39,17 @@ import argparse
 import collections
 import json
 import os
+import sys
 
 import ifcopenshell
 import ifcopenshell.geom
 import ifcopenshell.guid
 import ifcopenshell.util.schema
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from ifcutil import (  # noqa: E402
+    detach_from_containment, detach_object_from_rels, sweep_orphans,
+)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 IN = os.path.join(ROOT, "out", "ASR_v3_a.ifc")
@@ -113,119 +119,6 @@ def xy_overlap(a, b, tol=TOL_XY):
     ox = min(a[3] + tol, b[3] + tol) - max(a[0] - tol, b[0] - tol)
     oy = min(a[4] + tol, b[4] + tol) - max(a[1] - tol, b[1] - tol)
     return ox * oy if ox > 0 and oy > 0 else 0.0
-
-
-def detach_from_containment(model, element, removed: list) -> None:
-    """Odoberie prvok z ``IfcRelContainedInSpatialStructure``.
-
-    Ak rel ostane prázdny, zmaže sa celý — ``RelatedElements`` je
-    ``SET[1:?]`` a prázdny by porušil invariant 5.
-    """
-    eid = element.id()
-    for rid in [r.id() for r in (getattr(element, "ContainedInStructure", ()) or ())]:
-        rel = model.by_id(rid)
-        rest = tuple(x for x in rel.RelatedElements if x.id() != eid)
-        if rest:
-            rel.RelatedElements = rest
-        else:
-            removed.append(rel.GlobalId)
-            model.remove(rel)
-
-
-def _drop_rel(model, rel, removed: list, candidates: list, dead: set) -> None:
-    """Zmaže vzťah a zapamätá jeho ``Relating*`` definície na zametenie."""
-    rid = rel.id()
-    if rid in dead:
-        return
-    for i in range(len(rel)):
-        if rel.attribute_name(i).startswith("Relating"):
-            v = rel[i]
-            # produkty nezametáme — tie sa mažú explicitne
-            if isinstance(v, ifcopenshell.entity_instance) and not v.is_a(
-                "IfcObjectDefinition"
-            ):
-                candidates.append(v.id())
-    gid = getattr(rel, "GlobalId", None)
-    if isinstance(gid, str):
-        removed.append(gid)
-    dead.add(rid)
-    model.remove(rel)
-
-
-def detach_object_from_rels(model, element, removed: list, candidates: list,
-                            dead: set) -> None:
-    """Odpojí prvok od **všetkých** vzťahov pred jeho zmazaním.
-
-    Bez tohto zostanú po zmazaní obalu prázdne ``IfcRelDefinesByProperties``
-    (36 obalov × 4 = 144) a invariant 5 padne.
-    """
-    eid = element.id()
-    # Handle z get_inverse sa po prvom model.remove() zneplatnia a siahnutie
-    # na ne zhodí proces. Preto sa najprv odloží zoznam id a entita sa
-    # v každom kole vytiahne nanovo.
-    for rid in [r.id() for r in model.get_inverse(element)]:
-        if rid in dead:
-            continue
-        rel = model.by_id(rid)
-        if not rel.is_a("IfcRelationship"):
-            continue
-        # prvok je celok / kontajner → vzťah ide preč celý
-        whole = False
-        for a in ("RelatingObject", "RelatingStructure"):
-            v = getattr(rel, a, None)
-            if v is not None and v.id() == eid:
-                whole = True
-        if whole:
-            _drop_rel(model, rel, removed, candidates, dead)
-            continue
-        for attr in ("RelatedObjects", "RelatedElements", "RelatedDefinitions"):
-            cur = getattr(rel, attr, None)
-            if cur is None:
-                continue
-            rest = tuple(x for x in cur if x.id() != eid)
-            if len(rest) == len(cur):
-                continue
-            if rest:
-                setattr(rel, attr, rest)
-            else:
-                _drop_rel(model, rel, removed, candidates, dead)
-                break   # entita je preč — ďalší atribút by sa čítal z mŕtveho
-                        # handle a zhodil by proces (SIGSEGV)
-
-
-def sweep_orphans(model, candidate_ids, removed: list, dead: set):
-    """Iteratívne zmaže definície, na ktoré už nič neodkazuje.
-
-    Iteratívne zámerne: Revit **zdieľa `IfcProperty` medzi psetmi** — zo 72
-    property v rušených psetoch ich 36 patrí aj inam. Zmazanie psetu môže
-    property osirotiť, ale len tú nezdieľanú; preto sa po každom kole
-    prepočíta ``get_total_inverses`` a zdieľané ostávajú.
-
-    Pracuje sa s ``id()``, nie s handle — handle zmazanej entity je v
-    ifcopenshell neplatný a siahnutie naň zhodí proces (SIGSEGV).
-    """
-    done = collections.Counter()
-    queue = [i for i in candidate_ids if i not in dead]
-    while queue:
-        nxt = []
-        for eid in queue:
-            if eid in dead:
-                continue
-            e = model.by_id(eid)
-            if model.get_total_inverses(e):
-                continue
-            children = []
-            for attr in ("HasProperties", "Quantities"):
-                children.extend(x.id() for x in (getattr(e, attr, None) or ()))
-            done[e.is_a()] += 1
-            gid = getattr(e, "GlobalId", None)
-            if isinstance(gid, str):
-                removed.append(gid)
-            dead.add(eid)
-            model.remove(e)
-            nxt.extend(children)
-        queue = [i for i in nxt if i not in dead]
-    return done
 
 
 def contain_in(model, storey, element, added: list):
