@@ -175,13 +175,13 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 | # | | vec |
 |---|---|---|
 | I | **H** | ~~14 MEP priestorov s `LongName = 'Space'`~~ — prečíslované podľa §6, `20_fix_spaces.py`. Namerané 78.84 m² |
-| J | O | pôvodné znenie bolo v dvoch bodoch nepresné, viď §14: schodisko na 1NP **existuje** (`1.23`, legenda `D.1.1.01`, 18.36 m²) a šácht nie je 2, ale 6 zvislých stĺpcov. Nepomenovanosť na 2NP–4NP vyriešila fáza 5b (#I). Otvorené zostáva jediné: **na 1NP nemá priestor ani jeden zo 6 stĺpcov.** Rozhodnuté — dokreslia sa 3 inštalačné šachty, výťahové nie |
+| J | **H** | ~~schodisko a 2 šachty na 2NP–4NP nepomenované, na 1NP chýbajú~~ — fáza 5c, §15. Pôvodné znenie bolo v dvoch bodoch nepresné: schodisko na 1NP **existuje** (`1.23`, legenda `D.1.1.01`, 18.36 m²) a šácht nie je 2, ale 7 zvislých stĺpcov. Nepomenovanosť riešila fáza 5b (#I). Doplnených 6 šachtových priestorov, 4 výťahy premenované, 7 zón šácht |
 | H | O | 1NP: 2 prvky z 247 v miestnostiach |
 | G | O | 16 z 18 strešných vpustí v `IfcSpace` na 3NP; 2 `ST01.10` v zlom podlaží |
 | K | O | 10 dverí bez priestorového kontajnera |
 | L | O | `IfcRelSpaceBoundary` 0× |
 | Z | **H** | ~~22 rekonštruovaných priestorov bez `Qto_BodyGeometryValidation`~~ — dopočítané z geometrie, `20_fix_spaces.py` |
-| Q | O | 3NP nemá prenajímateľnú zónu. **Premisa „nová zóna = vyrobiť geometriu" je nesprávna** — `IfcZone` je podtyp `IfcSystem`/`IfcGroup`, nie `IfcProduct`, a spec hovorí doslova *„A zone does not have its own shape representation"* a *„it can not define an own geometric representation and placement"*. Rozhodnuté — vnorený `IfcZone` s 11 nájomnými priestormi 3NP (584.06 m² podľa legendy `D.1.1.03`) vložený do `IfcZone` `Pronajmutelné`. WR1 `IfcSpace` aj `IfcZone` ako členov výslovne povoľuje |
+| Q | **H** | ~~3NP nemá prenajímateľnú zónu~~ — fáza 5c, §15. **Premisa „nová zóna = vyrobiť geometriu" bola nesprávna** — `IfcZone` je podtyp `IfcSystem`/`IfcGroup`, nie `IfcProduct`, a spec hovorí doslova *„A zone does not have its own shape representation"* a *„it can not define an own geometric representation and placement"*. Rozhodnuté — vnorený `IfcZone` s 11 nájomnými priestormi 3NP (584.06 m² podľa legendy `D.1.1.03`) vložený do `IfcZone` `Pronajmutelné`. WR1 `IfcSpace` aj `IfcZone` ako členov výslovne povoľuje |
 | Q2 | O | `PZ01`–`PZ10` majú vlastnú geometriu a `PredefinedType = OCCUPANCY`, ale **nereferencujú ani jeden prvok či priestor** (`IfcRelReferencedInSpatialStructure` 0×). Prenajímateľnosť tak dnes nesie iba objem, nie väzba na miestnosti. Nájdené sondou §14 |
 | R | **H** | ~~súčet plôch vs 2031.95 z handoveru~~ — zosúhlasené: 1NP 613.55 + 2NP 665.74 + 3NP 664.11 + 4NP 69.47 = **2012.88 m²** na 69 priestoroch. Rozdiel 19.07 m² je v handoveri, nie v modeli |
 | AW | O | **85 častí fasády je súčasne agregovaných aj kontajnovaných** — 70 `IfcMember` `LOP02` a 9 `AZ01`, 6 `IfcPlate` `TI06.01`. Časti sedia o podlažie vyššie než ich `IfcCurtainWall` (`PL01` v 3NP → časti v 4NP; `LP03.01` v 4NP → časti v 5NP). Invariant 7 na základni zlyháva, nie až po fáze 1 |
@@ -306,11 +306,16 @@ a boundaries, sweep a zaokrúhlenie posledné.
 | **4** | `18_snim_inst.py` | #M #N #P #S #Y #AP; `LOP02` → `LP02`; swap dverí na 3NP |
 | **5a** | `19_fix_type_names.py` | #AF — zlúčenie 4 dvojíc `IfcCoveringType`, typ `DD01.05` → `DD01.04` |
 | **5b** | `20_fix_spaces.py` | #I #J (prečíslovanie §6, šachty na 1NP) #Z #Q #R |
-| **6** | `21_fix_containment.py`, `22_space_boundaries.py` | #G #H #K #L #AO; agregáty skladieb |
-| **7** | `23_lop_fields.py` | 48 vnorených `IfcCurtainWall`, `Ucw`, `Qto` |
-| **8** | `24_layer_sets.py` | #AQ #AU #AS; layer sety na typoch; `IfcGroup` S1–S9 |
-| **9** | `25_fix_numeric.py`, `26_sweep_orphans.py` | #AJ #F + finálna kontrola |
-| **10** | `27_sanitary.py` | pôvodný krok 13 |
+| **5c** | `21_fix_spaces_jq.py` | #J #Q; šachtové priestory, zóny šácht, zóna 3NP |
+| **6** | `22_fix_containment.py`, `23_space_boundaries.py` | #G #H #K #L #AO; agregáty skladieb |
+| **7** | `24_lop_fields.py` | 48 vnorených `IfcCurtainWall`, `Ucw`, `Qto` |
+| **8** | `25_layer_sets.py` | #AQ #AU #AS; layer sety na typoch; `IfcGroup` S1–S9 |
+| **9** | `26_fix_numeric.py`, `27_sweep_orphans.py` | #AJ #F + finálna kontrola |
+| **10** | `28_sanitary.py` | pôvodný krok 13 |
+
+Fáza 5c pribudla po sonde k #J — pôvodný plán s ňou nerátal, lebo predpokladal,
+že #J aj #Q sú len rozhodnutia, nie samostatný krok. Kroky 22–28 sa tým posunuli
+o jedno; čísla skriptov ostávajú súvislé od `ASR.ifc`.
 | neskôr | | #AT fyzika materiálov |
 
 **Fáza 10, rozsah:** v modeli **nie je ani jeden kus potrubia**. Jediný podtyp
@@ -606,8 +611,85 @@ Pred kreslením musí skript pri každom kandidátovi overiť obvodové steny na
 1NP a zastať, ak nesedia — inak by vyrobil priestor tam, kde šachta
 nepokračuje.
 
+### Ako skript rozozná výťah od inštalačnej šachty
+
+Nie podľa mena — meno je práve to, čo je zle. Rozhoduje **šachtová jama**:
+otvor v základovej doske `ZD02` alebo v podkladnom betóne `DZ01` pod tým istým
+pôdorysom. Inštalačná šachta pod základovú škáru nejde, výťahová áno. Test
+vybral presne dva stĺpce, 5.05 a 2.89 m², čo sedí s `VT01 01` a `VT01 02`
+z výkresu.
+
 ### Brána `ASR_v8.ifc` pred fázou 6
 
 inv 2 EXPRESS 0, inv 3 GUID OK, inv 5 OK, inv 6 OK, inv 7 OK (mimo #AW,
 85 menovite); inv 4 = 48 (#F). inv 1 sa nedá spustiť — `data/ASR.ifc` v repe
 stále nie je.
+
+---
+
+## 15. Fáza 5c — #J a #Q
+
+`out/ASR_v8.ifc` → `out/ASR_v9.ifc`, `src/21_fix_spaces_jq.py`.
+
+**#J — názvy.** `LongName` štyroch priestorov (`2.15`, `2.18`, `3.15`, `3.17`)
+opravený na „Výťahová šachta". `Name`, umiestnenie ani geometria sa nedotkli.
+
+**#J — chýbajúce priestory.** Pravidlo: *šachta je na podlaží, ktorého strop
+prerazí jej void*. Vzniklo 6 priestorov, každý overený proti pôdorysu a pásmu,
+z ktorých vznikol, na 1 mm:
+
+| priestor | plocha | podlažie | stĺpec |
+|---|--:|---|---|
+| `1.24` | 1.23 m² | 1NP | 2050 × 600 |
+| `1.25` | 1.29 m² | 1NP | 550 × 2350 |
+| `1.26` | 2.76 m² | 1NP | 3450 × 800 |
+| `2.21` | 2.76 m² | 2NP | 3450 × 800 |
+| `3.21` | 1.23 m² | 3NP | 2050 × 600 |
+| `3.22` | 2.76 m² | 3NP | 3450 × 800 |
+
+Stĺpce 1.48 a 0.75 m² priestor na 1NP **nedostali** — ich void neprerazí žiadnu
+dosku, takže dôkaz o pokračovaní neexistuje a bez neho sa nekreslí.
+
+Tvar sa robil vzorom rekonštruovaných priestorov 1NP: `IfcArbitraryClosedProfileDef`
++ extrúzia, placement k podlažiu, polyline vo svetových XY. Extrúzia 1NP je
+`4600` — presne ako u `1.05` z `build_1np_spaces.py`.
+
+**#J — zóny šácht.** Každý stĺpec dostal `IfcZone`, takže šachta je jedna vec
+naprieč podlažiami bez jediného milimetra novej geometrie. `ObjectType` podľa
+spec (IFC4.3 §5.4.3.82): 2× `'ElevatorShaft'`, 5× `'RisingDuct'`. Zoznam je
+v spec uvedený vetou *„in case of a zone denoting a (fire) compartment"* —
+rámec je požiarny a do BEP to patrí napísať tak, ako to je.
+
+**#Q.** `IfcZone` „Nájomné priestory 3NP" s 11 priestormi, 584.07 m² (legenda
+`D.1.1.03` uvádza 584.06), vložená do `IfcZone` `Pronajmutelné`. Skript zastane,
+ak sa súčet od legendy odchýli o viac než 0.05 m². Geometria žiadna — `IfcZone`
+ju niesť nemôže.
+
+### Plochy po fáze 5c
+
+| podlažie | pred | po | priestorov |
+|---|--:|--:|--:|
+| 1NP | 613.55 | **618.83** | 26 |
+| 2NP | 665.74 | **668.50** | 21 |
+| 3NP | 664.11 | **668.10** | 22 |
+| 4NP | 69.47 | 69.47 | 6 |
+| spolu | 2012.88 | **2024.91** | **75** |
+
+Zosúhlasenie s legendami tým prestáva byť rovnosť na cent — pribudlo 12.03 m²
+šachiet, ktoré legendy neuvádzajú, lebo šachta nie je miestnosť. Legendy
+nikdy neuvádzali ani pôvodných 14 MEP priestorov; rozdiel je teraz
+dokumentovaný, nie neznámy.
+
+### Brána
+
+| inv | výsledok |
+|---|---|
+| 1 geometria | **0 zmenených** (referencia = `ASR_v8.ifc`, 6 nových tvarov v allowliste) |
+| 2 EXPRESS | **0 hlásení** — vrátane `IfcZone_WR1` na siedmich nových zónach |
+| 3 GUID | 0 zrušených, 58 nových, všetky v `out/ASR_v9.ifc.allowlist.json` |
+| 4 osirelé | 48 (#F) — rozpad nezmenený, skript nepridal ani jednu |
+| 5 prázdne SET | 0 |
+| 6 jednoznačnosť | 0 |
+| 7 kontajnment | 0 mimo #AW |
+
+Idempotencia overená: druhý beh 0 zmien, 0 nových GlobalId.
