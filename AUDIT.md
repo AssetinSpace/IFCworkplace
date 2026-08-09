@@ -149,7 +149,7 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 | AC | **H** | ~~`ZD02.03/.04` `FLOOR`; occurrence `ZD02.01` typovaná `ZD02.04`~~ — typ premenovaný, `BASESLAB`, `45ea35d` |
 | AM | O | `PredefinedType` — steny hotové (`45ea35d`): 159 occ podľa §5 + všetkých 12 `IfcWallType`. Číslo 383 = **314** `NOTDEFINED` + **69** `IfcFlowTerminal`, ktoré atribút v IFC4X3 nemajú vôbec (fáza 10). Otvorených ostáva **67** occurrences bez pravidla v §5: 8 `IfcSlab DZ02`, 19 `IfcCurtainWall`, 22 `IfcFurniture`, 12 `IfcRailing`, 5 `SC01` |
 | AN | **H** | ~~`KV01` `MOLDING`~~ → `COPING`, 2 occ + typ, `45ea35d` |
-| AO | O | atika hotová (`50c26c5`): 8× `IfcRelAggregates` na `SN02.01`, 18 dielov, časti odobrané z kontajnmentu. Fasádne zateplenia zostávajú — fáza 6 |
+| AO | **H** | ~~fasádne zateplenia mimo agregácie~~ — atika fáza 1 (`50c26c5`, 8× `IfcRelAggregates`, 18 dielov); zateplenia fáza 6a, 14 dielov `FS01` do 10 stien. **Otvorené zostáva 7 `FS03.01`**, pre ktoré sa nenašla stena — viď §16 |
 
 ### Typy a identita
 | # | | vec |
@@ -176,15 +176,15 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 |---|---|---|
 | I | **H** | ~~14 MEP priestorov s `LongName = 'Space'`~~ — prečíslované podľa §6, `20_fix_spaces.py`. Namerané 78.84 m² |
 | J | **H** | ~~schodisko a 2 šachty na 2NP–4NP nepomenované, na 1NP chýbajú~~ — fáza 5c, §15. Pôvodné znenie bolo v dvoch bodoch nepresné: schodisko na 1NP **existuje** (`1.23`, legenda `D.1.1.01`, 18.36 m²) a šácht nie je 2, ale 7 zvislých stĺpcov. Nepomenovanosť riešila fáza 5b (#I). Doplnených 6 šachtových priestorov, 4 výťahy premenované, 7 zón šácht |
-| H | O | 1NP: 2 prvky z 247 v miestnostiach |
-| G | O | 16 z 18 strešných vpustí v `IfcSpace` na 3NP; 2 `ST01.10` v zlom podlaží |
-| K | O | 10 dverí bez priestorového kontajnera |
+| H | **H** | ~~1NP: 2 prvky z 247 v miestnostiach~~ — fáza 6a, kontajnment prepočítaný z geometrie. Prvkov v miestnostiach 93 → **136**, presunutých 95 |
+| G | **H** | ~~16 z 18 strešných vpustí v `IfcSpace` na 3NP; `ST01.10` v zlom podlaží~~ — fáza 6a: 17 `OV04` von z openspace do podlaží podľa geometrie; `ST01.10.0001` doplnená do agregácie `ST01.0001` (66 dielov) |
+| K | **H** | ~~10 dverí bez priestorového kontajnera~~ — namerané **0** už na `ASR_v9`; vyriešili to skoršie fázy, register bol zastaraný |
 | L | O | `IfcRelSpaceBoundary` 0× |
 | Z | **H** | ~~22 rekonštruovaných priestorov bez `Qto_BodyGeometryValidation`~~ — dopočítané z geometrie, `20_fix_spaces.py` |
 | Q | **H** | ~~3NP nemá prenajímateľnú zónu~~ — fáza 5c, §15. **Premisa „nová zóna = vyrobiť geometriu" bola nesprávna** — `IfcZone` je podtyp `IfcSystem`/`IfcGroup`, nie `IfcProduct`, a spec hovorí doslova *„A zone does not have its own shape representation"* a *„it can not define an own geometric representation and placement"*. Rozhodnuté — vnorený `IfcZone` s 11 nájomnými priestormi 3NP (584.06 m² podľa legendy `D.1.1.03`) vložený do `IfcZone` `Pronajmutelné`. WR1 `IfcSpace` aj `IfcZone` ako členov výslovne povoľuje |
 | Q2 | O | `PZ01`–`PZ10` majú vlastnú geometriu a `PredefinedType = OCCUPANCY`, ale **nereferencujú ani jeden prvok či priestor** (`IfcRelReferencedInSpatialStructure` 0×). Prenajímateľnosť tak dnes nesie iba objem, nie väzba na miestnosti. Nájdené sondou §14 |
 | R | **H** | ~~súčet plôch vs 2031.95 z handoveru~~ — zosúhlasené: 1NP 613.55 + 2NP 665.74 + 3NP 664.11 + 4NP 69.47 = **2012.88 m²** na 69 priestoroch. Rozdiel 19.07 m² je v handoveri, nie v modeli |
-| AW | O | **85 častí fasády je súčasne agregovaných aj kontajnovaných** — 70 `IfcMember` `LOP02` a 9 `AZ01`, 6 `IfcPlate` `TI06.01`. Časti sedia o podlažie vyššie než ich `IfcCurtainWall` (`PL01` v 3NP → časti v 4NP; `LP03.01` v 4NP → časti v 5NP). Invariant 7 na základni zlyháva, nie až po fáze 1 |
+| AW | **H** | ~~85 častí fasády súčasne agregovaných aj kontajnovaných~~ — fáza 6a, časti odobrané z kontajnmentu po overení, že ich celok v priestorovej štruktúre je. Pôvodne: **85 častí** — 70 `IfcMember` `LOP02` a 9 `AZ01`, 6 `IfcPlate` `TI06.01`. Časti sedia o podlažie vyššie než ich `IfcCurtainWall` (`PL01` v 3NP → časti v 4NP; `LP03.01` v 4NP → časti v 5NP). Invariant 7 na základni zlyháva, nie až po fáze 1 |
 
 ### Materiály a skladby
 | # | | vec |
@@ -693,3 +693,84 @@ dokumentovaný, nie neznámy.
 | 7 kontajnment | 0 mimo #AW |
 
 Idempotencia overená: druhý beh 0 zmien, 0 nových GlobalId.
+
+---
+
+## 16. Fáza 6a — kontajnment a agregácia
+
+`out/ASR_v9.ifc` → `out/ASR_v10.ifc`, `src/22_fix_containment.py`.
+
+**#AW.** 85 častí fasády (79 `IfcMember`, 6 `IfcPlate`) odobraných
+z kontajnmentu. Skript najprv overí, že **celok** v priestorovej štruktúre
+je — inak by sa časť odobratím stratila. Brána bola preto pustená
+**bez** `--known AW` a invariant 7 prešiel, takže vada je vyriešená, nie
+zamaskovaná. Menovitý allowlist v `tests/known_baseline.json` zostáva —
+platí pre základňu `ASR_final_v2.ifc`, kde vada reálne je.
+
+**#AO.** 14 fasádnych zateplení `FS01` vložených cez `IfcRelAggregates`
+do 10 stien a odobraných z kontajnmentu — tá istá deprecation ako pri
+atike vo fáze 1.
+
+**#G + #H — jedno pravidlo namiesto dvoch opráv.** Kontajnment sa pre
+triedy z rozhodnutia 24 prepočítal z geometrie. 95 presunov:
+
+| smer | ks | čo to je |
+|---|--:|---|
+| podlažie → miestnosť | 60 | #H, vlastný cieľ rozhodnutia 24 |
+| miestnosť → podlažie | 17 | #G, strešné vpuste `OV04` von z openspace |
+| miestnosť → miestnosť | 16 | krytiny priradené zlej miestnosti |
+| podlažie → podlažie | 2 | prvky v zlom podlaží |
+
+Prvkov v miestnostiach **93 → 136**.
+
+### Dva testy, nie jeden — a prečo
+
+Prvý pokus použil jednotné pravidlo „ťažisko vnútri priestoru" a vyhodil
+z miestností 43 krytín. Nebola to chyba modelu, ale testu: **krytina leží
+mimo objemu miestnosti** — podlaha pod ňou, podhľad nad ňou — takže
+ťažiskový test ju vždy pošle do podlažia. Rozhodnutie 24 to menuje
+„Z-filtrom" a myslí tým presne toto.
+
+* **zariaďovacie predmety** (`IfcFlowTerminal`, `IfcSanitaryTerminal`,
+  `IfcFurniture`, `IfcRailing`) — ťažisko vnútri, vyhráva **najmenší**
+  priestor, inak by chodba pohltila prvky priľahlých miestností;
+* **krytiny** (`IfcCovering`) — najprv **zvislá priľahlosť** (vrch krytiny
+  ≈ spodok priestoru, alebo spodok krytiny ≈ vrch priestoru, tolerancia
+  300 mm), až potom prekryv pôdorysu ≥ 0.5 z plochy krytiny.
+
+Opačné poradie nefunguje: bbox openspace prekrýva v XY takmer všetko, takže
+párovanie podľa prekryvu trafí cudzie podlažie. Zmerané — medzery pri
+takom párovaní vychádzali +0 až +8650 mm.
+
+**#G, zvyšok.** `ST01.10.0001` visela od fázy 1 mimo strešnej agregácie,
+lebo bola kontajnovaná v 3NP, kým zvyšok súvrstvia na 4NP. Doplnená do
+`ST01.0001` (65 → **66 dielov**). Dôkaz: jej vrch je `13454` a stoh
+strechy presne tam začína, pri zhodnom pôdoryse (30285…62985 vs
+30135…63135).
+
+### Otvorené
+
+**7 z 9 `FS03.01` sa nepodarilo priradiť k stene** (2 áno —
+`SN05.01.0005` a `SN02.02.0019`), zostávajú kontajnované v 1NP.
+Pravdepodobné vysvetlenie je v registri #A: `FS03.01` bolo pôvodne
+`IfcWall` prekvalifikované na `IfcCovering`, takže nemusí ísť o krytinu
+steny, ale o samostatný pás. **Neoverené** — skript nič nedomýšľa
+a nechal ich tak.
+
+### Brána
+
+| inv | výsledok |
+|---|---|
+| 1 geometria | **0 zmenených** (referencia = `ASR_v9.ifc`) |
+| 2 EXPRESS | **0 hlásení** |
+| 3 GUID | 36 nových, 12 zrušených, všetky v allowliste kroku |
+| 4 osirelé | 48 (#F) — rozpad nezmenený |
+| 5 prázdne SET | 0 |
+| 6 jednoznačnosť | 0 |
+| 7 kontajnment | **0 — bez allowlistu `AW`** |
+
+Idempotencia overená: druhý beh 0 zmien, 0 nových GlobalId.
+
+**Zostáva vo fáze 6:** #L `IfcRelSpaceBoundary` — `23_space_boundaries.py`,
+rozhodnutie 23 (1. úroveň, bez `ConnectionGeometry`, `ParentBoundary` pre
+dvere a okná).
