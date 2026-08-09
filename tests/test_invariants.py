@@ -367,15 +367,16 @@ def inv5_empty_sets(subject, allowlist: Iterable[str] = ()) -> list[Violation]:
 # --------------------------------------------------------------------------
 
 #: Kódy bez UOT — INST ide hneď za kód (AUDIT.md §2 rozhodnutie 1).
-#: Zdroj: ``data/snim_mapovanie.csv``, s dvomi opravami z AUDIT.md §2:
-#:   * ``LOP02`` → ``LP02`` (rozhodnutie 4)
-#:   * ``ZD02`` **nie je** dvojúrovňový — rozhodnutie 12 drží rad
-#:     ``ZD02.01``–``.04`` dosky, ``.05`` blok, teda kód.UOT
-#: ``LP01`` pribúda podľa rozhodnutia 19 (26 ``IfcWindow`` → ``LP01.0001``…).
+#: Dokumentačná konštanta; ``parse_snim`` ju **nepoužíva**, tam rozhoduje
+#: šírka INST. Zdroj: ``data/snim_mapovanie.csv`` (17 kódov) plus to, čo
+#: reálne stojí v modeli bez UOT: ``DZ02``, ``PL01`` a ``ST01`` (obal
+#: strešného súvrstvia z fázy 1). ``ZD02`` je naopak trojúrovňový —
+#: rozhodnutie 12 drží rad ``ZD02.01``–``.04`` dosky, ``.05`` blok.
+#: ``LP01`` je tu podľa rozhodnutia 19, ``LP02`` podľa rozhodnutia 4.
 TWO_LEVEL_CODES = frozenset(
     {
-        "AZ01", "KV01", "KV02", "LP01", "LP02", "LOP02", "OK01",
-        "SC01", "SD03", "SD04", "VP02",
+        "AZ01", "DZ02", "KV01", "KV02", "LP01", "LP02", "LOP02", "OK01",
+        "PL01", "SC01", "SD03", "SD04", "ST01", "VP02",
         "WC01", "WC02", "WC03", "WC04", "WC05", "WC06", "WC07",
     }
 )
@@ -394,12 +395,22 @@ def load_two_level_codes(csv_path: str = os.path.join(DATA, "snim_mapovanie.csv"
     return codes
 
 
+#: pevná šírka INST (AUDIT.md §2 rozhodnutie 2, napr. ``LP02.0001``)
+INST_WIDTH = 4
+
+
 def parse_snim(name: str | None) -> tuple[str | None, str | None]:
     """``name`` → ``(kód, INST)``. ``INST`` je ``None``, ak chýba.
 
-    ``DD01.05.01`` → ``("DD01.05", "01")`` — kód.UOT.INST
-    ``LP02.0001``  → ``("LP02", "0001")`` — dvojúrovňový kód.INST
-    ``PH01.10``    → ``("PH01.10", None)`` — kód.UOT, INST chýba
+    ``DD01.05.01`` → ``("DD01.05", "01")``   — kód.UOT.INST
+    ``LP02.0001``  → ``("LP02", "0001")``    — dvojúrovňový kód.INST
+    ``PH01.10``    → ``("PH01.10", None)``   — kód.UOT, INST chýba
+
+    Dvojsegmentové meno je nejednoznačné: ``PL01.0004`` môže byť kód.UOT
+    aj kód.INST. Rozhoduje **šírka** — ``INST`` má podľa rozhodnutia 2
+    pevne 4 znaky, ``UOT`` v tomto modeli vždy 2. Je to spoľahlivejšie než
+    zoznam kódov bez UOT: ten v ``snim_mapovanie.csv`` má 17 položiek, ale
+    model ich obsahuje 18 a ďalšie sú len na typoch (``DZ01``, ``IH01``).
     """
     if not name:
         return None, None
@@ -409,7 +420,7 @@ def parse_snim(name: str | None) -> tuple[str | None, str | None]:
     if len(parts) == 3 and parts[1].isdigit() and parts[2].isdigit():
         return parts[0] + "." + parts[1], parts[2]
     if len(parts) == 2 and parts[1].isdigit():
-        if parts[0] in TWO_LEVEL_CODES:
+        if len(parts[1]) == INST_WIDTH:
             return parts[0], parts[1]
         return name, None
     if len(parts) == 1:
@@ -631,8 +642,18 @@ def test_inv7_containment_vs_aggregation(model):
     assert inv7_containment_vs_aggregation(model, allow) == []
 
 
-def test_two_level_codes_match_csv():
-    """Konštanta musí sedieť s CSV, až na dve zdokumentované odchýlky."""
+def test_two_level_codes_cover_csv():
+    """Každý kód bez UOT z CSV musí byť v konštante, okrem ZD02."""
     csv_codes = load_two_level_codes()
     assert csv_codes - TWO_LEVEL_CODES == {"ZD02"}, "ZD02 je kód.UOT (rozhodnutie 12)"
-    assert TWO_LEVEL_CODES - csv_codes == {"LP01", "LP02"}, "rozhodnutia 4 a 19"
+
+
+def test_parse_snim_width_rule():
+    """Dvojsegmentové meno rozhoduje šírkou, nie zoznamom kódov."""
+    assert parse_snim("DD01.05.01") == ("DD01.05", "01")
+    assert parse_snim("LP02.0001") == ("LP02", "0001")
+    assert parse_snim("PL01.0004") == ("PL01", "0004")
+    assert parse_snim("PH01.10") == ("PH01.10", None)
+    assert parse_snim("ZD02.01") == ("ZD02.01", None)
+    assert parse_snim("OK01") == ("OK01", None)
+    assert parse_snim("Openspace") == (None, None)
