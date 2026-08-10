@@ -1,6 +1,6 @@
 """Akceptačné meranie modelu.
 
-    python src/report_final.py                    # out/ASR_v16.ifc
+    python src/report_final.py                    # out/ASR_v18.ifc
     python src/report_final.py --in out/ASR_v9.ifc
 
 Prejde tvrdenia, ktoré o modeli robí `AUDIT.md`, a odmeria ich naraz.
@@ -24,7 +24,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from tests.test_invariants import parse_snim, snim_occurrences  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-IN = os.path.join(ROOT, "out", "ASR_v16.ifc")
+IN = os.path.join(ROOT, "out", "ASR_v18.ifc")
 
 
 def riadok(nazov, hodnota, poznamka=""):

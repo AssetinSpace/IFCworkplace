@@ -1414,3 +1414,160 @@ Všetkých **osem skladieb** z výpisu je tým založených.
 
 Brána: inv 1 geometria 0 zmenených, inv 2 EXPRESS 0, inv 3 6 nových
 v allowliste, inv 4–7 OK — **zlyhalo 0 zo 7**. Idempotencia overená.
+
+---
+
+## 29. Fáza 11 — schodiská, zábradlia, madlá, poistný prepad
+
+`out/ASR_v17.ifc` → `out/ASR_v18.ifc`, `src/30_stairs_rails.py`.
+
+Podnet Samuela: *„Schodiská sú komplikované, otázka čo je schodisko ako
+grupa zase a čo sú jednotlivé časti ako flight… Asi ideálne jedno
+schodisko ktoré zgrupne elementy (resp. druhé maličké schodisko je na
+streche ale to je iné)."*
+
+### Čo o schodisku hovorí spec
+
+`IfcStair`, 6.1.3.37.1: *„A stair is a vertical passageway allowing
+occupants to walk (step) **from one floor level to another floor level**
+at a different elevation. It may include a landing as an intermediate
+floor slab."* a *„The IfcStair shall either be represented as a stair
+assembly entity that aggregates all parts…, or as a single stair entity
+without decomposition… the aggregation is handled by the IfcRelAggregates
+relationship, relating an IfcStair with the related IfcStairFlight and
+landings, IfcSlab with PredefinedType=LANDING. IfcRailing's belonging to
+the stair may also be included."*
+
+### Čo model má — meranie, nie dojem
+
+| celok | podlažie | vlastný tvar | ramená | podesty | zábradlia | výška behu |
+|---|---|---|--:|--:|--:|---|
+| `SC01.0001` | 1NP | **nie** | 2 | 2 | 3 | 0 → 5000 mm |
+| `SC01.0002` | 2NP | **nie** | 2 | 2 | 3 | 5000 → 9200 |
+| `SC01.0003` | 3NP | **nie** | 2 | 2 | 3 | 9200 → 13400 |
+| `SH04.03.0001` | 4NP | nie | 1 | 0 | 2 + 2 stringery | 13400 → 14326 |
+
+`Pset_StairCommon` to potvrdzuje: 30 × 166,667 = 5000 a 26 × 161,538 =
+4200 mm.
+
+**Model teda vzor zo spec už spĺňa** a nič sa neprestavovalo: agregát bez
+vlastného tvaru, podesty ako `IfcSlab/LANDING`, zábradlia v agregácii.
+
+### Prečo nie jeden `IfcStair` cez tri podlažia
+
+Dva dôvody, druhý je ten vecný:
+
+1. Definícia hovorí *„from one floor level to another floor level"*.
+2. **Prišlo by sa o priradenie k podlažiam.** Časti agregátu sa do
+   priestorovej štruktúry neviažu samostatne (invariant 7 to stráži), takže
+   dnešné tri údaje 1NP / 2NP / 3NP by sa scvrkli na jeden. To je strata
+   informácie, nie formálna zmena.
+
+„Jedno schodisko" sa preto vyjadrilo **zoskupením**: `IfcBuiltSystem`
+= *„a group by which built elements are grouped according to a common
+function within the facility"*, `Name = SC01`, členovia tri `IfcStair`.
+`PredefinedType = USERDEFINED` s `ObjectType = "Vertikálna komunikácia —
+schodisko"`; jediná blízka hodnota `TRANSPORT` je v spec písaná o
+*transport elements* (výťah, eskalátor) a model ani jeden nemá, takže by
+tvrdila viac, než sa dá odmerať. Strešné schodisko `SH04.03.0001` v
+zoskupení nie je — Samuel: *„to je iné"*.
+
+### `HALF_TURN_STAIR` sa dokázalo, nie dosadilo
+
+Rozdiel oproti `TWO_STRAIGHT_RUN_STAIR` je merateľný: pri 180° otočke sú
+ramená **vedľa seba** (pôdorysné rozsahy sa v jednej osi neprekrývajú a
+v kolmej prekrývajú) a podesta zasahuje do oboch a leží medzi nimi vo
+výške. Pri priamom behu je to naopak. Skript to overuje pred akoukoľvek
+zmenou a bez dôkazu sa zastaví.
+
+`SC01.0001`: rameno A x 37860…42510 y 3534…4784, rameno B x 37860…42960
+y 4984…6234 — prienik v Y je nula, v X 4650 mm; podesta x 37010…38010
+y 3534…6234 siaha do oboch. Dva razy 15 × 166,667 mm cez medzipodestu vo
+výške 2500. Rovnako `SC01.0002` a `.0003`.
+
+### Zábradlie verzus madlo — z geometrie, nie z názvu
+
+| kód | ks | rozmer | poloha | hodnota |
+|---|--:|---|---|---|
+| `ZV01.01` | 4 | šírka 290 mm | v zrkadle, cez celú výšku ramien | `GUARDRAIL` |
+| `ZV01.02` | 6 | hrúbka 40 mm | pri stene, stúpa s ramenom | `HANDRAIL` |
+| `KV02` | 2 | hrúbka 40 mm | po oboch stranách strešného schodiska, stúpa 791 na 791 mm | `HANDRAIL` |
+| `VP02` | 12 | 850×155 mm, z 590…810 | po dvoch v 6 hygienických miestnostiach | `IfcRailing/HANDRAIL` |
+
+`GUARDRAIL` je *„designed to guard human occupants from falling off
+a stair, ramp or landing where there is a vertical drop"*, `HANDRAIL` je
+*„structural support for loads applied by human occupants (at hand
+height)… floor or wall mounted"*.
+
+`ZV01.01.0004` je zábradlie pri otvore zrkadla v miestnosti 4.06, nie na
+ramene. Zdieľa typ `ZV01.01` a typ nesie jednu hodnotu, takže dostáva
+`GUARDRAIL` — spec ju na *„floors/landings"* výslovne rozširuje.
+Do zoskupenia schodiska nepatrí, patrí k podlahe 4.06.
+
+`VP02` potvrdil Samuel: *„tie madlá sú skoplne áno ale je to špeciálne na
+invalidovské wcko"*. Revit typ `Invalida_Madlo_Sklop`, výška 590…810 mm
+nad podlahou sedí. `IfcFurniture` z exportu bolo vecne zlé — madlo nie je
+nábytok.
+
+### Poistný prepad `OV04.03`
+
+Samuel: *„je to proste len špeciálna diera trubka v atike"*, na nič sa
+nenapája. Meranie: dve kocky 100×100×100 mm na atike 5NP, z 16954…17554.
+
+Model má štyri **skutočné** poistné prepady `OV04.02` (Revit *„Poistny
+prepad"*, 500×500×796 mm na 4NP) a tie sú z fázy 10
+`IfcWasteTerminal/ROOFDRAIN`. `OV04.03` dostal to isté zaradenie — nie
+preto, že by 100 mm kocka bola vpusť, ale preto, že je to ten istý druh
+prvku a líši sa len tým, že je nakreslený zástupne. Že ide o zástupný
+tvar, hovorí `Description`. `IfcWasteTerminalTypeEnum` hodnotu pre prepad
+nemá; to je v BEP zapísané ako obmedzenie číselníka, nie ako vlastnosť
+budovy.
+
+### Invariant 1 zlyhal správne a prečo
+
+Prvý beh brány ohlásil 12 porušení „tvar pribudol oproti referencii" —
+presne 12 madiel `VP02`. Nie je to chyba: invariant 1 meria
+`IfcBuiltElement` a `IfcSpace`, `IfcFurniture` ani jedno nie je,
+`IfcRailing` áno. Zmenou triedy prvky **vstúpili do meraného súboru**.
+
+Riešenie nie je výnimka v kóde. Skript tvar tých prvkov premeria **pred aj
+po** zmene triedy, porovná na tú istú desatinu ako invariant (6), a keby
+sa čokoľvek pohlo, nezapíše nič. Overené GlobalId sa zapíšu do allowlistu
+pod kľúč `scope` s odôvodnením priamo v JSON; `gate.py` ten kľúč číta.
+Tak je v súbore vidieť rozdiel medzi „pribudol tvar" a „rozšíril sa
+rozsah merania".
+
+### Čo krok zámerne nerobí
+
+Typ `SC01` nesie `Pset_StairCommon` s `NumberOfRiser = 0` a
+`NumberOfTreads = 0` — nula z Revit šablóny, kým occurrences majú 30, 26
+a 26. Je to nepravdivý údaj z exportu, ale mazať exportované vlastnosti je
+iný druh zásahu než dopĺňať `PredefinedType`. Vedené ako **#BB**.
+
+### Výsledok
+
+* `SC01` ×3 + typ → `HALF_TURN_STAIR`
+* `SD04.0005/0006` → `STRAIGHT` (ich vlastný typ `SD04` `STRAIGHT` už mal)
+* `ZV01.01` ×4 → `GUARDRAIL`, `ZV01.02` ×6 + `KV02` ×2 → `HANDRAIL`
+* `VP02` ×12 `IfcFurniture` → `IfcRailing/HANDRAIL`
+* `OV04.03` ×2 `IfcFurniture` → `IfcWasteTerminal/ROOFDRAIN`
+* `IfcBuiltSystem SC01` + `IfcRelAssignsToGroup` + `IfcRelServicesBuildings`
+
+Brána proti `ASR_v17.ifc`: **zlyhalo 0 zo 7**, 3 nové GlobalId,
+0 odstránených, 12 v `scope`. Kumulatívne proti pôvodnému exportu
+`data/ASR.ifc`: inv 1 **0 porušení**. Proti základni `ASR_final_v2.ifc`:
+560 odstránených + 1127 pridaných, **0 mimo allowlistu**. `pytest` 9 z 9.
+
+### Čo z toho ostáva otvorené
+
+`occurrences bez PredefinedType` klesli na 83, z toho 67 `IfcCurtainWall`
+(enum nemá čo ponúknuť), 8 `IfcSlab` a 8 `IfcFurniture`:
+
+* **#BC `DZ02`** — 8 betónových panelov 100 mm, výška 700 mm, z −1600…−900,
+  tvoria dva uzavreté obdĺžniky 2400×2400 a 2850×3050 mm pod výťahovými
+  šachtami. Vyzerá to na obmurovku výťahových prehlbní. Zvislý panel nie
+  je doska; návrh `IfcWall`, čaká na potvrdenie.
+* **#BD `ZV04.01.0001`** — 785×770×3900 mm, z 14900…18800 na 4NP, materiál
+  `Výchozí` (Revit predvolený). Zvislý útvar 3,9 m nad strechou. Neviem, čo
+  to je.
+* **#AY `OV02.01/.02`** — 7 ks, sklenená vstupná markíza ako `IfcFurniture`.

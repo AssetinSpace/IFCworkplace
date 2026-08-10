@@ -97,6 +97,25 @@ len tam, kde void existujúceho otvoru dokazuje, že šachta tým podlažím
 prechádza. Tvar sa preberá z otvoru a oreže na pásmo podlažia; výťahové
 šachty sa nekreslili.
 
+### 2.7 Schodisko ako zoskupenie, nie ako jeden agregát
+
+Hlavné schodisko je v modeli **tri** `IfcStair` — po jednom na každý beh
+medzi podlažiami (1NP→2NP, 2NP→3NP, 3NP→4NP), presne ako hovorí spec:
+*„from one floor level to another floor level"*. „Jedno schodisko" nesie
+`IfcBuiltSystem` s `Name = SC01`, ktoré tie tri celky zoskupuje.
+
+Zámena za jeden `IfcStair` cez tri podlažia sa **odmietla**: časti
+agregátu sa do priestorovej štruktúry neviažu samostatne, takže by sa
+stratilo, ktoré rameno patrí do ktorého podlažia. Dnes je to tri údaje,
+po zlúčení jeden.
+
+`PredefinedType` toho zoskupenia je `USERDEFINED` s `ObjectType =
+"Vertikálna komunikácia — schodisko"`. Hodnota `TRANSPORT` sa nepoužila,
+lebo spec ju píše o *transport elements* — výťahoch a eskalátoroch —
+a model ani jeden nemá.
+
+Strešné schodisko `SH04.03` je samostatná konštrukcia a v zoskupení nie je.
+
 ---
 
 ## 3. Rozhodnutia o triede a type, ktoré nemá excel
@@ -120,6 +139,20 @@ a rozhodnutie projektanta. Tieto je nutné vedieť pri preberaní:
 | `WC02`, `WC04` | `TOILETPAN` | §7 |
 | `WC03`, `WC05` | `WASHHANDBASIN` | §7 |
 | `WC07` | `SINK` | §7 |
+| `SC01` | `IfcStair / HALF_TURN_STAIR` | dve ramená vedľa seba, podesta na oboch — odmerané, nie odhadnuté |
+| `SD03` | `IfcSlab / LANDING` | z exportu, spec vzor pre podesty |
+| `SD04`, `SH04.02` | `IfcStairFlight / STRAIGHT` | priama výstupná čiara |
+| `SH04.01` | `IfcMember / STRINGER` | schodnica oceľového schodiska |
+| `ZV01.01` | `IfcRailing / GUARDRAIL` | 290 mm v zrkadle; „guard… from falling off a stair, ramp or landing" |
+| `ZV01.02`, `KV02` | `IfcRailing / HANDRAIL` | 40 mm pri stene, stúpa s ramenom; „support… at hand height… wall mounted" |
+| `VP02` | `IfcRailing / HANDRAIL` | sklopné madlo na invalidnom WC, 590–810 mm; nie nábytok |
+| `OV04.03` | `IfcWasteTerminal / ROOFDRAIN` | zástupná kocka poistného prepadu; zhodne s `OV04.02` |
+
+**Poistný prepad číselník nemá.** `IfcWasteTerminalTypeEnum` pozná
+`FLOORTRAP`, `FLOORWASTE`, `GULLYSUMP`, `GULLYTRAP`, `ROOFDRAIN`,
+`WASTEDISPOSALUNIT` a `WASTETRAP` — pre poistný prepad atikou nie je nič.
+Použil sa `ROOFDRAIN` zhodne s ostatnými `OV04`; je to obmedzenie
+číselníka, nie tvrdenie o budove.
 
 **`IfcCurtainWall` nemá čo nastaviť.** `IfcCurtainWallTypeEnum` obsahuje
 iba `USERDEFINED` a `NOTDEFINED`, takže `NOTDEFINED` na všetkých 67

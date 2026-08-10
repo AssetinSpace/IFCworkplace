@@ -58,7 +58,11 @@ def main() -> int:
         import json
         with open(args.allow_file, encoding="utf-8") as fh:
             d = json.load(fh)
-        allow |= set(d.get("removed", [])) | set(d.get("added", []))
+        # `scope` = prvky, ktorým zmena triedy zmenila príslušnosť do
+        # meraného súboru invariantu 1. Nie je to zmena tvaru; skript kroku
+        # tvar premeria pred aj po a bez zhody nezapíše.
+        allow |= (set(d.get("removed", [])) | set(d.get("added", []))
+                  | set(d.get("scope", [])))
 
     print("subject   :", args.subject)
     print("reference :", args.reference,
