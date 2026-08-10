@@ -1203,3 +1203,56 @@ kódu z §3.
 
 **Trvalá medzera:** `data/ASR.ifc` v repe nie je, takže invariant 1 sa
 reťazí (referencia = vstup fázy) namiesto porovnania s pôvodným exportom.
+
+---
+
+## 24. Kontrola proti pôvodnému exportu
+
+`data/ASR.ifc` je v repe (Revit 2027, `IFC4X3_ADD2`, 21 MB). Tým sa
+zaviera diera otvorená v §9 — invariant 1 sa už nereťazí, ale porovnáva
+sa s originálom.
+
+### Geometria: nula
+
+| porovnanie | tvarov | zmenených | stratených | pribudnutých |
+|---|--:|--:|--:|--:|
+| `ASR.ifc` → `ASR_v16.ifc`, `IfcBuiltElement` | 2495 | **0** | **0** | **0** |
+| `ASR.ifc` → `ASR_final_v2.ifc`, `IfcBuiltElement` | 2495 | 0 | 0 | 0 |
+| `ASR.ifc` → `ASR_v16.ifc`, `IfcSpace` | 89 → 75 | **0** | 42 | 28 |
+
+**Cez celý reťazec od surového exportu po `ASR_v16.ifc` sa neposunul ani
+jeden prvok.** Bboxy sa zhodujú na 6 desatinných miest, čo je v
+milimetroch nanometer. To je tvrdenie, na ktorom celý audit stojí, a
+prvýkrát je overené proti pravej referencii, nie proti vstupu fázy.
+
+Priestory sú jediné, kde sa geometria hýbala, a ani tam nie zmenou —
+42 pôvodných zrušených a 28 nových. Z toho 42 + 22 pripadá na kroky 1–13
+(`build_1np_spaces.py`, mimo repa) a 6 na fázu 5c (šachty). Ani jeden
+prežívajúci priestor nemá iný tvar.
+
+### Počty, ktoré sedia
+
+`IfcBuiltElement` 2554 → 2568: mínus 36 strešných obalov (fáza 1), plus
+2 `IfcRoof` (fáza 1), plus 48 polí LOP (fáza 7). Sedí do kusa.
+
+### GUID účtovníctvo
+
+| úsek | zmizlo | pribudlo | mimo allowlistu |
+|---|--:|--:|--:|
+| kroky 1–13 (`ASR.ifc` → `ASR_final_v2.ifc`) | 7468 | 3792 | neúčtovateľné |
+| **fázy 1–10** (`ASR_final_v2.ifc` → `ASR_v16.ifc`) | **560** | **1118** | **0** |
+
+560 + 1118 = 1678, čo je presne veľkosť kumulatívneho allowlistu zo
+všetkých krokov. **Každý GUID, ktorý tento repo zrušil alebo vytvoril, je
+vysvetlený.**
+
+Kroky 1–13 v repe nie sú, takže ich 11 260 zmien nemá zapísané očakávania
+a účtovať sa voči nim nedá — test by meral cudziu prácu. Účtovníctvo
+tohto repa preto začína pri `ASR_final_v2.ifc`. Zapísané v
+`tests/known_baseline.json` ako `PIPELINE_1_13`, aby invariant 1 vedel,
+čo nie je jeho.
+
+### Testy
+
+`pytest` **9 z 9 prechádza**, vrátane pomalej kontroly geometrie proti
+`data/ASR.ifc`.
