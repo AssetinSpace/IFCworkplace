@@ -147,7 +147,7 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 | AL | **H** | ~~`IH01.01` ako `IfcWall / STANDARD`~~ → `IfcCovering / MEMBRANE`, 4 occ + typ, `45ea35d` |
 | AB | **H** | ~~blok 0.41×1.25×0.30 ako `IfcStair`~~ → `IfcFooting / PAD_FOOTING`, `ZD02.05`, `45ea35d` |
 | AC | **H** | ~~`ZD02.03/.04` `FLOOR`; occurrence `ZD02.01` typovaná `ZD02.04`~~ — typ premenovaný, `BASESLAB`, `45ea35d` |
-| AM | O | `PredefinedType` — steny hotové (`45ea35d`): 159 occ podľa §5 + všetkých 12 `IfcWallType`. Číslo 383 = **314** `NOTDEFINED` + **69** `IfcFlowTerminal`, ktoré atribút v IFC4X3 nemajú vôbec (fáza 10). Otvorených ostáva **67** occurrences bez pravidla v §5: 8 `IfcSlab DZ02`, 19 `IfcCurtainWall`, 22 `IfcFurniture`, 12 `IfcRailing`, 5 `SC01`. **Odmerané na `ASR_v17.ifc` (§29):** 114 = 67 `IfcCurtainWall` (uzavreté schémou, §25) + 22 `IfcFurniture` + 12 `IfcRailing` + 8 `IfcSlab` + 3 `IfcStair` + 2 `IfcStairFlight`. §25 uvádzalo 21 `IfcFurniture` — chýbal v ňom `ZV04.01`. Rozhodnutia sú v §29. **Fáza 11 (§30) uzavrela 30 z nich** prekvalifikovaním — 114 → 84 bez `PredefinedType`, z toho 67 `IfcCurtainWall` uzavretých schémou. Zostáva **17**: `SC01` 3, `SD04` 2, `ZV01.01` 4, `ZV01.02` 6, `KV02` 2 — fáza 12 |
+| AM | **H** | ~~`PredefinedType` chýba na 383~~ — steny hotové (`45ea35d`): 159 occ podľa §5 + všetkých 12 `IfcWallType`. Číslo 383 = **314** `NOTDEFINED` + **69** `IfcFlowTerminal`, ktoré atribút v IFC4X3 nemajú vôbec (fáza 10). Otvorených ostáva **67** occurrences bez pravidla v §5: 8 `IfcSlab DZ02`, 19 `IfcCurtainWall`, 22 `IfcFurniture`, 12 `IfcRailing`, 5 `SC01`. **Odmerané na `ASR_v17.ifc` (§29):** 114 = 67 `IfcCurtainWall` (uzavreté schémou, §25) + 22 `IfcFurniture` + 12 `IfcRailing` + 8 `IfcSlab` + 3 `IfcStair` + 2 `IfcStairFlight`. §25 uvádzalo 21 `IfcFurniture` — chýbal v ňom `ZV04.01`. Rozhodnutia sú v §29. **Fáza 11 (§30) uzavrela 30 z nich** prekvalifikovaním — 114 → 84 bez `PredefinedType`, z toho 67 `IfcCurtainWall` uzavretých schémou. Fáza 12 (§31) doplnila zvyšných 17 a **#AM je tým uzavreté**: bez `PredefinedType` zostalo 67 occurrences a všetkých 67 je `IfcCurtainWall` |
 | AN | **H** | ~~`KV01` `MOLDING`~~ → `COPING`, 2 occ + typ, `45ea35d` |
 | AO | **H** | ~~fasádne zateplenia mimo agregácie~~ — atika fáza 1 (`50c26c5`, 8× `IfcRelAggregates`, 18 dielov); zateplenia fáza 6a, 14 dielov `FS01` do 10 stien. **Otvorené zostáva 7 `FS03.01`**, pre ktoré sa nenašla stena — viď §16 |
 
@@ -1628,3 +1628,61 @@ triedu ponechávajú**: `SC01` 3, `SD04` 2, `ZV01.01` 4, `ZV01.02` 6,
 
 Occurrences bez `PredefinedType`: 114 → **84**, z toho 67 `IfcCurtainWall`
 uzavretých schémou (§25) a 17 pre fázu 12.
+
+---
+
+## 31. Fáza 12 — `PredefinedType`, #AM uzavreté
+
+`out/ASR_v18.ifc` → `out/ASR_v19.ifc`, `src/31_predefined_types.py`.
+Nastavených **21 hodnôt** na 17 occurrences a 4 typoch.
+
+| kód | trieda | `PredefinedType` | occ | typ |
+|---|---|---|--:|--:|
+| `SC01` | `IfcStair` | `HALF_TURN_STAIR` | 3 | 1 |
+| `SD04` | `IfcStairFlight` | `STRAIGHT` | 2 | — (typ ho už mal) |
+| `ZV01.01` | `IfcRailing` | `GUARDRAIL` | 4 | 1 |
+| `ZV01.02` | `IfcRailing` | `HANDRAIL` | 6 | 1 |
+| `KV02` | `IfcRailing` | `HANDRAIL` | 2 | 1 |
+
+**Bez `PredefinedType` zostalo 67 occurrences a všetkých 67 je
+`IfcCurtainWall`** — uzavreté schémou v §25, nie rozhodnutím. Sedemnásť
+`OV02` a spol. atribút nemá vôbec, lebo `IfcBuiltElement` ho nedefinuje
+(§30). **#AM je tým uzavreté.**
+
+### `HALF_TURN_STAIR` je doložený geometriou, nie popisom
+
+Skript pre každé `SC01` spočíta smer stúpania oboch ramien — ťažisko XY
+vrcholov v spodnej desatine výšky proti ťažisku v hornej desatine — a
+vyžaduje, aby zvierali viac než 150°. Namerané **180,0° na všetkých troch**.
+Keby ramená stúpali rovnakým smerom, správna hodnota by bola
+`TWO_STRAIGHT_RUN_STAIR` a skript by zastal.
+
+Skript sa navyše pred zápisom presvedčí, že popis typu sedí s očakávaním
+(`'Zábradlí 1000 se svislou výplní'`, `'Madlo 1000'`, `'Madlo – kovové'`).
+Keby sa kód medzitým použil na iný výrobok, zastane radšej, než by nastavil
+enum naslepo.
+
+### Pasca, na ktorú prvý beh naletel
+
+`np.array(create_shape(settings, e).geometry.verts)` v jednom výraze vracia
+pohľad do pamäte **dočasného** objektu, ktorý medzitým zanikne. Numpy potom
+číta uvoľnenú pamäť: bboxy vychádzajú s nulami a hodnotami rádu `1e260`.
+Prvý beh kvôli tomu namemeral medzi ramenami 1,8° a skript správne zastal —
+ale z nesprávneho dôvodu. Shape sa musí držať v premennej.
+
+To isté sa týka overenia geometrie v §30. Bolo **premerané znova** správnou
+metódou a záver platí: 30 dotknutých prvkov, **0 so zmenenou geometriou**,
+množina `GlobalId` identická. Do `CLAUDE_CODE_START.md` § „Pravidlá pre
+skripty" patrí k pravidlu *„`geom.iterator`, nie opakované `geom.create_shape`"*
+ešte veta o držaní shape v premennej.
+
+### Brána
+
+| inv | výsledok |
+|---|---|
+| 1 geometria | **OK** — allowlist prázdny, `PredefinedType` geometriu nemení |
+| 2 EXPRESS | **0 hlásení** |
+| 3 GUID | **OK** — 0 zrušených, 0 nových |
+| 4–7 | OK |
+
+**Zlyhalo 0 zo 7.** Idempotencia overená (druhý beh 0 zmien), `pytest` 8/8.
