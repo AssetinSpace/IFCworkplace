@@ -135,9 +135,9 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 | B | **H** | ~~17 `IfcSlab` nesie `Pset_WallCommon`~~ → `Pset_SlabCommon`, `70d17af` |
 | C | **H** | ~~`IfcSpaceType` = `NOTDEFINED` / `USERDEFINED`~~ |
 | E | **H** | ~~`Pset_SpaceCommon` na 10 `IfcSpatialZone`~~ → `Pset_SpatialZoneCommon`, `70d17af` |
-| F | O | 48 osirelých entít (31 `IfcLocalPlacement`, 16 profilov, 1 `IfcSurfaceStyle`) — potvrdené do kusa |
+| F | **H** | ~~48 osirelých entít~~ — zametené vo fáze 9b, 48 koreňov a 204 entít v kaskáde, 0 zrušených `GlobalId`. Invariant 4 odvtedy prechádza |
 | AY | O | `#16` `IfcGeometricRepresentationSubContext` „Box" nepoužitý (0 reprezentácií). Má 0 inverzov, lebo väzbu na rodiča drží **dopredný** `ParentContext`, nie inverzný `HasSubContexts` — do whitelistu invariantu 4 patrí alebo sa má zmazať |
-| AJ | O | 2653 hodnôt s FP šumom (2502 `Qto`, 145 `Overall*`, 18 property) |
+| AJ | **H** | ~~2653 hodnôt s FP šumom~~ — fáza 9a, zaokrúhlené na 6 desatinných miest. Opravených **15135** (širšie kritérium než pôvodný odhad), najväčšia oprava 5e-07 |
 
 ### Triedny model
 | # | | vec |
@@ -309,6 +309,7 @@ a boundaries, sweep a zaokrúhlenie posledné.
 | **5a** | `19_fix_type_names.py` | #AF — zlúčenie 4 dvojíc `IfcCoveringType`, typ `DD01.05` → `DD01.04` |
 | **5b** | `20_fix_spaces.py` | #I #J (prečíslovanie §6, šachty na 1NP) #Z #Q #R |
 | **5c** | `21_fix_spaces_jq.py` | #J #Q; šachtové priestory, zóny šácht, zóna 3NP |
+| — | | *poradie ďalej: 6, 7, 10, 9, 8 — viď §20* |
 | **6** | `22_fix_containment.py`, `23_space_boundaries.py` | #G #H #K #L #AO; agregáty skladieb |
 | **7** | `24_lop_fields.py` | 48 vnorených `IfcCurtainWall`, `Ucw`, `Qto` |
 | **8** | `25_layer_sets.py` | #AQ #AU #AS; layer sety na typoch; `IfcGroup` S1–S9 |
@@ -979,3 +980,88 @@ meno ani jedno. Idempotencia overená.
 **Zostáva:** fáza 8 (`25_layer_sets.py`, #AQ #AU #AS a `IfcGroup` S1–S9),
 fáza 9 (sweep #F #AJ), fáza 10 (`27_sanitary.py`). Otvorené položky
 registra: #AM, #AT, #AZ, #Q2, 7× `FS03.01` bez steny.
+
+---
+
+## 20. Fázy 10 a 9 — sanita, číselný šum, sweep
+
+Poradie oproti §7 zamenené: fáza 8 (skladby) potrebuje prečítať
+desaťstranový výpis a nesie rozhodnutia do BEP, kým fázy 10 a 9 sú
+v pláne rozpísané do detailu. Spravili sa preto skôr; sweep zostal
+posledný, ako plán zamýšľal. Skripty sú prečíslované podľa poradia
+vykonania: `25_sanitary.py`, `26_fix_numeric.py`, `27_sweep_orphans.py`,
+skladby zostávajú na `28_layer_sets.py`.
+
+### Fáza 10 — `ASR_v12.ifc` → `ASR_v13.ifc`
+
+69 `IfcFlowTerminal` prekvalifikovaných na podtypy, ktoré
+`PredefinedType` v IFC4X3 majú. Súčty sedia s §7 do kusa:
+
+| kód | trieda | `PredefinedType` | ks |
+|---|---|---|--:|
+| `WC01` | `IfcSanitaryTerminal` | `URINAL` | 5 |
+| `WC02`, `WC04` | `IfcSanitaryTerminal` | `TOILETPAN` | 20 |
+| `WC03`, `WC05` | `IfcSanitaryTerminal` | `WASHHANDBASIN` | 18 |
+| `WC07` | `IfcSanitaryTerminal` | `SINK` | 3 |
+| `OV01.01` | `IfcWasteTerminal` | `GULLYTRAP` | 5 |
+| `OV04.*` | `IfcWasteTerminal` | `ROOFDRAIN` | 18 |
+
+`IfcFlowTerminal` po behu **0**, `IfcSanitaryTerminal` 46,
+`IfcWasteTerminal` 23. `GlobalId` sa nemenili — `util.schema.reassign_class`
+zachováva `id()`.
+
+**`GULLYTRAP` pre `OV01.01`** §7 neurčovala; rozhodla definícia zo spec
+proti legende. Výkres: *„Vpusť podlahová, DN110, krytá pochôdznou
+mriežkou"*. IFC4.3 `GULLYTRAP`: *„…fitted with a grating or sealed cover
+that discharges water through a trap."* `FLOORTRAP` je definovaný cez
+zápachovú uzáveru a `FLOORWASTE` cez odvedenie do samostatnej uzávery —
+ani jeden nespomína mriežku, ktorú výkres uvádza ako určujúcu.
+
+**Zoskupenia.** Tri `IfcSystem`, nie `IfcDistributionSystem`: model má
+51 portov a **0 `IfcFlowSegment`**, takže sieť neexistuje a entita by ju
+sľubovala. Názvy to hovoria priamo — „Zoskupenie zariadení —
+zdravotechnika" (46), „— strešné vpuste" (18), „— podlahové vpuste" (5).
+Každý je cez `IfcRelServicesBuildings` naviazaný na budovu.
+
+### Fáza 9a — `ASR_v13.ifc` → `ASR_v14.ifc`, #AJ
+
+Zaokrúhlenie na 6 desatinných miest. V milimetroch je to nanometer, teda
+rádovo pod presnosťou, s akou model vznikol; skript navyše zastane, ak by
+niektorá oprava presiahla `1e-4`.
+
+Opravených **15135** hodnôt (14834 `Qto`, 242 `Overall*`, 59 property),
+najväčšia oprava **5e-07**. Register uvádzal 2653 — rozdiel nie je v
+modeli, ale v kritériu: register počítal užšiu množinu. Ukážka toho, čo
+sa deje: `33250.000000000124 → 33250.0`, `4849.999999999999 → 4850.0`,
+`24.999999999999996 → 25.0`, `161.26250000000059 → 161.2625`.
+
+### Fáza 9b — `ASR_v14.ifc` → `ASR_v15.ifc`, #F
+
+Koreňov **48** a rozpad sedí s registrom na kus (31 `IfcLocalPlacement`,
+11 `IfcRectangleProfileDef`, 5 `IfcArbitraryClosedProfileDef`,
+1 `IfcSurfaceStyle`) — skript to porovnáva proti
+`tests/known_baseline.json` a inak zastane.
+
+Zametalo sa v **3 kolách, spolu 204 entít**: po zmazaní placementu
+osireli aj jeho `IfcAxis2Placement3D` a body, po profile jeho polyline.
+48 je počet koreňov, nie zmazaných entít. Zdieľané entity prežili — počet
+inverzov sa po každom kole ráta nanovo. Zrušených `GlobalId` **0**, lebo
+ani jedna z nich nie je `IfcRoot`.
+
+**Po zametaní 0 osirelých entít, čiže invariant 4 prvýkrát prechádza
+bez známej vady.**
+
+### Brána `ASR_v15.ifc`
+
+| inv | výsledok |
+|---|---|
+| 1 geometria | **0 zmenených** (referencia = `ASR_v13.ifc`, teda cez obe časti fázy 9) |
+| 2 EXPRESS | **0 hlásení** |
+| 3 GUID | 0 zrušených, 0 nových, allowlist prázdny |
+| 4 osirelé | **0** |
+| 5 prázdne SET | 0 |
+| 6 jednoznačnosť | 0 |
+| 7 kontajnment | 0 |
+
+**zlyhalo 0 z 7** — prvýkrát v projekte prejde brána celá, bez známej
+vady v allowliste. Idempotencia oboch skriptov overená.
