@@ -136,7 +136,7 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 | C | **H** | ~~`IfcSpaceType` = `NOTDEFINED` / `USERDEFINED`~~ |
 | E | **H** | ~~`Pset_SpaceCommon` na 10 `IfcSpatialZone`~~ → `Pset_SpatialZoneCommon`, `70d17af` |
 | F | **H** | ~~48 osirelých entít~~ — zametené vo fáze 9b, 48 koreňov a 204 entít v kaskáde, 0 zrušených `GlobalId`. Invariant 4 odvtedy prechádza |
-| AY | O | `#16` `IfcGeometricRepresentationSubContext` „Box" nepoužitý (0 reprezentácií). Má 0 inverzov, lebo väzbu na rodiča drží **dopredný** `ParentContext`, nie inverzný `HasSubContexts` — do whitelistu invariantu 4 patrí alebo sa má zmazať |
+| AY | **H** | ~~`#16` `IfcGeometricRepresentationSubContext` „Box" nepoužitý (0 reprezentácií). Má 0 inverzov, lebo väzbu na rodiča drží **dopredný** `ParentContext`, nie inverzný `HasSubContexts` — do whitelistu invariantu 4 patrí alebo sa má zmazať~~ — **zmazaný**, fáza 18, §37. Rozhodnutie Samuela: *„tak ho zmaž, keď to nič nepokazí."* Overené: 0 reprezentácií, 0 detí, 0 inverzov |
 | AJ | **H** | ~~2653 hodnôt s FP šumom~~ — fáza 9a, zaokrúhlené na 6 desatinných miest. Opravených **15135** (širšie kritérium než pôvodný odhad), najväčšia oprava 5e-07 |
 
 ### Triedny model
@@ -196,7 +196,7 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 | AQ | **D** | ~~layer sety nesedia s výpisom~~ — **prvá polovica bola nesprávne prečítaná**, viď §21. Spádové kliny v modeli **sú**: `ST01.10a` (23 ks) nesie `Izolace EPS spádové kliny`, `ST01.10b` (2 ks) rovné dosky. Hydroizolácia patrí do druhej vrstvy strechy a v modeli tam aj je — `ST01.20` a `ST01.21` nesú po dvoch asfaltových pásoch. Zostáva ETICS: krytina nesie 1 vrstvu (izoláciu) zo 6 vo výpise; lepidlo, stierka, sieťka a omietka nemajú vlastnú geometriu a podľa §2 a §3 sa hrúbkový rozdiel **dokumentuje, nedopĺňa** |
 | AU | **D** | ~~deklarovaná vs geometrická hrúbka~~ — **zdokumentované, neopravuje sa.** Rozhodnutie Samuela 10. 8.: *„v `Qto` musí byť geometria, do `Description` keď tak rozsah, ale asi ani to nie — proste tam je sklon.“* Sú to **dve rôzne príčiny**: `ST01.10` 234–354/204 je spádový klin, teda sklon, a jedna hodnota hrúbky preň neexistuje; `FS01.10` 210/180, `FS01.11` 141/120, `FS01.12` 80/50 a `FS01.20` 210/180 je ETICS, kde lepidlo, stierka, sieťka a omietka vlastnú geometriu nemajú — to je #AQ. `Qto` v oboch prípadoch nesie skutočnú geometriu |
 | AS | **H** | ~~materiál „Výchozí" ako dutinová podlaha v `PD03.*`~~ — fáza 8, §22: štyri vrstvy `PD03.*` nesú `IsVentilated` a materiál nemajú, ako žiada `IfcMaterialLayer` §8.10.3.6.1. Overené na `ASR_v21.ifc`: 0 vrstiev s materiálom „Výchozí". Riadok registra zostal omylom na **O**, hoci §23 ho medzi uzavretými uvádza |
-| BB | O | **fyzika materiálu platí pre jednu skladbu, materiál ju nesie pre všetky.** IFC vlastnosti visia na `IfcMaterial`, nie na vrstve, takže `Izolace XPS` nesie λ=0,036 z `FS01.11` aj v `FS03.01`, `ST01.32` a `PD02.11` — a tie tri **výpis `D.1.1.09` neuvádza vôbec**. To isté pri `Izolace minerální` (doložené `FS01.10/.12/.20`, použité aj v `TI06.01`) a `Izolace EPS` (doložené `PD02`). Ak je to inde iný výrobok, materiál treba rozdeliť; ak ten istý, je to v poriadku. Zistené vo fáze 17 |
+| BB | **H** | **fyzika materiálu platí pre jednu skladbu, materiál ju nesie pre všetky.** IFC vlastnosti visia na `IfcMaterial`, nie na vrstve, takže `Izolace XPS` nesie λ=0,036 z `FS01.11` aj v `FS03.01`, `ST01.32` a `PD02.11` — a tie tri **výpis `D.1.1.09` neuvádza vôbec**. To isté pri `Izolace minerální` (doložené `FS01.10/.12/.20`, použité aj v `TI06.01`) a `Izolace EPS` (doložené `PD02`). **Rozhodnuté** (Samuel, 10. 8.): *„ber to tak, že majú rovnaké vlastnosti všetky XPS."* Materiál sa nerozdeľuje; to isté sa uplatňuje na minerálnu izoláciu a EPS. Zistené vo fáze 17 |
 | AT | **H** | ~~λ, ρ, c, μ z výpisu nie sú v `Pset_Material*`~~ — fáza 17, §36. Deväť materiálov, 15 `IfcMaterialProperties`, plus tri chýbajúce odvodené jednotky do `IfcUnitAssignment` |
 
 ### Zdokumentovať, neopraviť
@@ -2023,3 +2023,97 @@ má `Material` vyplnený a všetkých 15 je dosiahnuteľných cez
 
 inv 1 OK, inv 2 EXPRESS **0 hlásení**, inv 3 0/0, inv 4–7 OK.
 **Zlyhalo 0 zo 7.** Idempotencia overená, `pytest` 8/8.
+
+---
+
+## 37. Fáza 18 — #AY, subkontext „Box" zmazaný
+
+`out/ASR_v24.ifc` → `out/ASR_v25.ifc`, `src/37_sweep_box_context.py`.
+
+Revitovský `IfcGeometricRepresentationSubContext` `'Box'` zmazaný.
+Rozhodnutie Samuela: *„tak ho zmaž, keď to nič nepokazí."* Skript pred
+zmazaním overil tri veci nezávisle — **0 reprezentácií na ňom, 0 detských
+subkontextov, 0 inverzných odkazov** — a zastavil by sa, keby čokoľvek
+z toho nesedelo. Zostali `Axis` (617 reprezentácií), `Body` (3282)
+a `FootPrint` (185).
+
+`IfcRepresentationContext` zostáva v `ORPHAN_WHITELIST`: pravidlo platí
+ďalej, lebo ktorýkoľvek subkontext by pri prestaní používania hlásil
+falošne to isté.
+
+Brána: **zlyhalo 0 zo 7.**
+
+**Register je tým vyčerpaný** — otvorená zostáva jediná položka, #BA,
+a tá je rozhodnutá (zostáva zápisom, do BEP nejde).
+
+---
+
+## 38. Zadanie pre revíziu
+
+Cieľ, ako ho určil Samuel: **model validný voči IFC schéme, ktorý správne
+nesie všetky podstatné vzťahy, atribúty a informácie.** Register je
+vyčerpaný, ale to znamená len „všetko, čo sme si zapísali, je vybavené" —
+nie „nič sme neprehliadli". Táto kapitola je zadanie pre nezávislé
+prejdenie, nie zhrnutie.
+
+### Čo netreba robiť znova
+
+| tvrdenie | ako je overené |
+|---|---|
+| geometria sa od pôvodného exportu neposunula | 0 posunutých bboxov na 2542 spoločných tvaroch, `bbox_map` proti `data/ASR.ifc` (§34) |
+| model je schémovo platný | `validate(express_rules=True)` = 0 hlásení po každej fáze |
+| GUID účtovníctvo sedí | allowlist ku každému kroku, inv 3 čistý |
+| kontajnment je exkluzívny | inv 7 = 0 |
+| plný SNIM kód je jedinečný | inv 6 = 0, 2611 z 2611 |
+| každá fáza je idempotentná | druhý beh 0 zmien, overené pri všetkých 18 |
+
+### Kde by som hľadal chyby ako prvé
+
+**1 · Psety a `Qto` proti triede prvku, systematicky.** Toto je najsilnejší
+kandidát na nález. Vieme, že vada existovala (#A, #B, #E) a že sme ju
+opravili len tam, kde sme ju **hľadali menovite**. Že to nebolo úplné,
+dokázala fáza 11: `DZ02` niesla `Qto_WallBaseQuantities` celý čas, čo bol
+odtlačok jej pôvodnej triedy `IfcWall`, a nikto si toho nevšimol tri fázy
+po sebe. Systematická kontrola „nesie prvok len tie psety a Qto, ktoré
+jeho trieda pripúšťa" nikdy nebežala.
+
+**2 · Rozhodnutia o triede bez excelu.** Je ich vyše dvadsať a autoritou
+bola dokumentácia plus rozhodnutie Samuela, nie číselník. `BEP_ANNEX.md`
+§3 ich má aj s citáciami — každé si zaslúži druhý pohľad. Menovite tie,
+kde sa rozhodovalo z popisu typu, nie z výkresu.
+
+**3 · `DZ02` — popis a vlastnosť si protirečia.** Typ sa volá „Podkladný
+betón", čo je podkladová vrstva, ale originál nesie
+`Pset_WallCommon.LoadBearing = True` a rozhodnutie znelo „nosná
+konštrukcia". Sto milimetrov hrubá stena výťahovej jamy môže byť oboje —
+ale zhodnúť by sa mali. `SOLIDWALL` proti `RETAININGWALL` je otvorená
+otázka, jama zeminu naozaj zadržiava.
+
+**4 · Hodnoty fyziky proti PDF.** Čítané cez `pdftotext`, ktorý vie
+zlúčiť stĺpce. Deväť materiálov, každý má v `Specification` riadok
+pôvodu — dá sa to prejsť očami za pár minút a stojí to za to.
+
+**5 · `IfcRelSpaceBoundary`.** 649 hraníc, z toho 83 s `ParentBoundary`
+a 52 dverí, ktorým fáza 6b odvodila hostiteľa **z polohy**, lebo
+`FillsVoids` chýba (#AZ). Odvodenie nebolo nezávisle preverené.
+
+**6 · Rekonštruované priestory 1NP.** Dvadsaťdva priestorov `1.01`–`1.23`
+vzniklo v pôvodnej pipeline mimo tohto repa; 42 pôvodných zaniklo (§34).
+Plochy sedia s legendou na 0,46 m², ale tvary nikto neporovnal s výkresom.
+
+**7 · Polia LOP.** 48 vnorených `IfcCurtainWall`, `Ucw` a plochy zo
+samostatného podkladu. Súčet 1603,63 m² bol zosúhlasený, jednotlivé polia
+nie.
+
+**8 · Čo sme nespustili vôbec.** Model neprešiel oficiálnym validátorom
+buildingSMART ani žiadnym IDS. `validate(express_rules=True)` overuje
+schému, nie zmysluplnosť pre konkrétny MVD.
+
+### Ako to spustiť
+
+```
+python src/report_final.py --in out/ASR_v25.ifc          # vecné meranie
+python src/gate.py out/ASR_v25.ifc --reference data/ASR.ifc --skip 3 \
+    --allow-file tests/allowlist_prepipeline.json \
+    $(for f in out/ASR_v*.ifc.allowlist.json; do echo --allow-file $f; done)
+```
