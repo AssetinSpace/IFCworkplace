@@ -73,6 +73,9 @@ na merge, nie na každý commit.
 - `reassign_class` na occurrence kaskádovo prepíše zdieľaný typ — pred zmenou
   triedy prvok od typu odpoj
 - `geom.iterator`, nie opakované `geom.create_shape`
+- shape z `create_shape` **drž v premennej**. `np.array(create_shape(...).geometry.verts)`
+  v jednom výraze číta pamäť dočasného objektu, ktorý medzitým zanikne —
+  výsledkom sú nuly a hodnoty rádu `1e260`, nie výnimka
 - `MERGE_IDENTICAL_MAPS` zostáva natrvalo `False`
 - `geom.create_shape` vracia metre, súbor je v milimetroch
 
