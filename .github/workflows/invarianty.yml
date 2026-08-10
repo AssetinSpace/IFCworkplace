@@ -1,0 +1,59 @@
+name: invarianty
+
+# Delenie podľa CLAUDE_CODE_START.md § Invarianty:
+# „Testy 1, 2, 4, 5 v CI. Test 1 na 2564 tvarov trvá jednotky minút —
+#  nech beží na merge, nie na každý commit."
+#
+# Preto dve úlohy: rýchla na každý push, pomalá až na pull request.
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  rychle:
+    name: rýchle invarianty (3, 5, 6, 7 a jednotkové)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      # ifcopenshell je pinnutý na 0.8.5 — celý audit vznikol proti nej
+      - run: pip install -r requirements.txt
+
+      - name: pytest bez pomalých
+        run: python -m pytest -q -m "not slow"
+
+  pomale:
+    name: geometria a EXPRESS (inv 1 a 2)
+    # Beží až na pull request. Inv 1 porovnáva 2495 tvarov proti
+    # data/ASR.ifc, inv 2 validuje EXPRESS pravidlá — jednotky minút.
+    if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: pytest celý, vrátane pomalých
+        run: python -m pytest -q
+
+      - name: brána na finálnom modeli
+        # Referenciou je vstup poslednej fázy — tak sa brána púšťa pri
+        # každom kroku pipeline a tak sú aj písané allowlisty.
+        run: |
+          python src/gate.py out/ASR_v16.ifc \
+            --reference out/ASR_v15.ifc \
+            --allow-file out/ASR_v16.ifc.allowlist.json
