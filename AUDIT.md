@@ -138,6 +138,11 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 | F | **H** | ~~48 osirelých entít~~ — zametené vo fáze 9b, 48 koreňov a 204 entít v kaskáde, 0 zrušených `GlobalId`. Invariant 4 odvtedy prechádza |
 | AY | **H** | ~~`#16` `IfcGeometricRepresentationSubContext` „Box" nepoužitý (0 reprezentácií). Má 0 inverzov, lebo väzbu na rodiča drží **dopredný** `ParentContext`, nie inverzný `HasSubContexts` — do whitelistu invariantu 4 patrí alebo sa má zmazať~~ — **zmazaný**, fáza 18, §37. Rozhodnutie Samuela: *„tak ho zmaž, keď to nič nepokazí."* Overené: 0 reprezentácií, 0 detí, 0 inverzov |
 | AJ | **H** | ~~2653 hodnôt s FP šumom~~ — fáza 9a, zaokrúhlené na 6 desatinných miest. Opravených **15135** (širšie kritérium než pôvodný odhad), najväčšia oprava 5e-07 |
+| BC | O | **251 psetov a `Qto` na triede, ktorá ich nepripúšťa** — odtlačok pôvodnej triedy prvku, ktorý po prekvalifikovaní nikto neodstránil. Presne tá vada, ktorú §38 bod 1 predpovedal, a #A/#B/#E boli len jej menovite nájdené kusy. Nájdené `src/probe_psets.py`, §39. **Všetkých 251 má doloženú provenanciu proti `data/ASR.ifc`**: 246 pset v origináli na prvku bol a je odtlačkom jeho vtedajšej triedy, 5 pridalo zlučovanie typov fázy 1. Rozpis: 48 + 48 `Pset_RoofCommon`/`Qto_RoofBaseQuantities` na `IfcCovering` (pôvodne `IfcRoof`, #T/#V), 36 + 36 `Pset_SlabCommon`/`Qto_SlabBaseQuantities` na `IfcCovering` (pôvodne `IfcSlab`), 25 `Pset_ReinforcementBarPitchOfSlab` + 19 `Pset_SlabCommon` + 5 `Pset_WallCommon` + 5 `Pset_ReinforcementBarPitchOfWall` + 4 `Pset_RoofCommon` na `IfcCoveringType`, 10 `Qto_SpaceBaseQuantities` na `IfcSpatialZone` (**dvojička #E** — pset sa opravil, `Qto` nie), 9 `Qto_WallBaseQuantities` na `IfcSlab` a 4 na `IfcCovering` (**dvojička #B**), 2 `Pset_StairCommon` na `IfcFooting`/`IfcFootingType` (`ZD02.05`, #AB). Dotknutých **142 prvkov a typov**. Oprava nie je mechanická: cieľové šablóny sú chudobnejšie, čistý presun by zahodil `ProjectedArea` na 48 vrstvách strechy a `GrossVolume`/`NetVolume`/`Perimeter`/`Length` na 36 vrstvách podlahy — **čaká na rozhodnutie**, §39 |
+| BD | O | **`Qto_WallBaseQuantities.GrossFootprintArea` × 128** — IFC4.3 tú veličinu píše `GrossFootPrintArea` (veľké P). Meno z modelu v šablóne nie je, takže odberateľ, ktorý hľadá podľa docs, ju nenájde. Vada **originálu**: `data/ASR.ifc` je `IFC4X3_ADD2` a nesie 139 rovnako. Premenovanie nič nestráca |
+| BE | O | **`Qto_BodyGeometryValidation` nesie `NetArea` a `GrossArea` na 36 prvkoch** — šablóna má `GrossSurfaceArea`/`NetSurfaceArea`/`GrossVolume`/`NetVolume`/`SurfaceGenus*` a plošné veličiny tohto mena nepozná. Ide o tých istých 36 `ST01.*`, ktoré boli v origináli `IfcSlab`; **hodnoty sú na 6 desatinných miest totožné** s `GrossArea`/`NetArea` v ich `Qto_SlabBaseQuantities`, teda duplicita, nie údaj navyše. Vada originálu. Zmazanie z `Qto_BodyGeometryValidation` nestráca nič |
+| BF | O | **`Pset_DoorPanelProperties` × 28: `PanelOperation` a `PanelPosition` ako `IfcPropertySingleValue`** — šablóna žiada `IfcPropertyEnumeratedValue` nad `PEnum_DoorPanelOperationEnum`/`PEnum_DoorPanelPositionEnum`. Hodnoty (`NOTDEFINED` 21, `SWINGING` 6, `DOUBLE_ACTING` 1) sú správne, nesprávny je nosič. **Zaviedla to pôvodná pipeline mimo tohto repa** — v `ASR_final_v2.ifc` už tých 28 je, v `data/ASR.ifc` ani jeden. Súvisiaci uzavretý nález je v §39 |
+| BG | O | **`PEnum_AddressType` ako `IfcPropertySet` na `IfcActor` „IfcOpenShell"** — stopa nástroja, nie údaj o stavbe: `#379850 IfcOrganization('IfcOpenShell'…)`, `#379851 IfcApplication(…'Bonsai')`, `#379853 IfcActor`, a pset s `Purpose`/`UserDefinedPurpose`/`WWWHomePageURL = https://ifcopenshell.org`. To sú atribúty `IfcTelecomAddress`, nie property set, a `PEnum_` je predpona pre `IfcPropertyEnumeration`. V `data/ASR.ifc` nie je; v `ASR_final_v2.ifc` už áno — pôvodná pipeline mimo repa |
 
 ### Triedny model
 | # | | vec |
@@ -2117,3 +2122,164 @@ python src/gate.py out/ASR_v25.ifc --reference data/ASR.ifc --skip 3 \
     --allow-file tests/allowlist_prepipeline.json \
     $(for f in out/ASR_v*.ifc.allowlist.json; do echo --allow-file $f; done)
 ```
+
+---
+
+## 39. Revízia, bod 1 — psety a `Qto` proti triede prvku
+
+`src/probe_psets.py`, meranie na `out/ASR_v25.ifc`. Sonda **nič nemení**;
+strojovo čitateľný nález je `out/pset_class_report.json`, 509 záznamov.
+
+Nová vada: **#BC** (251 kusov), **#BD**, **#BE**, **#BF**, **#BG**.
+
+### Odkiaľ berie sonda pravdu
+
+Publikované docs, `IFC/RELEASE/IFC4_3` — dva zdroje toho istého:
+
+* `annex-a-psd.zip`, **760** strojovo čitateľných definícií, každá s
+  `templatetype` a `ApplicableClasses`;
+* `lexical/<meno>.html`, tá istá vec vetou.
+
+Sonda ich pre každý pset, ktorý v modeli naozaj je, **navzájom porovná**
+a nezhodu ohlási ako vlastný nález. Na 43 menách z modelu je nezhoda **0**,
+takže tvrdenia nižšie stoja na oboch zdrojoch, nie na jednom čítaní.
+
+Normatívna opora, `lexical/IfcPropertySet.html`, doslova:
+
+> *The naming convention "Pset_Xxx" applies to all those property sets that
+> are defined as part of this specification and it shall be used as the value
+> of the Name attribute.*
+
+> *Property sets that are not declared as part of the IFC specification shall
+> have a Name value not including the "Pset_" prefix.*
+
+Meno `Pset_RoofCommon` teda nie je voľný reťazec — je to **nárok, že obsah
+zodpovedá tej definícii**, a jej `Applicable entities` sú `IfcRoof`
+a `IfcRoofType`. Nosič určuje `lexical/IfcPropertySetTemplate.html`:
+*„Depending on the TemplateType the IfcPropertySetTemplate defines a template
+for: "Pset_" - occurrences of IfcPropertySet "Qto_" - occurrences of
+IfcElementQuantity."*
+
+### Čo sa meralo
+
+Sedem kontrol nad **9872** dvojicami (definícia psetu, vlastník), zbieranými
+troma cestami: `IfcRelDefinesByProperties` **9733**,
+`IfcTypeObject.HasPropertySets` **124**, `IfcMaterialProperties` **15**.
+
+Obe prvé cesty treba, a nie sú zameniteľné. `RelatedObjects` je síce
+`SET [1:?] OF IfcObjectDefinition`, ale pravidlo `NoRelatedTypeObject`
+v `IFC4X3_DEV_60a6175.exp` v ňom `IfcTypeObject` **zakazuje**:
+
+```
+NoRelatedTypeObject : SIZEOF(QUERY(Types <* SELF\IfcRelDefinesByProperties
+    .RelatedObjects | 'IFC4X3_ADD2.IFCTYPEOBJECT' IN TYPEOF(Types))) = 0;
+```
+
+Typ teda nesie psety iba cez `HasPropertySets`; kto by čítal len vzťah,
+124 psetov na typoch nevidí. Model to pravidlo dodržiava — **0 z 9733**
+`RelatedObjects` je `IfcTypeObject`, čo je meranie, nie predpoklad
+z invariantu 2.
+
+| # | kontrola | porušení |
+|---|---|--:|
+| 1 | meno s vyhradenou predponou mimo štandardu | **1** |
+| 2 | trieda vlastníka pset nepripúšťa | **251** |
+| 3 | zlý nosič (`Pset_` × `Qto_` × material-driven) | 0 |
+| 4 | šablóna typ × occurrence | 0 |
+| 5 | property/veličina mimo šablóny | **200** |
+| 6 | dátový typ proti šablóne | **57** |
+| 7 | `PredefinedType` proti applicability | 0 |
+
+Kontroly 3, 4 a 7 sú čisté a to je vecný výsledok, nie prázdny riadok:
+žiadny `Qto_*` nesedí v `IfcPropertySet` ani naopak, žiadny
+`*_TYPEDRIVENONLY` nevisí na occurrence a žiadny `*_OCCURRENCEDRIVEN`
+na type — vrátane 2661 `Qto_BodyGeometryValidation`, ktoré sú
+`QTO_OCCURRENCEDRIVEN`, a teda *„can only be assigned to subtypes of
+`IfcObject`"*.
+
+### Bod 2 — prečo to nie je mechanická oprava
+
+Provenancia každého z 251 kusov je overená proti `data/ASR.ifc`: **246**
+z nich v origináli na prvku bolo a je odtlačkom jeho vtedajšej triedy,
+**5** pridalo zlučovanie typov fázy 1 (`ST01.10a`, `ST01.20`, `ST01.21`
+dostali `Pset_SlabCommon` a `Pset_ReinforcementBarPitchOfSlab`, hoci
+pôvodne boli `IfcRoofType`). Žiadny nevznikol z ničoho.
+
+Precedens #B hovorí „pset premenuj na správny a zahoď z neho len tie
+property, ktoré cieľová šablóna nepozná". Pri `Qto` ten precedens narazí,
+lebo cieľové šablóny sú **chudobnejšie než zdrojové**:
+
+| zdroj | cieľ | prejde | zahodí sa |
+|---|---|---|---|
+| `Pset_RoofCommon` → | `Pset_CoveringCommon` | 48 `IsExternal`, 4 `ThermalTransmittance` | — |
+| `Pset_SlabCommon` → | `Pset_CoveringCommon` | 36 `IsExternal`, 19 `ThermalTransmittance` | 36 `PitchAngle` |
+| `Pset_WallCommon` → | `Pset_CoveringCommon` | 5 `ThermalTransmittance` | — |
+| `Qto_RoofBaseQuantities` → | `Qto_CoveringBaseQuantities` | 48 `GrossArea`, 48 `NetArea` | **48 `ProjectedArea`** |
+| `Qto_SlabBaseQuantities` → | `Qto_CoveringBaseQuantities` | 36 `GrossArea`, 36 `NetArea` | **36× `GrossVolume`, `NetVolume`, `Perimeter`, `Length`** |
+| `Qto_WallBaseQuantities` → | `Qto_SlabBaseQuantities` | 9× `Length`, `Width`, `GrossVolume`, `NetVolume` | 9× `GrossSideArea`, `NetSideArea`, `Height`, `GrossFootprintArea` |
+| `Qto_WallBaseQuantities` → | `Qto_CoveringBaseQuantities` | 4 `Width` | 4× `Length`, `Height`, `GrossSideArea`, `NetSideArea`, `GrossVolume`, `NetVolume` |
+| `Qto_SpaceBaseQuantities` → | `Qto_SpatialZoneBaseQuantities` | 10 `Height` | **10× `GrossFloorArea`, `NetFloorArea`, `GrossPerimeter`, `GrossCeilingArea`** |
+| `Pset_StairCommon` → | `Pset_FootingCommon` | — | `IsExternal`, `NosingLength`, `NumberOfRiser`, `NumberOfTreads` |
+| `Pset_ReinforcementBarPitchOf*` | zmazať | — | 30 `Description` |
+
+`Qto_CoveringBaseQuantities` má v IFC4.3 iba `Width`, `GrossArea`, `NetArea`
+a `Qto_SpatialZoneBaseQuantities` iba `Length`, `Width`, `Height` — objem
+ani podlahovú plochu **niesť nevedia**. Doslovné dodržanie schémy tu teda
+stojí údaj, ktorý v modeli je a je správny. To je rozhodnutie pre Samuela,
+nie pre skript; možnosti sú v poslednej sekcii.
+
+`ProjectedArea` na 48 vrstvách strechy a `GrossFloorArea`/`NetFloorArea`
+na 10 zónach `PZ01`–`PZ10` sú z toho najcennejšie — prvé je výmera, ktorou
+sa strecha účtuje, druhé nesie prenajímateľnú plochu.
+
+### Body 5 a 6 — čo je za tými 257 kusmi
+
+* **128 × `Qto_WallBaseQuantities.GrossFootprintArea`** (#BD). IFC4.3 píše
+  `GrossFootPrintArea`. Premenovanie nič nestráca.
+* **72 × `Qto_BodyGeometryValidation.NetArea`/`GrossArea`** na 36 prvkoch
+  (#BE). Overené, že ide o **duplicitu**: tie isté hodnoty na 6 desatinných
+  miest už nesie `Qto_SlabBaseQuantities` tých istých 36 prvkov, prienik
+  množín je úplný (36 z 36, 0 mimo).
+* **56 × `Pset_DoorPanelProperties`** (#BF), nosič namiesto enumerácie.
+* **1 × `Pset_MaterialCommon.MassDensity` ako `IfcPropertyBoundedValue`** —
+  **nie je to nová vada.** Je to vedomé rozhodnutie fázy 17, `BEP_ANNEX.md`
+  §4b: *„Rozsah ρ = 23–28 nesie `IfcPropertyBoundedValue` — šablóna psetu
+  predpisuje jednu hodnotu, tá by rozsah zahodila."* Že to sonda našla, je
+  kontrola sondy: vie odchýlku odhaliť aj tam, kde je zámerná.
+
+### Čo sa preverilo a vyšlo čisto
+
+Toto sa už nemusí robiť znova.
+
+| tvrdenie | ako |
+|---|---|
+| dátové typy property sedia so šablónou | mimo #BF a vedomého `MassDensity` **0 nezhôd** na 4508 `IfcPropertySet` a 5349 `IfcElementQuantity` |
+| `Qto_` je vždy `IfcElementQuantity`, `Pset_` vždy `IfcPropertySet` | kontrola 3 = 0 |
+| nič nesedí na zlej strane typ/occurrence | kontrola 4 = 0 |
+| oba zdroje docs hovoria to isté | 43 mien z modelu, nezhoda 0 |
+| **dvere nestratili údaj pri zrušení zastaraných entít** | `data/ASR.ifc` má 65 `IfcDoorLiningProperties` a 65 `IfcDoorPanelProperties`; v modeli nie sú ani jedny. Vyzeralo to na stratu dát, **nie je to strata**: všetkých 65 `IfcDoorLiningProperties` má každý geometrický atribút `$` (`LiningDepth` … `LiningToPanelOffsetY`), rovnako 2 `IfcWindowLiningProperties`. `IfcDoorPanelProperties` niesli iba `PanelOperation`/`PanelPosition` a tie sú v modeli všetky: 42/22/1 `NOTDEFINED`/`SWINGING`/`DOUBLE_ACTING` na 65 typoch → 21/6/1 na 28 typoch, čo je presne pomer zlúčenia 65 `IfcDoorType` na 28 (#AF) |
+| `AIMviewer_Provenance` (1664 ×) nie je porušenie | vlastná predpona, nie `Pset_`, teda presne to, čo `IfcPropertySet` žiada od neštandardných psetov |
+
+### Čo sonda z princípu nevidí
+
+Applicability je **dokumentačná** väzba, nie EXPRESS pravidlo. Preto
+`validate(express_rules=True)` mlčal 18 fáz po sebe a mlčí aj teraz —
+invariant 2 je na túto vadu slepý a vždy bol. Rovnako sonda nevie povedať,
+že prvku pset **chýba**: psety sú voliteľné, absencia nie je vada.
+
+Do brány sa kontrola pridáva **až po oprave #BC**, ako invariant 8. Teraz
+by ju zhodila na 251 kusoch a účtovanie „zlyhalo 0 zo 7“, o ktoré sa opiera
+každá fáza od jedenástej, by prestalo byť porovnateľné.
+
+### Otvorené rozhodnutia
+
+1. **`Qto` na prekvalifikovaných prvkoch (#BC).** Tri cesty:
+   *(a)* premenovať a chýbajúce veličiny zahodiť — schéma čistá, údaj preč;
+   *(b)* premenovať a prebytok presunúť do `IfcElementQuantity` s **vlastným
+   menom bez predpony `Qto_`** — schéma čistá aj údaj zostáva, cenou je
+   neštandardné meno, ktoré však `IfcPropertySet` pre neštandardné sady
+   výslovne predpisuje;
+   *(c)* nechať a zdokumentovať do BEP.
+   Odporúčanie: **(b)**, lebo drží obe požiadavky zadania naraz.
+2. **`DZ02` `SOLIDWALL` × `RETAININGWALL`** — §38 bod 3, nezávislé od #BC.
+3. **#BG** — zmazať stopu nástroja, alebo nechať a zdokumentovať.
