@@ -138,7 +138,7 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 | F | **H** | ~~48 osirelých entít~~ — zametené vo fáze 9b, 48 koreňov a 204 entít v kaskáde, 0 zrušených `GlobalId`. Invariant 4 odvtedy prechádza |
 | AY | **H** | ~~`#16` `IfcGeometricRepresentationSubContext` „Box" nepoužitý (0 reprezentácií). Má 0 inverzov, lebo väzbu na rodiča drží **dopredný** `ParentContext`, nie inverzný `HasSubContexts` — do whitelistu invariantu 4 patrí alebo sa má zmazať~~ — **zmazaný**, fáza 18, §37. Rozhodnutie Samuela: *„tak ho zmaž, keď to nič nepokazí."* Overené: 0 reprezentácií, 0 detí, 0 inverzov |
 | AJ | **H** | ~~2653 hodnôt s FP šumom~~ — fáza 9a, zaokrúhlené na 6 desatinných miest. Opravených **15135** (širšie kritérium než pôvodný odhad), najväčšia oprava 5e-07 |
-| BC | O | **251 psetov a `Qto` na triede, ktorá ich nepripúšťa** — odtlačok pôvodnej triedy prvku, ktorý po prekvalifikovaní nikto neodstránil. Presne tá vada, ktorú §38 bod 1 predpovedal, a #A/#B/#E boli len jej menovite nájdené kusy. Nájdené `src/probe_psets.py`, §39. **Všetkých 251 má doloženú provenanciu proti `data/ASR.ifc`**: 246 pset v origináli na prvku bol a je odtlačkom jeho vtedajšej triedy, 5 pridalo zlučovanie typov fázy 1. Rozpis: 48 + 48 `Pset_RoofCommon`/`Qto_RoofBaseQuantities` na `IfcCovering` (pôvodne `IfcRoof`, #T/#V), 36 + 36 `Pset_SlabCommon`/`Qto_SlabBaseQuantities` na `IfcCovering` (pôvodne `IfcSlab`), 25 `Pset_ReinforcementBarPitchOfSlab` + 19 `Pset_SlabCommon` + 5 `Pset_WallCommon` + 5 `Pset_ReinforcementBarPitchOfWall` + 4 `Pset_RoofCommon` na `IfcCoveringType`, 10 `Qto_SpaceBaseQuantities` na `IfcSpatialZone` (**dvojička #E** — pset sa opravil, `Qto` nie), 9 `Qto_WallBaseQuantities` na `IfcSlab` a 4 na `IfcCovering` (**dvojička #B**), 2 `Pset_StairCommon` na `IfcFooting`/`IfcFootingType` (`ZD02.05`, #AB). Dotknutých **142 prvkov a typov**. Oprava nie je mechanická: cieľové šablóny sú chudobnejšie, čistý presun by zahodil `ProjectedArea` na 48 vrstvách strechy a `GrossVolume`/`NetVolume`/`Perimeter`/`Length` na 36 vrstvách podlahy — **čaká na rozhodnutie**, §39 |
+| BC | O | **251 psetov a `Qto` na triede, ktorá ich nepripúšťa** — odtlačok pôvodnej triedy prvku, ktorý po prekvalifikovaní nikto neodstránil. Presne tá vada, ktorú §38 bod 1 predpovedal, a #A/#B/#E boli len jej menovite nájdené kusy. Nájdené `src/probe_psets.py`, §39. **Všetkých 251 má doloženú provenanciu proti `data/ASR.ifc`**: 246 pset v origináli na prvku bol a je odtlačkom jeho vtedajšej triedy, 5 pridalo zlučovanie typov fázy 1. Rozpis: 48 + 48 `Pset_RoofCommon`/`Qto_RoofBaseQuantities` na `IfcCovering` (pôvodne `IfcRoof`, #T/#V), 36 + 36 `Pset_SlabCommon`/`Qto_SlabBaseQuantities` na `IfcCovering` (pôvodne `IfcSlab`), 25 `Pset_ReinforcementBarPitchOfSlab` + 19 `Pset_SlabCommon` + 5 `Pset_WallCommon` + 5 `Pset_ReinforcementBarPitchOfWall` + 4 `Pset_RoofCommon` na `IfcCoveringType`, 10 `Qto_SpaceBaseQuantities` na `IfcSpatialZone` (**dvojička #E** — pset sa opravil, `Qto` nie), 9 `Qto_WallBaseQuantities` na `IfcSlab` a 4 na `IfcCovering` (**dvojička #B**), 2 `Pset_StairCommon` na `IfcFooting`/`IfcFootingType` (`ZD02.05`, #AB). Dotknutých **142 prvkov a typov**. Oprava nie je mechanická: cieľové šablóny sú chudobnejšie a čistý presun by zahodil údaje, ktoré sú vecne správne a inde v modeli nie sú — **30 `Description` s plným zložením skladby z výpisu `D.1.1.09`** (schované v `Pset_ReinforcementBarPitchOf*`; vlastný atribút `Description` tých typov je obsadený iným textom, overené 30 z 30), **36 `PitchAngle`** so sklonom strechy (pre `IfcCovering` nemá IFC4.3 štandardné miesto), `ProjectedArea` na 48 vrstvách strechy, `GrossFloorArea`/`NetFloorArea` na 10 zónach `PZ01`–`PZ10` a `GrossVolume`/`NetVolume`/`Perimeter`/`Length` na 36 vrstvách podlahy. Bez straty sa dá zmazať jediné: `Pset_StairCommon` na `ZD02.05` (samé nuly po `IfcStair`). **Čaká na rozhodnutie**, §39 |
 | BD | O | **`Qto_WallBaseQuantities.GrossFootprintArea` × 128** — IFC4.3 tú veličinu píše `GrossFootPrintArea` (veľké P). Meno z modelu v šablóne nie je, takže odberateľ, ktorý hľadá podľa docs, ju nenájde. Vada **originálu**: `data/ASR.ifc` je `IFC4X3_ADD2` a nesie 139 rovnako. Premenovanie nič nestráca |
 | BE | O | **`Qto_BodyGeometryValidation` nesie `NetArea` a `GrossArea` na 36 prvkoch** — šablóna má `GrossSurfaceArea`/`NetSurfaceArea`/`GrossVolume`/`NetVolume`/`SurfaceGenus*` a plošné veličiny tohto mena nepozná. Ide o tých istých 36 `ST01.*`, ktoré boli v origináli `IfcSlab`; **hodnoty sú na 6 desatinných miest totožné** s `GrossArea`/`NetArea` v ich `Qto_SlabBaseQuantities`, teda duplicita, nie údaj navyše. Vada originálu. Zmazanie z `Qto_BodyGeometryValidation` nestráca nič |
 | BF | O | **`Pset_DoorPanelProperties` × 28: `PanelOperation` a `PanelPosition` ako `IfcPropertySingleValue`** — šablóna žiada `IfcPropertyEnumeratedValue` nad `PEnum_DoorPanelOperationEnum`/`PEnum_DoorPanelPositionEnum`. Hodnoty (`NOTDEFINED` 21, `SWINGING` 6, `DOUBLE_ACTING` 1) sú správne, nesprávny je nosič. **Zaviedla to pôvodná pipeline mimo tohto repa** — v `ASR_final_v2.ifc` už tých 28 je, v `data/ASR.ifc` ani jeden. Súvisiaci uzavretý nález je v §39 |
@@ -2220,7 +2220,7 @@ lebo cieľové šablóny sú **chudobnejšie než zdrojové**:
 | `Qto_WallBaseQuantities` → | `Qto_CoveringBaseQuantities` | 4 `Width` | 4× `Length`, `Height`, `GrossSideArea`, `NetSideArea`, `GrossVolume`, `NetVolume` |
 | `Qto_SpaceBaseQuantities` → | `Qto_SpatialZoneBaseQuantities` | 10 `Height` | **10× `GrossFloorArea`, `NetFloorArea`, `GrossPerimeter`, `GrossCeilingArea`** |
 | `Pset_StairCommon` → | `Pset_FootingCommon` | — | `IsExternal`, `NosingLength`, `NumberOfRiser`, `NumberOfTreads` |
-| `Pset_ReinforcementBarPitchOf*` | zmazať | — | 30 `Description` |
+| `Pset_ReinforcementBarPitchOf*` → | *(žiadny štandardný)* | — | **30 `Description`** |
 
 `Qto_CoveringBaseQuantities` má v IFC4.3 iba `Width`, `GrossArea`, `NetArea`
 a `Qto_SpatialZoneBaseQuantities` iba `Length`, `Width`, `Height` — objem
@@ -2228,9 +2228,46 @@ ani podlahovú plochu **niesť nevedia**. Doslovné dodržanie schémy tu teda
 stojí údaj, ktorý v modeli je a je správny. To je rozhodnutie pre Samuela,
 nie pre skript; možnosti sú v poslednej sekcii.
 
-`ProjectedArea` na 48 vrstvách strechy a `GrossFloorArea`/`NetFloorArea`
-na 10 zónach `PZ01`–`PZ10` sú z toho najcennejšie — prvé je výmera, ktorou
-sa strecha účtuje, druhé nesie prenajímateľnú plochu.
+### Čo je v tom prebytku — pozreté, nie odhadnuté
+
+Prvé čítanie tejto tabuľky zvádza k tomu, že prebytok je zvyšok po Revite
+a dá sa zmazať. **Nie je.** Tri položky sú z najhodnotnejšieho, čo model
+o skladbách nesie:
+
+**30 × `Description` v `Pset_ReinforcementBarPitchOfSlab`/`OfWall`** nie je
+popis rozstupu výstuže — je to **plné zloženie skladby z výpisu `D.1.1.09`**,
+schované v psete, ktorý s tým nemá nič spoločné:
+
+> *„Ťažká plávajúca podlaha, keramická dlažba, cementové lepidlo, cementový
+> poter, separačná fólia, tepelná izolácia EPS 150."*
+> *„Extenzívna vegetačná rohož, minerálny substrát, hydrofilné dosky,
+> filtračná geotextília, drenážna fólia, separačná geotextília, SBS
+> modifikovaný asfaltový pás…"*
+> *„ETICS - Krycia omietka, penetračný náter, cementová lepiaca hmota, dosky
+> z čadičovej vlny, suchá omietková zmes."*
+
+Vlastný atribút `Description` tie typy **už majú vyplnený** a iným, kratším
+textom (`ST01.10a` = „TI súvrstvie po HI vrstvu (bez HI vrstvy)" proti
+psetu „Spádové kliny"), takže presun do atribútu by prepísal existujúci
+údaj. Overené na všetkých 30: 30 z 30 má atribút neprázdny.
+`Pset_CoveringCommon` voľné textové pole nemá.
+
+**36 × `PitchAngle`** je sklon strechy — 22× 1,72°, 7× 2,5°, 7× 0°. Docs
+k `Pset_SlabCommon`: *„Angle of the slab to the horizontal when used as a
+component for the roof."* Nesú ho práve vrstvy `ST01.*`, teda skutočné
+komponenty strechy, a je to ten istý sklon, o ktorom hovorí #AU
+(*„proste tam je sklon"*). Zo 645 štandardných psetov `PitchAngle` ponúkajú
+len `Pset_BeamCommon`, `Pset_ColumnCommon`, `Pset_MemberCommon`,
+`Pset_RampFlightCommon`, `Pset_SlabCommon` a `Pset_PipeSegmentTypeGutter` —
+**pre `IfcCovering` v IFC4.3 štandardné miesto pre sklon neexistuje**.
+
+**`ProjectedArea` na 48 vrstvách strechy** je výmera, ktorou sa strecha
+účtuje; **`GrossFloorArea`/`NetFloorArea` na 10 zónach `PZ01`–`PZ10`** nesú
+prenajímateľnú plochu, teda to, kvôli čomu zóny vznikli (#Q2).
+
+Zmazať sa dá bez straty jediné: `Pset_StairCommon` na `ZD02.05`
+(`IsExternal = False`, `NosingLength = 0`, `NumberOfRiser = 0`,
+`NumberOfTreads = 0` — nuly po `IfcStair`, #AB) a duplicity #BE.
 
 ### Body 5 a 6 — čo je za tými 257 kusmi
 
@@ -2273,13 +2310,26 @@ každá fáza od jedenástej, by prestalo byť porovnateľné.
 
 ### Otvorené rozhodnutia
 
-1. **`Qto` na prekvalifikovaných prvkoch (#BC).** Tri cesty:
-   *(a)* premenovať a chýbajúce veličiny zahodiť — schéma čistá, údaj preč;
-   *(b)* premenovať a prebytok presunúť do `IfcElementQuantity` s **vlastným
-   menom bez predpony `Qto_`** — schéma čistá aj údaj zostáva, cenou je
-   neštandardné meno, ktoré však `IfcPropertySet` pre neštandardné sady
-   výslovne predpisuje;
-   *(c)* nechať a zdokumentovať do BEP.
-   Odporúčanie: **(b)**, lebo drží obe požiadavky zadania naraz.
-2. **`DZ02` `SOLIDWALL` × `RETAININGWALL`** — §38 bod 3, nezávislé od #BC.
-3. **#BG** — zmazať stopu nástroja, alebo nechať a zdokumentovať.
+1. **Prebytok pri prekvalifikovaných prvkoch (#BC).** Tri cesty:
+   *(a)* premenovať na správny pset a čo cieľová šablóna nepozná, zahodiť —
+   schéma čistá, ale zloženie skladieb, sklon strechy, `ProjectedArea`
+   a prenajímateľné plochy sú preč;
+   *(b)* premenovať a prebytok presunúť do `IfcPropertySet` /
+   `IfcElementQuantity` s **vlastným menom bez vyhradenej predpony** —
+   schéma čistá aj údaj zostáva. Cenou je neštandardné meno, ktoré však
+   `lexical/IfcPropertySet.html` pre neštandardné sady priamo predpisuje:
+   *„Property sets that are not declared as part of the IFC specification
+   shall have a Name value not including the "Pset_" prefix."* Presne tak
+   je v modeli vedený `AIMviewer_Provenance`, takže precedens už stojí;
+   *(c)* nechať tak a zdokumentovať do BEP.
+   Odporúčanie: **(b)**. Zadanie znie „validný voči schéme **a** správne
+   nesúci všetky podstatné informácie" a (b) je jediná cesta, ktorá drží
+   oboje. (a) by ako vedľajší účinok zmazala údaje, ktoré nikto nežiadal
+   zmazať, a to je presne ten druh tichej straty, ktorý tento audit hľadá.
+2. **Meno pre tie neštandardné sady**, ak padne (b). Model už používa
+   `AIMviewer_Provenance`; pre projektové sady sa ponúka `SNIM_`, lebo
+   názvoslovie modelu je SNIM (`BEP_ANNEX.md` §1).
+3. **`DZ02` `SOLIDWALL` × `RETAININGWALL`** — §38 bod 3, nezávislé od #BC.
+4. **#BG** — zmazať stopu nástroja, alebo nechať a zdokumentovať. Tvarom
+   je to ten istý prípad ako #AY, kde rozhodnutie znelo *„tak ho zmaž, keď
+   to nič nepokazí"*.
