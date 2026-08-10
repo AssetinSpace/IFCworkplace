@@ -1,7 +1,7 @@
 # BEP — príloha k modelu OCB
 
 Zoznam rozšírení SNIM a odchýlok od dokumentovaného IFC vzoru, ktoré
-model `ASR_v21.ifc` obsahuje. Každá položka uvádza, čo sa spravilo, prečo,
+model `ASR_v26.ifc` obsahuje. Každá položka uvádza, čo sa spravilo, prečo,
 a o akú oporu sa opiera.
 
 Register vád, meranie a postup sú v `AUDIT.md`; táto príloha je jeho
@@ -72,7 +72,41 @@ nalepené na základovú dosku.“* Izolácia nie je jedna súvislá konštrukci
 ktorú by bolo treba viesť pod jedným celkom — každý kus patrí k tomu, na
 čom je nalepený.
 
-### 2.3 Zóny šácht mimo požiarneho rámca
+### 2.3 `SNIM_Properties` a `SNIM_Quantities` — čo štandardná šablóna neunesie
+
+Prvky, ktoré v priebehu prác zmenili triedu, si so sebou niesli psety
+svojej **pôvodnej** triedy — krytina strechy `Pset_RoofCommon` po tom, čo
+bola `IfcRoof`, vrstvy podlahy `Pset_SlabCommon` po `IfcSlab`. Meno psetu
+pritom nie je voľný reťazec; docs k `IfcPropertySet` hovoria, že
+konvencia `Pset_Xxx` *„applies to all those property sets that are defined
+as part of this specification"* a každá definícia má vymenované, na akú
+triedu patrí.
+
+Psety sa preto premenovali na tie, ktoré nová trieda pripúšťa. Lenže
+cieľové šablóny sú **chudobnejšie** než zdrojové, takže doslovné
+prečíslovanie by zmazalo údaje, ktoré sú vecne správne:
+
+| údaj | koľko | prečo nemá kam ísť |
+|---|--:|---|
+| zloženie skladby (`Description`) | 30 | `Pset_CoveringCommon` textové pole nemá; vlastný atribút `Description` typu je obsadený iným, kratším popisom |
+| sklon strechy (`PitchAngle`) | 36 | `PitchAngle` ponúka šesť štandardných psetov a ani jeden nie je pre `IfcCovering` |
+| `ProjectedArea` | 48 | `Qto_CoveringBaseQuantities` má iba `Width`, `GrossArea`, `NetArea` |
+| `GrossFloorArea` / `NetFloorArea` zón | 20 | `Qto_SpatialZoneBaseQuantities` má iba `Length`, `Width`, `Height` |
+| objemy, obvody, dĺžky vrstiev | 228 | to isté |
+
+Tých **362 vlastností** je v `SNIM_Properties` a `SNIM_Quantities`.
+Neštandardné meno je zámer, nie nedbalosť — docs k `IfcPropertySet` ho
+priamo predpisujú: *„Property sets that are not declared as part of the
+IFC specification shall have a Name value not including the "Pset_"
+prefix."* Každá sada nesie `Description` s menom šablóny, z ktorej údaj
+pochádza, takže sa to dá vystopovať aj bez tohto dokumentu.
+
+**Čo treba vedieť pri preberaní:** kto počíta výmery strechy, nájde
+`ProjectedArea` v `SNIM_Quantities`, nie v `Qto_CoveringBaseQuantities`.
+Kto hľadá zloženie skladby, nájde ho v `SNIM_Properties`, nie v
+`Description` prvku.
+
+### 2.4 Zóny šácht mimo požiarneho rámca
 
 Sedem `IfcZone` nesie `ObjectType` `'ElevatorShaft'` (2) a `'RisingDuct'`
 (5). Spec tie hodnoty uvádza vetou *„in case of a zone denoting a (fire)
@@ -81,7 +115,7 @@ zoskupenie šachtových priestorov naprieč podlažiami. Opora pre význam je
 doslovná: *`'ElevatorShaft'`: a collection of spaces within an elevator,
 **potentially going through many storeys***.
 
-### 2.4 Prenajímateľnosť 3NP inou cestou než PZ
+### 2.5 Prenajímateľnosť 3NP inou cestou než PZ
 
 `PZ01`–`PZ10` sú `IfcSpatialZone` s vlastným telesom. 3NP takú zónu nemá
 a vyrobiť ju by znamenalo fabrikovať geometriu. Namiesto toho je
@@ -110,7 +144,7 @@ väzbu preto dostala — vzťah znamená „referenced in", nie „je
 prenajímateľná". Jej náprotivok na 3NP väzbu nemá, lebo tá zóna vznikla
 z legendy.
 
-### 2.5 `IfcDistributionSystem` bez siete
+### 2.6 `IfcDistributionSystem` bez siete
 
 Zariaďovacie predmety sú v troch `IfcDistributionSystem`:
 
@@ -130,7 +164,7 @@ výpočet, musí vedieť, že topológia chýba.
 Do odvodnenia strechy patria aj **dva poistné prepady `OV04.03`**, ktoré
 predtým stáli mimo akéhokoľvek systému.
 
-### 2.6 Rekonštruované priestory
+### 2.7 Rekonštruované priestory
 
 Pravidlo projektu je **nefabrikovať geometriu**, ktorá v modeli nie je.
 Priestory sú jediná výnimka, lebo precedens vznikol už v krokoch 1–13
@@ -274,5 +308,7 @@ Nájdené pri práci; model ich nekopíruje, ale ani neopravuje ticho.
 | žiadne osirelé entity | invariant 4 = 0 |
 | kontajnment je exkluzívny | invariant 7 = 0 |
 | plný SNIM kód je jedinečný | invariant 6 = 0 |
+| **prvok nesie len tie psety a `Qto`, ktoré jeho trieda pripúšťa** | systematická kontrola proti **760** definíciám z `annex-a-psd.zip`, krížom overeným proti `lexical/*.html`: **509 porušení → 2**. Obe zvyšné sú zdôvodnené — `PEnum_AddressType` (stopa nástroja, `AUDIT.md` #BG) a `MassDensity` ako `IfcPropertyBoundedValue` (vedomé rozhodnutie, §4b) |
+| pri tej oprave sa nič nestratilo | meranie vlastnosť po vlastnosti medzi `v25` a `v26`: zmizlo 32 a všetkých 32 je zámer (28× neplatná hodnota `PanelPosition`, 4× nuly po `IfcStair`). Prebytok 362 vlastností prežil v `SNIM_*` |
 
-Brána po každej fáze proti výstupu predošlej: **zlyhalo 0 zo 7** vo fázach 11, 12, 13 aj 14. `pytest` 8 z 8 (deviaty je pomalý test geometrie, beží na merge).
+Brána po každej fáze proti výstupu predošlej: **zlyhalo 0 zo 7** vo fázach 11 až 19. Reťazová brána `ASR_v26.ifc` proti `data/ASR.ifc`: **zlyhalo 0 zo 6** (invariant 3 sa v nej nepúšťa, viď `AUDIT.md` §34). `pytest` 9 z 9.
