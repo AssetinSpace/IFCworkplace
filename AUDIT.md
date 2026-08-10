@@ -180,8 +180,8 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 | G | **H** | ~~16 z 18 strešných vpustí v `IfcSpace` na 3NP; `ST01.10` v zlom podlaží~~ — fáza 6a: 17 `OV04` von z openspace do podlaží podľa geometrie; `ST01.10.0001` doplnená do agregácie `ST01.0001` (66 dielov) |
 | K | **H** | ~~10 dverí bez priestorového kontajnera~~ — namerané **0** už na `ASR_v9`; vyriešili to skoršie fázy, register bol zastaraný |
 | L | **H** | ~~`IfcRelSpaceBoundary` 0×~~ — fáza 6b, **649** `IfcRelSpaceBoundary1stLevel` na všetkých 75 priestoroch, bez `ConnectionGeometry`, `ParentBoundary` na 83 výplniach |
-| BA | O | **`C1-J` vo výkrese `D.1.1.08` chýba** — južný pohľad má v treťom poli 1NP kód `C1-S`, ktorý zároveň patrí severnému poľu. Vada podkladu rovnakej povahy ako #AV. Model používa `C1-J` (rozhodnutie Samuela), odchýlka do BEP |
-| AZ | O | **80 z 97 `IfcDoor` nemá `FillsVoids`** — dvere nie sú zviazané s otvorom, takže hostiteľskú stenu nemožno prečítať zo vzťahu. Fáza 6b ju pri 52 dverách odvodila z polohy a overila proti hraniciam tej istej miestnosti; 20 dverí zostáva bez `ParentBoundary`. Oprava väzby je samostatná vec. **Overené proti originálu (§29):** `data/ASR.ifc` má tých istých 80 z 97, rovnako 26 z 26 `IfcWindow` a 61 `IfcOpeningElement` — číslo do jedného sedí s `ASR_v17.ifc`. Vada prišla z Revit exportu, pipeline ju nespôsobila ani nezmenila |
+| BA | O | **`C1-J` vo výkrese `D.1.1.08` chýba** — južný pohľad má v treťom poli 1NP kód `C1-S`, ktorý zároveň patrí severnému poľu. Vada podkladu rovnakej povahy ako #AV. Model používa `C1-J` (rozhodnutie Samuela), odchýlka **nejde do BEP** — rozhodnutie Samuela 10. 8.: *„nedávaj nič do BEPu, netreba, stačí v nejakých podporných dokumentoch.“* Zostáva teda tu |
+| AZ | **D** | ~~80 z 97 `IfcDoor` nemá `FillsVoids`~~ — **vypustené z rozsahu**, rozhodnutie Samuela 10. 8.: *„vypustiť celé, ak to rovnako bolo aj v `ASR.ifc`.“* Bolo: originál má tých istých 80 z 97, rovnako 26 z 26 `IfcWindow` a 61 `IfcOpeningElement` (§29). Vada prišla z Revit exportu, oprava by znamenala vyrobiť 80 `IfcOpeningElement`, čo §8 zakazuje. Ani 20 dverí bez `ParentBoundary` sa nedopĺňa |
 | Z | **H** | ~~22 rekonštruovaných priestorov bez `Qto_BodyGeometryValidation`~~ — dopočítané z geometrie, `20_fix_spaces.py` |
 | Q | **H** | ~~3NP nemá prenajímateľnú zónu~~ — fáza 5c, §15. **Premisa „nová zóna = vyrobiť geometriu" bola nesprávna** — `IfcZone` je podtyp `IfcSystem`/`IfcGroup`, nie `IfcProduct`, a spec hovorí doslova *„A zone does not have its own shape representation"* a *„it can not define an own geometric representation and placement"*. Rozhodnuté — vnorený `IfcZone` s 11 nájomnými priestormi 3NP (584.06 m² podľa legendy `D.1.1.03`) vložený do `IfcZone` `Pronajmutelné`. WR1 `IfcSpace` aj `IfcZone` ako členov výslovne povoľuje |
 | Q2 | **H** | ~~`PZ01`–`PZ10` nereferencujú ani jeden priestor~~ — fáza 13, §32. Pôvodne: — majú vlastnú geometriu a `PredefinedType = OCCUPANCY`, ale **nereferencujú ani jeden prvok či priestor** (`IfcRelReferencedInSpatialStructure` 0×). Prenajímateľnosť tak dnes nesie iba objem, nie väzba na miestnosti. Nájdené sondou §14. Rozhodnuté (§29): väzbu **odvodiť geometricky aj logicky**. Doplnených 10 `IfcRelReferencedInSpatialStructure` na 42 priestorov; zón bez väzby 0 |
@@ -194,9 +194,9 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 | AH | **H** | ~~164 `IfcMaterialConstituent` bez `IfcShapeAspect`~~ — 0 na occurrence úrovni, `70d17af` |
 | AI | **H** | ~~„Dřevo obecné" na krídle LOP~~ — vyriešilo sa rozhodnutím 27, `70d17af` |
 | AQ | **D** | ~~layer sety nesedia s výpisom~~ — **prvá polovica bola nesprávne prečítaná**, viď §21. Spádové kliny v modeli **sú**: `ST01.10a` (23 ks) nesie `Izolace EPS spádové kliny`, `ST01.10b` (2 ks) rovné dosky. Hydroizolácia patrí do druhej vrstvy strechy a v modeli tam aj je — `ST01.20` a `ST01.21` nesú po dvoch asfaltových pásoch. Zostáva ETICS: krytina nesie 1 vrstvu (izoláciu) zo 6 vo výpise; lepidlo, stierka, sieťka a omietka nemajú vlastnú geometriu a podľa §2 a §3 sa hrúbkový rozdiel **dokumentuje, nedopĺňa** |
-| AU | O | deklarovaná vs geometrická hrúbka: `FS01.10` 210/180, `FS01.11` 141/120, `FS01.12` 80/50, `FS01.20` 210/180, `ST01.10` 234–354/204 |
+| AU | **D** | ~~deklarovaná vs geometrická hrúbka~~ — **zdokumentované, neopravuje sa.** Rozhodnutie Samuela 10. 8.: *„v `Qto` musí byť geometria, do `Description` keď tak rozsah, ale asi ani to nie — proste tam je sklon.“* Sú to **dve rôzne príčiny**: `ST01.10` 234–354/204 je spádový klin, teda sklon, a jedna hodnota hrúbky preň neexistuje; `FS01.10` 210/180, `FS01.11` 141/120, `FS01.12` 80/50 a `FS01.20` 210/180 je ETICS, kde lepidlo, stierka, sieťka a omietka vlastnú geometriu nemajú — to je #AQ. `Qto` v oboch prípadoch nesie skutočnú geometriu |
 | AS | **H** | ~~materiál „Výchozí" ako dutinová podlaha v `PD03.*`~~ — fáza 8, §22: štyri vrstvy `PD03.*` nesú `IsVentilated` a materiál nemajú, ako žiada `IfcMaterialLayer` §8.10.3.6.1. Overené na `ASR_v21.ifc`: 0 vrstiev s materiálom „Výchozí". Riadok registra zostal omylom na **O**, hoci §23 ho medzi uzavretými uvádza |
-| AT | O | λ, ρ, c, μ z výpisu nie sú v `Pset_Material*` — samostatná fáza |
+| AT | **H** | ~~λ, ρ, c, μ z výpisu nie sú v `Pset_Material*`~~ — fáza 17, §36. Deväť materiálov, 15 `IfcMaterialProperties`, plus tri chýbajúce odvodené jednotky do `IfcUnitAssignment` |
 
 ### Zdokumentovať, neopraviť
 | # | | vec |
@@ -1859,3 +1859,166 @@ a tá je čistá.
 
 Nič z tohto nespôsobili fázy 11–14: množina stratených tvarov je
 konštantná od `ASR_v3.ifc`.
+
+---
+
+## 35. Fázy 15 a 16 — systémy a prístrešky
+
+Rozhodnutia Samuela z 10. 8. k bodom 1–8; tie, ktoré menia model, sú dve.
+
+### Fáza 15 — `IfcDistributionSystem`
+
+`out/ASR_v21.ifc` → `out/ASR_v22.ifc`, `src/34_systems.py`.
+
+*„Takýto systém určite nie, skôr asi distribution system a pridaj tam
+všetky."* Tri `IfcSystem` prekvalifikované, dva poistné prepady doplnené:
+
+| systém | nové meno | `PredefinedType` | členov |
+|---|---|---|--:|
+| Zoskupenie zariadení — zdravotechnika | Zdravotechnika | `SEWAGE` | 46 |
+| Zoskupenie zariadení — strešné vpuste | Odvodnenie strechy | `RAINWATER` | 18 **+ 2** |
+| Zoskupenie zariadení — podlahové vpuste | Podlahové vpuste | `DRAINAGE` | 5 |
+
+`SEWAGE` nie je dohad — všetkých **51 `IfcDistributionPort` nesie
+`SystemType = SEWAGE`**. `RAINWATER` zvolené proti `STORMWATER`, ktoré je
+*„runs off or travels over the ground surface"*, kým strešná vpusť
+zachytáva zrážky priamo. `DRAINAGE` pre podlahové vpuste, lebo `OV01.01`
+ležia **vnútri budovy** (1NP, `1.07`, `3.14`, `4.01`), nie na streche.
+
+**Toto prebíja rozhodnutie fázy 10**, ktorá zvolila `IfcSystem` zámerne
+s odôvodnením, že sieť neexistuje (51 portov, 0 `IfcFlowSegment`).
+Schéma to nezakazuje: `IfcDistributionSystem` je podtyp `IfcSystem`, teda
+zoskupenie, a žiadne pravidlo nevyžaduje segmenty. Tvrdenie o chýbajúcej
+sieti zostáva pravdivé — presunulo sa z odôvodnenia triedy do poznámky
+o rozsahu. `BEP_ANNEX.md` §2.5 prepísané.
+
+Mená sa menili tiež: „Zoskupenie zariadení — …" bolo zvolené práve preto,
+aby netvrdilo, že ide o systém.
+
+### Fáza 16 — `OV02` na markízu
+
+`out/ASR_v22.ifc` → `out/ASR_v23.ifc`, `src/35_ov02_shading.py`.
+
+*„`IfcBuiltElement` podľa mňa takto schéma nepovoľuje, daj radšej shading
+… alebo niečo iné na markízu."* Sedem `OV02` a dva typy prešli na
+**`IfcShadingDevice / AWNING`**.
+
+Poznámka k premise: **schéma `IfcBuiltElement` pripúšťa** — overené proti
+`IFC4X3_ADD2`, `is_abstract()` je `False` pre entitu aj typ. Zmena je teda
+voľbou konkrétnejšej entity pred všeobecnou, nie opravou nelegálneho
+zápisu. Vecná opora pre `AWNING` je pritom silná: *„A rooflike shelter…
+extending over a doorway… in order to provide protection."* Napätie je len
+medzi tou vetou a definíciou nadradenej entity, ktorá hovorí o ochrane
+pred slnkom.
+
+`ObjectType` zmazaný — význam nesie enum; pri `USERDEFINED` by ho niesol
+`ObjectType`, pri `AWNING` by bol duplicitný.
+
+### Brány
+
+| | fáza 15 | fáza 16 |
+|---|---|---|
+| 1 geometria | OK | OK |
+| 2 EXPRESS | 0 | 0 |
+| 3 GUID | 0 / 0 | 0 / 0 |
+| 4–7 | OK | OK |
+
+**Zlyhalo 0 zo 7** v oboch. Idempotencia overená. Allowlisty prázdne:
+`IfcDistributionSystem` ani `IfcShadingDevice` nemenia množinu tvarov,
+ktorú stráži invariant 1 — na rozdiel od fázy 11, kde prvky do nej
+z `IfcFurniture` vstupovali.
+
+### Rozhodnutia, ktoré model nemenia
+
+| bod | rozhodnutie |
+|---|---|
+| `FS03.01` dva celky | *„budú oddelené, proste to nie je skladba, ale len nalepené na základovú dosku."* Zostáva sedem pod doskou, dva v stenách — zámer, nie nedôslednosť |
+| #AZ dvere | **vypustiť celé**, keďže to rovnako bolo v `ASR.ifc`. Ani 20 dverí bez `ParentBoundary` sa nedopĺňa |
+| #AU hrúbky | zdokumentovať; `Qto` nesie geometriu. Dve príčiny: `ST01.10` je sklon spádového klina, `FS01.*` je nemodelovaný ETICS (#AQ) |
+| #BA `C1-J` | **nedávať do BEP**, stačí v podporných dokumentoch — zostáva v registri |
+| #AT fyzika materiálov | **áno**, podľa IFC schémy — samostatná fáza |
+
+---
+
+## 36. Fáza 17 — #AT, fyzika materiálov
+
+`out/ASR_v23.ifc` → `out/ASR_v24.ifc`, `src/36_material_physics.py`.
+Deväť materiálov, **15 `IfcMaterialProperties`**, tri doplnené jednotky.
+
+### Kam to podľa schémy patrí
+
+`Pset_MaterialThermal`, `Pset_MaterialCommon` aj `Pset_MaterialHygroscopic`
+sú **`PSET_MATERIALDRIVEN`**: *„The property sets defined by this
+IfcPropertySetTemplate are to be encoded in an `IfcMaterialProperties`
+entity and assigned to an `IfcMaterialDefinition`."* Nie sú to teda
+`IfcPropertySet` na prvku — pôvodná otázka predpokladala opak.
+
+**μ v `Pset_MaterialThermal` nie je.** Schéma preň má
+`Pset_MaterialHygroscopic` s dvojicou `Upper`/`LowerVaporResistanceFactor`,
+čo mimochodom rieši aj rozsahy.
+
+| materiál | λ | ρ | c | μ |
+|---|--:|--:|--:|--:|
+| `Beton - Železobeton` | 1,430 | 2300 | 1020 | 24 |
+| `Zdivo nosné` | 0,093 | — | — | 20 |
+| `Izolace EPS spadove kliny` | 0,035 | **23–28** | — | **30–70** |
+| `Izolace EPS` | 0,035 | — | — | — |
+| `Izolace minerální` | 0,035 | — | — | — |
+| `Izolace XPS` | 0,036 | — | — | — |
+| `Hydrofílna vata` | 0,037 | — | — | — |
+| `Hydroizolace - asfaltový pás` | — | — | — | 29000 |
+| `podlahový potěr/mazanina + kari síť KH 20` | — | 2100 | — | 19 |
+
+Každá hodnota nesie v `Specification` riadok výpisu, z ktorého pochádza.
+Priradenie stojí na tom, **ktorý materiál je v ktorej skladbe** — napr.
+`Izolace minerální` je v `FS01.10/.12/.20`, kde výpis uvádza reakciu na
+oheň A1, kým `Izolace XPS` je v `FS01.11` s reakciou E a λ 0,036.
+
+### Rozsahy
+
+`μ = 30–70` → `Lower = 30`, `Upper = 70`. Výpis neuvádza, ktorý koniec
+platí pri akej vlhkosti, kým schéma áno (*„measured in high/low relative
+humidity"*), takže sa priraďuje číselne a `Specification` to hovorí.
+Pri jedinej hodnote nesú oba konce to isté číslo.
+
+`ρ = 23–28` → **`IfcPropertyBoundedValue`**. Šablóna psetu predpisuje
+`IfcPropertySingleValue`, ale jedna hodnota by rozsah zahodila. Odchýlka
+od šablóny, nie od schémy.
+
+### Jednotky, ktoré v modeli neboli
+
+Model deklaroval len `LENGTHUNIT` (mm), `AREAUNIT`, `VOLUMEUNIT`,
+`PLANEANGLEUNIT` a jednu `THERMALTRANSMITTANCEUNIT`. Pre λ, ρ ani c
+jednotka neexistovala, takže by ich čitateľ musel hádať — a pri
+milimetrovom projekte je hádanie medzi kg/m³ a kg/mm³ rozdiel šiestich
+rádov. Doplnené ako `IfcDerivedUnit` do `IfcUnitAssignment`:
+
+* `THERMALCONDUCTANCEUNIT` = kg·m·s⁻³·K⁻¹
+* `MASSDENSITYUNIT` = kg·m⁻³
+* `SPECIFICHEATCAPACITYUNIT` = m²·s⁻²·K⁻¹
+
+Metre z `IfcSIUnit` **bez prefixu**, nie z dĺžkovej jednotky projektu.
+
+### Čo fyziku nedostalo
+
+Z 47 materiálov deväť. Zvyšok výpis neuvádza a tabuľková hodnota by bola
+vymyslená (§8). Menovite sa **nepriradil** parotesniaci pás s AL fóliou
+(λ=0,21, c=1470, ρ=1400, μ=370 000) — vo výpise je, ale samostatný
+materiál preň v modeli nie je.
+
+### Dve veci, na ktorých skript spadol
+
+**`IfcProperty` nemá `Description`.** V IFC4.3 sa ten atribút volá
+**`Specification`**; `IfcMaterialProperties` `Description` naopak má.
+
+**Invariant 4 ohlásil 15 osirelých.** `IfcMaterialProperties` drží väzbu
+**dopredným** atribútom `Material` a materiál ju vidí len cez inverz
+`HasProperties`, takže má vždy 0 inverzov — presne ten istý prípad ako
+`IfcRepresentationContext` (#AY). Pred zásahom do testu overené: 15 z 15
+má `Material` vyplnený a všetkých 15 je dosiahnuteľných cez
+`HasProperties`. Až potom doplnené do `ORPHAN_WHITELIST`.
+
+### Brána
+
+inv 1 OK, inv 2 EXPRESS **0 hlásení**, inv 3 0/0, inv 4–7 OK.
+**Zlyhalo 0 zo 7.** Idempotencia overená, `pytest` 8/8.

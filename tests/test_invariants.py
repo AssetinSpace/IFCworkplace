@@ -280,6 +280,11 @@ def inv3_guid_accounting(
 #: aj keď je riadnou súčasťou stromu projektu. Bez toho test hlási nepoužitý
 #: Revit subkontext „Box" (#16) ako osirelý. O jeho zmazaní sa rozhodne
 #: v sweepe fázy 9 spolu s #F.
+#: ``IfcMaterialProperties`` doplnené po fáze 17 z **toho istého dôvodu**:
+#: väzbu drží dopredný atribút ``Material`` a materiál ju vidí len cez
+#: inverz ``IfcMaterial.HasProperties``, takže sady vlastností majú vždy
+#: 0 inverzov. Overené na ``ASR_v24.ifc``: 15 z 15 má ``Material``
+#: vyplnený a všetkých 15 je dosiahnuteľných cez ``HasProperties``.
 ORPHAN_WHITELIST = (
     "IfcShapeAspect",
     "IfcMaterialDefinitionRepresentation",
@@ -287,6 +292,7 @@ ORPHAN_WHITELIST = (
     "IfcMapConversion",
     "IfcRelationship",
     "IfcRepresentationContext",
+    "IfcMaterialProperties",
 )
 
 
