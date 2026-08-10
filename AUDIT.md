@@ -193,7 +193,7 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 |---|---|---|
 | AH | **H** | ~~164 `IfcMaterialConstituent` bez `IfcShapeAspect`~~ — 0 na occurrence úrovni, `70d17af` |
 | AI | **H** | ~~„Dřevo obecné" na krídle LOP~~ — vyriešilo sa rozhodnutím 27, `70d17af` |
-| AQ | O | layer sety nesedia s výpisom: `ST01.10` chýbajú spádové kliny, ETICS majú 1 zo 6 vrstiev |
+| AQ | **D** | ~~layer sety nesedia s výpisom~~ — **prvá polovica bola nesprávne prečítaná**, viď §21. Spádové kliny v modeli **sú**: `ST01.10a` (23 ks) nesie `Izolace EPS spádové kliny`, `ST01.10b` (2 ks) rovné dosky. Hydroizolácia patrí do druhej vrstvy strechy a v modeli tam aj je — `ST01.20` a `ST01.21` nesú po dvoch asfaltových pásoch. Zostáva ETICS: krytina nesie 1 vrstvu (izoláciu) zo 6 vo výpise; lepidlo, stierka, sieťka a omietka nemajú vlastnú geometriu a podľa §2 a §3 sa hrúbkový rozdiel **dokumentuje, nedopĺňa** |
 | AU | O | deklarovaná vs geometrická hrúbka: `FS01.10` 210/180, `FS01.11` 141/120, `FS01.12` 80/50, `FS01.20` 210/180, `ST01.10` 234–354/204 |
 | AS | O | materiál „Výchozí" ako dutinová podlaha v `PD03.*` |
 | AT | O | λ, ρ, c, μ z výpisu nie sú v `Pset_Material*` — samostatná fáza |
@@ -1065,3 +1065,44 @@ bez známej vady.**
 
 **zlyhalo 0 z 7** — prvýkrát v projekte prejde brána celá, bez známej
 vady v allowliste. Idempotencia oboch skriptov overená.
+
+---
+
+## 21. #AQ — overenie skladby strechy
+
+Podnet Samuela: buď je skladba v PDF vypísaná zle, alebo je hydroizolácia
+až v druhej vrstve strechy, teda v `ST01.20`. Odmerané na `ASR_v15.ifc`:
+
+| typ | ks | layer set v modeli |
+|---|--:|---|
+| `ST01.10a` | 23 | `Izolace EPS spádové kliny 30` |
+| `ST01.10b` | 2 | `Izolace EPS 100`, `Izolace EPS 100`, `Hydroizolace — asfaltový pás 4` |
+| `ST01.20` | 18 | `Terén hlína 79`, `Hydrofílna vata 50`, `HDPE nopová fólia 26`, `Hydroizolace 2`, `Hydroizolace 3` |
+| `ST01.21` | 25 | `Kamenivo 129`, `HDPE nopová fólia 23`, `Hydroizolace 5`, `Hydroizolace 3` |
+
+**Prvá polovica #AQ bola nesprávne prečítaná.** Spádové kliny nechýbajú —
+sú to priamo prvky `ST01.10a` a materiál sa tak aj volá. Šikmosť teda
+nesie geometria týchto prvkov, nie zoznam vrstiev, a delenie na `a`/`b`
+je práve rozdiel medzi klinovou a rovnou časťou.
+
+**Hydroizolácia sedí tam, kde ju Samuel čakal.** `ST01.20` aj `ST01.21`
+nesú po dvoch asfaltových pásoch — to sú vrstvy 7 a 8 skladby S1. Vo
+výpise sú uvedené nad tepelnou izoláciou (vrstvy 9 a 10), čo pri teplej
+plochej streche sedí, a model to tak má. Rozpor teda nie je.
+
+Nemodelované zostávajú tenké vrstvy bez vlastnej geometrie: vegetačná
+rohož a dve geotextílie (1 a 2 mm). To je ten istý prípad ako vzduchová
+medzera podľa §2 — dokumentuje sa, nedopĺňa.
+
+**Čo z #AQ zostáva.** ETICS: krytina nesie jednu vrstvu — `FS01.10`
+`Izolace minerální 180`, `FS01.11` `Izolace XPS 120`, `FS01.12`
+`Izolace minerální 50`, `FS03.01` `Izolace XPS 120` — kým výpis uvádza
+šesť. Chýbajú lepidlo, kotvy, stierka so sieťkou a omietka, teda vrstvy
+bez vlastnej geometrie. Doplniť ich do layer setu by rozišlo súčet hrúbok
+s hrúbkou prvku a §2 hovorí, že `IfcMaterialLayerSetUsage` patrí len tam,
+kde hrúbka sedí. Preto sa to zapisuje, neopravuje — položka mení kategóriu
+na **D**.
+
+Stena pod krytinou nesie svoju vlastnú vrstvu (`SN02.02`
+`Beton — Železobeton 250`), takže skladba ako celok je v modeli čitateľná
+z agregácie z fázy 6a: stena + krytina.
