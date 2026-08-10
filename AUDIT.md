@@ -1106,3 +1106,100 @@ na **D**.
 Stena pod krytinou nesie svoju vlastnú vrstvu (`SN02.02`
 `Beton — Železobeton 250`), takže skladba ako celok je v modeli čitateľná
 z agregácie z fázy 6a: stena + krytina.
+
+---
+
+## 22. Fáza 8 — vzduchová dutina a skupiny skladieb
+
+`out/ASR_v15.ifc` → `out/ASR_v16.ifc`, `src/28_layer_sets.py`.
+
+### #AS — v dutine je vzduch
+
+Rozhodnutie Samuela: *„ak to je dutina tak tam je vzduch."* Schéma na to
+má presný zápis, `IfcMaterialLayer` §8.10.3.6.1:
+
+> Air gaps within a material layer set are represented as an
+> `IfcMaterialLayer` with the attribute `IsVentilated` having the value
+> TRUE or UNKNOWN. Such air gaps shall be interpreted as **voids (not
+> having a material)**.
+
+Štyri layer sety `PD03.*` mali druhú vrstvu s materiálom `Výchozí`.
+Vrstva teraz materiál nemá, nesie `IsVentilated = UNKNOWN` a meno
+„Vzduchová dutina". `UNKNOWN` a nie `TRUE` zámerne — dokumentácia
+nehovorí, že dutina je vetraná, len že tam je.
+
+Hrúbka sa nemenila, takže súčet vrstiev naďalej sedí s hrúbkou prvku
+a `IfcMaterialLayerSetUsage` ostáva platné podľa §2. Zároveň to napĺňa
+pravidlo „`IsVentilated` platí len vnútri jedného prvku" — vrstva je
+vnútri jedného layer setu, nie samostatný prvok.
+
+### S1–S9 ako `IfcGroup`
+
+Výpis `D.1.1.09` má **osem** skladieb, nie deväť: S7 v ňom nie je.
+Každá strana uvádza svoje SNIM kódy.
+
+| skupina | prvkov | zloženie |
+|---|--:|---|
+| `S3` Skladba základovej dosky a podlahy v 1NP | 54 | 50 krytín, 4 dosky |
+| `S4` Skladba ETICS, plocha výlezu | 8 | 4 krytiny, 4 steny |
+| `S5` Skladba ETICS, sokol výlezu | 8 | 4 krytiny, 4 steny |
+| `S8` Skladba ETICS, odpadové hospodárstvo | 2 | 1 krytina, 1 stena |
+| `S9` Skladba ETICS, odpadové hospodárstvo | 6 | 3 krytiny, 3 steny |
+
+**Prečo len päť z ôsmich.** Kódy `SD02` (9 dosiek), `PH01` (24 podhľadov),
+`ST01.10` (25) a `SN02` (73 stien) zdieľa viac skladieb naraz. Priradenie
+„všetky prvky kódu" by dalo tú istú stenu do `S4` aj `S5`, hoci ETICS na
+nej je jedno, a všetkých 9 dosiek `SD02` do štyroch skupín. Pri ETICS sa
+to rieši presne — substrát sa neberie z kódu, ale z **agregácie z fázy
+6a**, ktorá hovorí, na ktorej stene daná krytina naozaj je. `S3` je
+jednoznačná sama od seba, lebo ani jeden z jej kódov nezdieľa iná skladba.
+
+`S1`, `S2` a `S6` takú oporu nemajú a **nezaložili sa**. Rozlíšiť ich
+geometricky by šlo — `ST01.20` je vegetačná a `ST01.21` kačírková vrstva,
+takže `ST01.10`, `PH01` a `SD02` pod nimi by sa dali priradiť podľa
+pôdorysného prekryvu — ale je to odvodenie, nie údaj z podkladu.
+Nechávam ho na rozhodnutie.
+
+### Čo z #AU
+
+Register #AU (deklarovaná vs geometrická hrúbka) je ten istý prípad ako
+ETICS v #AQ: rozdiel vzniká vrstvami bez vlastnej geometrie a §3 ho už
+vedie v kategórii „zdokumentovať, neopraviť". Meranie fázy 8 to
+potvrdzuje — `FS01.20` nesie 180 mm a výpis S8 uvádza pre tepelnú
+izoláciu tiež 180 mm, `FS01.12` nesie 50 a S9 uvádza 50. **Izolačná
+vrstva sedí na milimeter**; rozdiel v celkovej hrúbke robia omietky,
+lepidlá a penetrácia, teda presne to, čo geometriu nemá.
+
+### Brána `ASR_v16.ifc`
+
+inv 1 geometria 0 zmenených, inv 2 EXPRESS 0, inv 3 10 nových v allowliste,
+inv 4 **0**, inv 5 OK, inv 6 OK, inv 7 OK — **zlyhalo 0 z 7**.
+Idempotencia overená.
+
+---
+
+## 23. Stav po fázach 1–10
+
+`out/ASR_v16.ifc`, brána celá zelená.
+
+**Uzavreté v registri:** A, B, C, E, F, G, H, I, J, K, L, M, N, O, P, Q, R,
+T, V, Y, Z, AA, AB, AC, AE, AF, AH, AI, AJ, AK, AL, AN, AO, AP, AS, AW, AX.
+
+**Zdokumentované, neopravované (D):** AQ, AR, AU, AV a štyri položky bez
+kódu z §3.
+
+**Otvorené:**
+
+| # | čo treba |
+|---|---|
+| AM | 67 occurrences bez pravidla pre `PredefinedType` v §5 — 8 `IfcSlab DZ02`, 19 `IfcCurtainWall`, 22 `IfcFurniture`, 12 `IfcRailing`, 5 `SC01` |
+| AT | fyzika materiálov (λ, ρ, c, μ) — vyhradená samostatná fáza |
+| AZ | 80 z 97 `IfcDoor` nemá `FillsVoids` |
+| BA | `C1-J` vo výkrese `D.1.1.08` chýba |
+| Q2 | `PZ01`–`PZ10` nereferencujú ani jeden prvok |
+| — | 7× `FS03.01` bez priradenej steny |
+| — | `S1`, `S2`, `S6` — skupiny skladieb so zdieľanými kódmi |
+| — | okenné hranice, otvorí ich delenie fasády na polia |
+
+**Trvalá medzera:** `data/ASR.ifc` v repe nie je, takže invariant 1 sa
+reťazí (referencia = vstup fázy) namiesto porovnania s pôvodným exportom.
