@@ -1307,10 +1307,9 @@ Vrstvy nie sú po jednej na plochu, ale rozsekané na kusy od decimetra
 strechy naraz. Prekryv „menší v väčšom" preto spája veci, ktoré spolu
 nesúvisia, a zároveň míňa tie, ktoré súvisia.
 
-Priradenie sa dá spraviť, ale nie mechanicky — chce to prejsť strešný
-pôdorys `D.1.1.04` a povedať, ktorá plocha je vegetačná a ktorá kačírková.
-To je čítanie podkladu, nie odvodenie, takže `S1`, `S2` a `S6` zostávajú
-otvorené.
+**Vyriešené v §28** — pravidlo od Samuela („kačírek je pri atikách asi
+600 mm od kraja") sa ukázalo byť v modeli už zakódované a chybu v mojom
+teste odhalilo.
 
 Zvyšných päť skupín z fázy 8 tým nie je dotknutých — tie stoja na
 jednoznačných kódoch a na agregácii, nie na tomto odhade.
@@ -1348,3 +1347,70 @@ A „53 netypovaných" bolo 51 `IfcDistributionPort`, ktoré sa netypujú, plus
 2 agregujúce `IfcRoof` z fázy 1, ktoré typ nemajú zámerne. Skutočný počet
 je 0. Obe merania sú v skripte opravené aj s poznámkou, aby na to
 nenaletel nikto ďalší.
+
+---
+
+## 28. Fáza 8b — S1, S2 a S6 doriešené
+
+`out/ASR_v16.ifc` → `out/ASR_v17.ifc`, `src/29_skladby_geom.py`.
+
+Podnet Samuela: *„kačírek je pri atikách a stenách asi 600 mm od kraja"*,
+plus otázka, či plochy nerozlišuje sufix `a`/`b` v názve vrchnej vrstvy.
+
+### Čo z toho platí a čo nie
+
+**Sufix nepomáha.** `a`/`b` majú len typy `ST01.10a` a `ST01.10b`
+a rozlišujú klinovú izoláciu od rovných dosiek. Vrchné vrstvy majú typy
+`ST01.20` a `ST01.21` bez sufixu.
+
+**Pravidlo so 600 mm platí a je merateľné.** Menší rozmer pôdorysu:
+
+| kód | n | min | medián | max |
+|---|--:|--:|--:|--:|
+| `ST01.20` vegetácia | 18 | 4195 | 4555 | 9750 mm |
+| `ST01.21` kačírek | 25 | **360** | **520** | 3975 mm |
+
+Dvadsaťtri z 25 kačírkových kusov má menší rozmer do 1000 mm — úzke pásy
+po obvode, presne ako hovorí pravidlo. Ktorá plocha je ktorá sa teda
+nemusí odvodzovať z pôdorysu strechy; model to už nesie.
+
+### Prečo prvý pokus zlyhal
+
+Podmienka znela „vrch prvku pod spodkom značky". Lenže klinová izolácia
+sa s krytinou **prerastá** — medzera vychádza medián **−144 mm** — takže
+tá podmienka vylúčila skoro všetko. Nová podmienka pracuje s **pásmom**:
+prvok patrí do skladby, ak pôdorysne prekrýva značku a jeho zvislý rozsah
+zasahuje do pásma od spodku značky nadol.
+
+### Hĺbka pásma z citlivostnej skúšky
+
+| hĺbka | S1 | S2 | S6 |
+|--:|--:|--:|--:|
+| 1200 | 43 | 51 | 15 |
+| 1500 | 44 | 52 | 16 |
+| **2000** | **45** | **53** | **17** |
+| 3000 | 45 | 53 | **30** |
+
+`S1` a `S2` sú stabilné celé pásmo. `S6` skočí zo 17 na 30 medzi 2000
+a 3000 — jeho značkou je celá podlahová doska, takže hlbšie pásmo
+prepadne do podlažia pod ňou. Zvolených **2000 mm**, čo je vnútri
+stabilnej oblasti pre všetky tri. Skúšku vie ktokoľvek zopakovať cez
+`--hlbka`.
+
+### Výsledok
+
+| skupina | prvkov | zloženie |
+|---|--:|---|
+| `S1` vegetácia | 45 | 18 `ST01.20` + 23 `ST01.10` + 2 `SD02` + 2 `PH01` |
+| `S2` kačírek | 53 | 25 `ST01.21` + 24 `ST01.10` + 2 `SD02` + 2 `PH01` |
+| `S6` kancelárie | 17 | 2 `PD03.30` + 7 `SD02` + 8 `PH01` |
+
+**Skupiny sa prekrývajú a majú.** Dvadsaťtri izolačných dosiek patrí do
+`S1` aj `S2` naraz, lebo kačírkový pás je 600 mm okraj tej istej strešnej
+plochy, pod ktorou je vegetácia. Práve preto sa priraďovalo po kuse,
+nie po kóde.
+
+Všetkých **osem skladieb** z výpisu je tým založených.
+
+Brána: inv 1 geometria 0 zmenených, inv 2 EXPRESS 0, inv 3 6 nových
+v allowliste, inv 4–7 OK — **zlyhalo 0 zo 7**. Idempotencia overená.
