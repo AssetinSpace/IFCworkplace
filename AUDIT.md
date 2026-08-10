@@ -180,6 +180,7 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 | G | **H** | ~~16 z 18 strešných vpustí v `IfcSpace` na 3NP; `ST01.10` v zlom podlaží~~ — fáza 6a: 17 `OV04` von z openspace do podlaží podľa geometrie; `ST01.10.0001` doplnená do agregácie `ST01.0001` (66 dielov) |
 | K | **H** | ~~10 dverí bez priestorového kontajnera~~ — namerané **0** už na `ASR_v9`; vyriešili to skoršie fázy, register bol zastaraný |
 | L | **H** | ~~`IfcRelSpaceBoundary` 0×~~ — fáza 6b, **649** `IfcRelSpaceBoundary1stLevel` na všetkých 75 priestoroch, bez `ConnectionGeometry`, `ParentBoundary` na 83 výplniach |
+| BA | O | **`C1-J` vo výkrese `D.1.1.08` chýba** — južný pohľad má v treťom poli 1NP kód `C1-S`, ktorý zároveň patrí severnému poľu. Vada podkladu rovnakej povahy ako #AV. Model používa `C1-J` (rozhodnutie Samuela), odchýlka do BEP |
 | AZ | O | **80 z 97 `IfcDoor` nemá `FillsVoids`** — dvere nie sú zviazané s otvorom, takže hostiteľskú stenu nemožno prečítať zo vzťahu. Fáza 6b ju pri 52 dverách odvodila z polohy a overila proti hraniciam tej istej miestnosti; 20 dverí zostáva bez `ParentBoundary`. Oprava väzby je samostatná vec |
 | Z | **H** | ~~22 rekonštruovaných priestorov bez `Qto_BodyGeometryValidation`~~ — dopočítané z geometrie, `20_fix_spaces.py` |
 | Q | **H** | ~~3NP nemá prenajímateľnú zónu~~ — fáza 5c, §15. **Premisa „nová zóna = vyrobiť geometriu" bola nesprávna** — `IfcZone` je podtyp `IfcSystem`/`IfcGroup`, nie `IfcProduct`, a spec hovorí doslova *„A zone does not have its own shape representation"* a *„it can not define an own geometric representation and placement"*. Rozhodnuté — vnorený `IfcZone` s 11 nájomnými priestormi 3NP (584.06 m² podľa legendy `D.1.1.03`) vložený do `IfcZone` `Pronajmutelné`. WR1 `IfcSpace` aj `IfcZone` ako členov výslovne povoľuje |
@@ -913,3 +914,68 @@ z kompasu obracia. Určiť to odhadom by znamenalo označiť 18 zo 48 polí
 možno naopak, preto to nechávam otvorené. Rozhodne to jedna veta od
 Samuela alebo chýbajúca zložka `3 – Tepelná technika LOP`, ktorá polia
 vymenúva záväzne.
+
+---
+
+## 19. Fáza 7 — polia LOP
+
+`out/ASR_v11.ifc` → `out/ASR_v12.ifc`, `src/24_lop_fields.py`.
+
+**48 vnorených `IfcCurtainWall`** pod 12 `PL01`. Rodičia už neagregujú
+jednotlivé panely, ale polia; panely visia na poliach. `IfcCurtainWall`
+pod `IfcCurtainWall` je legálne, ale nedokumentované — odchýlka patrí do
+BEP, ako hovorí §2.
+
+**Delenie z modelu, nie z rastra.** Zhluky stĺpov dávajú 6 osí v X po
+6500 mm a 4 osi v Y; červené deliace čiary na `D.1.1.08` ležia práve na
+nich. Dlhá fasáda sa delí na 5 polí, krátka na 3 — 16 na podlažie, 48
+spolu.
+
+**Orientácia.** `2.02 Openspace - Východ` na `Y = −2703` a `2.01 Západ` na
+`Y = +7922` dávajú **−Y = východ**. Pri klasickej konvencii (sever hore,
+východ vpravo) z toho vychádza **sever = +X** — rozhodnutie Samuela.
+Poradie názvov je v smere rastúcej súradnice, čo pre západ a juh znamená
+opačné poradie než na výkrese: tie pohľady sa kreslia zrkadlovo.
+
+Kontrola, ktorá tomu dáva váhu: severné a južné polia vyšli rozmerovo
+zhodné (6735 / 7525 / 7290 mm) a východné so západnými tiež. Symetria
+objektu sa v priradení odrazila sama.
+
+**Odchýlka od podkladu.** Južný pohľad má v treťom poli 1NP kód `C1-S`,
+hoci systematicky tam patrí `C1-J`, a `C1-J` sa vo výkrese nevyskytuje.
+Model používa `C1-J` — rozhodnutie Samuela, do BEP s odôvodnením.
+
+**Mená inštancií.** Kód nesie typ poľa, nie kus: `E3-V` je na východe
+trikrát. Za kód sa preto pridáva poradie, tým istým princípom ako INST
+pri SNIM, len na dve miesta — `E3-V.01`. Duplicitné meno nevzniklo ani
+raz.
+
+**`Ucw` a plochy.** `Pset_CurtainWallCommon` nesie
+`ThermalTransmittance = 0.64 W/m²K` z poznámky výkresu, `Reference` s kódom
+poľa a `IsExternal`. `Qto_CurtainWallQuantities` sa počíta z geometrie
+dielov, neprepisuje sa z tabuľky. `Description` nesie systém
+`SCHUECO FWS 50.SI`.
+
+Súčet plôch polí **1583.00 m²**, tepelná technika uvádza 1603.63 m² —
+rozdiel 20.63 m², teda 1.3 %. Plochy sú merané z geometrie a nedoťahujú
+sa na tabuľku; zdroj rozdielu (iná vzťažná rovina) sa overí, až keď bude
+zložka `3 – Tepelná technika LOP` k dispozícii.
+
+### Brána
+
+| inv | výsledok |
+|---|---|
+| 1 geometria | **0 zmenených** (referencia = `ASR_v11.ifc`) |
+| 2 EXPRESS | **0 hlásení** |
+| 3 GUID | 300 nových, 12 zrušených, všetky v allowliste kroku |
+| 4 osirelé | 48 (#F) — rozpad nezmenený |
+| 5 prázdne SET | 0 |
+| 6 jednoznačnosť | 0 |
+| 7 kontajnment | 0 |
+
+`IfcCurtainWall` v modeli 19 → **67** (19 pôvodných + 48 polí), duplicitné
+meno ani jedno. Idempotencia overená.
+
+**Zostáva:** fáza 8 (`25_layer_sets.py`, #AQ #AU #AS a `IfcGroup` S1–S9),
+fáza 9 (sweep #F #AJ), fáza 10 (`27_sanitary.py`). Otvorené položky
+registra: #AM, #AT, #AZ, #Q2, 7× `FS03.01` bez steny.
