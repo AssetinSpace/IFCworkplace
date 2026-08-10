@@ -1314,3 +1314,37 @@ otvorené.
 
 Zvyšných päť skupín z fázy 8 tým nie je dotknutých — tie stoja na
 jednoznačných kódoch a na agregácii, nie na tomto odhade.
+
+---
+
+## 27. Akceptačné meranie `ASR_v16.ifc`
+
+`src/report_final.py` — prejde tvrdenia registra a odmeria ich naraz.
+Nič nemení, dá sa pustiť na ktorýkoľvek medzivýstup.
+
+| vec | hodnota |
+|---|---|
+| occurrences spolu | 2802 |
+| z toho s plným SNIM kódom | **2611** |
+| duplicitných plných kódov | **0** |
+| `IfcTypeObject` | 120 |
+| typov s viac než jedným `IfcRelDefinesByType` | **0** |
+| netypovaných prvkov | **0** (porty a strešné obaly sa nerátajú) |
+| rovnomenných typov | 5 — zámerne, kód nesie užitie |
+| priestorov | 75, spolu **2024.91 m²** |
+| bez `Qto_BodyGeometryValidation` | **0** |
+| prvkov v miestnostiach / v podlažiach | 136 / 405 |
+| `IfcRelSpaceBoundary` | 649, z toho 83 s `ParentBoundary` |
+| `IfcZone` / `IfcSystem` / `IfcGroup` | 13 / 16 / 21 |
+| prázdnych `IfcPropertySet` | **0** |
+| vlastností `Status` | **209** |
+| vzduchových vrstiev (void + `IsVentilated`) | 4 |
+| occurrences bez `PredefinedType` | 114, z toho 67 `IfcCurtainWall` |
+
+**Dve čísla, ktoré najprv vyzerali ako strata dát a neboli.** `Status`
+vyšiel na nulu, lebo som ho hľadal medzi `IfcPropertySingleValue` — je to
+`IfcPropertyEnumeratedValue` a je ho 209, presne ako uvádza §11.
+A „53 netypovaných" bolo 51 `IfcDistributionPort`, ktoré sa netypujú, plus
+2 agregujúce `IfcRoof` z fázy 1, ktoré typ nemajú zámerne. Skutočný počet
+je 0. Obe merania sú v skripte opravené aj s poznámkou, aby na to
+nenaletel nikto ďalší.
