@@ -212,6 +212,31 @@ kódy s inými skladbami a priradenie podľa kódu by bolo nesprávne.
 
 ---
 
+## 4b. Fyzika materiálov
+
+Deväť materiálov nesie λ, ρ, c a μ z výpisu `D.1.1.09`. Zápis je podľa
+schémy v `IfcMaterialProperties` na `IfcMaterial`, nie v `IfcPropertySet`
+na prvku — psety `Pset_MaterialThermal`, `Pset_MaterialCommon`
+a `Pset_MaterialHygroscopic` sú `PSET_MATERIALDRIVEN`.
+
+μ je v `Pset_MaterialHygroscopic` ako dvojica `Lower`/`UpperVaporResistanceFactor`;
+`Pset_MaterialThermal` ho nemá. Rozsah `ρ = 23–28` nesie
+`IfcPropertyBoundedValue` — šablóna psetu predpisuje jednu hodnotu, tá by
+rozsah zahodila. Každá hodnota má v `Specification` riadok výpisu, z ktorého
+pochádza.
+
+**Doplnené jednotky.** Model pre λ, ρ ani c jednotku nedeklaroval. Pribudli
+do `IfcUnitAssignment` ako `IfcDerivedUnit`: `THERMALCONDUCTANCEUNIT`
+(kg·m·s⁻³·K⁻¹), `MASSDENSITYUNIT` (kg·m⁻³), `SPECIFICHEATCAPACITYUNIT`
+(m²·s⁻²·K⁻¹). Metre sú z `IfcSIUnit` bez prefixu — projekt je
+v milimetroch a bez toho by ρ vyšlo v kg/mm³.
+
+**Fyziku nemá 38 zo 47 materiálov.** Výpis ich neuvádza a tabuľková hodnota
+by bola vymyslená. Menovite chýba parotesniaci pás s AL fóliou — vo výpise
+je, ale samostatný materiál preň v modeli nie je.
+
+---
+
 ## 5. Vady podkladu
 
 Nájdené pri práci; model ich nekopíruje, ale ani neopravuje ticho.
