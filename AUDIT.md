@@ -301,7 +301,7 @@ a boundaries, sweep a zaokrúhlenie posledné.
 
 | fáza | skript | obsah |
 |---|---|---|
-| **0** | `tests/test_invariants.py` | testy invariantov, `AUDIT.md` a `BEP_ANNEX.md` do repa — **brána nesplnená**, viď §9 |
+| **0** | `tests/test_invariants.py` | testy invariantov, `AUDIT.md` a `BEP_ANNEX.md` do repa — **doplnené**: `BEP_ANNEX.md` vznikol po fáze 8, `data/ASR.ifc` po nej, viď §24 |
 | **1** | `14_fix_classes.py`, `15_fix_roof_assembly.py` | #T #V #AL #AB #AC #AN #AM; dve `FLAT_ROOF`; atika do `SN02.01` |
 | **2** | `16_fix_psets.py` | #A #B #E #AH #AI (117 occurrence setov) |
 | **3** | `17_dedup_types.py` | #AE #O #AK #AA #AF |
@@ -1256,3 +1256,27 @@ tohto repa preto začína pri `ASR_final_v2.ifc`. Zapísané v
 
 `pytest` **9 z 9 prechádza**, vrátane pomalej kontroly geometrie proti
 `data/ASR.ifc`.
+
+---
+
+## 25. `BEP_ANNEX.md` a stav #AM
+
+**`BEP_ANNEX.md`** doplnený. §7 ho žiadal už vo fáze 0 a v repe nebol.
+Zbiera rozšírenia SNIM, šesť odchýlok od dokumentovaného IFC vzoru,
+rozhodnutia o triede a type bez excelu, zápis vzduchovej dutiny, vady
+podkladu a zoznam toho, čo model nemá.
+
+**#AM sa zmenšilo o schémový nález.** `IfcCurtainWallTypeEnum` obsahuje
+iba `USERDEFINED` a `NOTDEFINED`, takže na 67 fasádach a poliach LOP nie
+je čo nastaviť — `NOTDEFINED` je jediná zmysluplná hodnota, ak sa nezavedie
+vlastný `ObjectType`. Tá časť #AM je uzavretá schémou, nie rozhodnutím.
+
+Zvyšok #AM na `ASR_v16.ifc` (114 occurrences bez `PredefinedType`, z toho
+67 fasád vyššie):
+
+| trieda | kód | ks | čo k tomu treba |
+|---|---|--:|---|
+| `IfcFurniture` | `VP02`, `OV02`, `OV04` | 21 | enum ponúka len nábytok (`CHAIR`, `DESK`, …); tieto sú stavebné výrobky, takže otázka je skôr na triedu než na typ |
+| `IfcRailing` | `ZV01`, `KV02` | 12 | legenda hovorí „schodišťové zábradlie výšky 1000 mm" — `GUARDRAIL` alebo `BALUSTRADE`, rozhodnutie |
+| `IfcSlab` | `DZ02` | 8 | §5 pravidlo nemá |
+| `IfcStair`, `IfcStairFlight` | `SC01`, `SD04` | 5 | enum má 15 hodnôt podľa tvaru ramena, treba výkres |
