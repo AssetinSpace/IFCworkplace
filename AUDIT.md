@@ -1839,9 +1839,15 @@ Doplnené ako **`tests/allowlist_prepipeline.json`** s vysvetlením priamo
 v súbore. Až s ním sa dá reťazová kontrola spustiť:
 
 ```
-python src/gate.py out/ASR_v21.ifc --reference data/ASR.ifc \
-    --allow-file tests/allowlist_prepipeline.json --skip 3
+python src/gate.py out/ASR_v21.ifc --reference data/ASR.ifc --skip 3 \
+    --allow-file tests/allowlist_prepipeline.json \
+    $(for f in out/ASR_v*.ifc.allowlist.json; do echo --allow-file $f; done)
 ```
+
+`--allow-file` sa dá odteraz uviesť **viackrát** a allowlisty sa zlúčia;
+reťazová kontrola potrebuje základňu aj allowlisty všetkých krokov.
+Takto spustená hlási **zlyhalo 0 zo 6** — celá cesta od pôvodného Revit
+exportu po `ASR_v21.ifc` je tým overená jedným príkazom.
 
 `--skip 3` je nutné: GUID účtovníctvo cez prechod `ASR.ifc` →
 `ASR_final_v2.ifc` pokrýva 11 000 entít pôvodnej pipeline, ktorá
