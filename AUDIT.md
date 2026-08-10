@@ -1280,3 +1280,37 @@ Zvyšok #AM na `ASR_v16.ifc` (114 occurrences bez `PredefinedType`, z toho
 | `IfcRailing` | `ZV01`, `KV02` | 12 | legenda hovorí „schodišťové zábradlie výšky 1000 mm" — `GUARDRAIL` alebo `BALUSTRADE`, rozhodnutie |
 | `IfcSlab` | `DZ02` | 8 | §5 pravidlo nemá |
 | `IfcStair`, `IfcStairFlight` | `SC01`, `SD04` | 5 | enum má 15 hodnôt podľa tvaru ramena, treba výkres |
+
+---
+
+## 26. S1, S2, S6 — pokus o geometrické odvodenie a prečo neprešiel
+
+Skúsil som priradiť zdieľané kódy tou istou metódou, akou fáza 7 rozdelila
+polia LOP: nájsť značkovú vrstvu (`ST01.20` vegetácia, `ST01.21` kačírek,
+`PD03.30` dutinová podlaha) a zobrať pod ňou prvky `ST01.10`, `SD02`
+a `PH01`, ktoré s ňou pôdorysne prekrývajú.
+
+**Nefunguje to a skript som zahodil.** Výsledok bol na prvý pohľad zlý:
+do `S1` padli 2 z 25 `ST01.10`, kým `S6` pritiahlo 21 podhľadov od dvoch
+značiek. Meranie ukazuje prečo:
+
+| kód | ks | zvislý rozsah | plocha jedného prvku |
+|---|--:|---|---|
+| `ST01.10` | 25 | 13250 … 17343 | 1.0 – 676.9 m² |
+| `ST01.20` | 18 | 13483 … 17503 | 24.0 – 102.9 m² |
+| `ST01.21` | 25 | 13484 … 17144 | **0.1 – 17.8 m²** |
+| `SD02.03` | 4 | 4600 … 13250 | 693 m² |
+| `PH01.10` | 14 | 2600 … 12263 | 2.3 – 693 m² |
+
+Vrstvy nie sú po jednej na plochu, ale rozsekané na kusy od decimetra
+štvorcového po sedemsto metrov, a rozprestierajú sa cez **obe** úrovne
+strechy naraz. Prekryv „menší v väčšom" preto spája veci, ktoré spolu
+nesúvisia, a zároveň míňa tie, ktoré súvisia.
+
+Priradenie sa dá spraviť, ale nie mechanicky — chce to prejsť strešný
+pôdorys `D.1.1.04` a povedať, ktorá plocha je vegetačná a ktorá kačírková.
+To je čítanie podkladu, nie odvodenie, takže `S1`, `S2` a `S6` zostávajú
+otvorené.
+
+Zvyšných päť skupín z fázy 8 tým nie je dotknutých — tie stoja na
+jednoznačných kódoch a na agregácii, nie na tomto odhade.
