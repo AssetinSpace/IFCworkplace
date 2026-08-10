@@ -1808,3 +1808,54 @@ nechať ako je, alebo presunúť `.0008` a `.0009` pod dosku tiež.
 
 **Zlyhalo 0 zo 7.** Idempotencia overená, `pytest` 8/8.
 Prvkov kontajnovaných v podlažiach 405 → 398, `IfcRelAggregates` 96 → 97.
+
+---
+
+## 34. Reťazová kontrola proti pôvodnému exportu
+
+Otázka, na ktorú §24 odpovedalo len čiastočne: **posunula sa niekde
+geometria medzi `data/ASR.ifc` a dnešným stavom?**
+
+Merané `bbox_map` z `tests/test_invariants.py` — tou istou funkciou, akú
+používa invariant 1 — na `data/ASR.ifc` proti `out/ASR_v21.ifc`:
+
+| vec | hodnota |
+|---|---|
+| tvarov v `ASR.ifc` | 2584 |
+| tvarov v `ASR_v21.ifc` | 2590 |
+| spoločných | 2542 |
+| **bboxov, ktoré sa posunuli** | **0** |
+| tvarov zaniklo | 42, všetko `IfcSpace` |
+| tvarov vzniklo | 48, z toho 26 v allowlistoch krokov |
+
+**Zvyšných 42 + 22 je jedna jediná udalosť.** Pôvodná pipeline (kroky
+1–13, mimo tohto repa) prekreslila priestory 1NP skriptom
+`build_1np_spaces.py`: 42 pôvodných `IfcSpace` zaniklo a 22
+rekonštruovaných `1.01`–`1.23` vzniklo. §8 tú výnimku menuje
+(*„Výnimka: priestory, kde už precedens existuje"*) a #Z ju rieši, ale
+v žiadnom allowliste nebola, lebo sa stala pred týmto repom.
+
+Doplnené ako **`tests/allowlist_prepipeline.json`** s vysvetlením priamo
+v súbore. Až s ním sa dá reťazová kontrola spustiť:
+
+```
+python src/gate.py out/ASR_v21.ifc --reference data/ASR.ifc --skip 3 \
+    --allow-file tests/allowlist_prepipeline.json \
+    $(for f in out/ASR_v*.ifc.allowlist.json; do echo --allow-file $f; done)
+```
+
+`--allow-file` sa dá odteraz uviesť **viackrát** a allowlisty sa zlúčia;
+reťazová kontrola potrebuje základňu aj allowlisty všetkých krokov.
+Takto spustená hlási **zlyhalo 0 zo 6** — celá cesta od pôvodného Revit
+exportu po `ASR_v21.ifc` je tým overená jedným príkazom.
+
+`--skip 3` je nutné: GUID účtovníctvo cez prechod `ASR.ifc` →
+`ASR_final_v2.ifc` pokrýva 11 000 entít pôvodnej pipeline, ktorá
+allowlisty nikdy nepísala. Reťazovo má zmysel **geometria**, nie GUID —
+a tá je čistá.
+
+**36 `IfcRoof`**, ktoré fáza 1 zrušila (#V, prázdne obaly 1:1 nad
+`IfcSlab`), v `bbox_map` nefigurujú vôbec a v allowliste kroku sú.
+
+Nič z tohto nespôsobili fázy 11–14: množina stratených tvarov je
+konštantná od `ASR_v3.ifc`.

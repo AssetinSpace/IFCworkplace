@@ -44,8 +44,11 @@ def main() -> int:
     ap.add_argument("--allow", default="")
     ap.add_argument("--known", default="",
                     help="položky registra zo známych vád základne, napr. AW")
-    ap.add_argument("--allow-file", default="",
-                    help="JSON s {'removed': [...], 'added': [...]} od skriptu kroku")
+    ap.add_argument("--allow-file", action="append", default=[],
+                    help="JSON s {'removed': [...], 'added': [...]} od skriptu kroku. "
+                         "Dá sa uviesť viackrát — allowlisty sa zlúčia. Reťazová "
+                         "kontrola proti data/ASR.ifc potrebuje základňu "
+                         "tests/allowlist_prepipeline.json aj out/ASR_v*.allowlist.json")
     ap.add_argument("--show", type=int, default=8)
     args = ap.parse_args()
 
@@ -56,9 +59,10 @@ def main() -> int:
         allow |= known_baseline(*known)
     if args.allow_file:
         import json
-        with open(args.allow_file, encoding="utf-8") as fh:
-            d = json.load(fh)
-        allow |= set(d.get("removed", [])) | set(d.get("added", []))
+        for path in args.allow_file:
+            with open(path, encoding="utf-8") as fh:
+                d = json.load(fh)
+            allow |= set(d.get("removed", [])) | set(d.get("added", []))
 
     print("subject   :", args.subject)
     print("reference :", args.reference,

@@ -1,7 +1,7 @@
 # BEP — príloha k modelu OCB
 
 Zoznam rozšírení SNIM a odchýlok od dokumentovaného IFC vzoru, ktoré
-model `ASR_v16.ifc` obsahuje. Každá položka uvádza, čo sa spravilo, prečo,
+model `ASR_v21.ifc` obsahuje. Každá položka uvádza, čo sa spravilo, prečo,
 a o akú oporu sa opiera.
 
 Register vád, meranie a postup sú v `AUDIT.md`; táto príloha je jeho
@@ -59,6 +59,18 @@ stena má vlastnú reprezentáciu. Dôvod: `IfcRelCoversBldgElements` je
 v IFC4.3 **deprecated**, a IFC4.3 zároveň zrušilo `IfcWallElementedCase`
 aj `IfcSlabElementedCase`, teda entity, ktoré ten vzor pomenúvali.
 
+Ten istý vzor platí aj pre **obvodovú izoláciu základovej dosky**:
+sedem `FS03.01` je agregovaných do `ZD02.01.0001`. Izolácia pokrýva celú
+zvislú hranu dosky (prekryv 500 mm = plná hrúbka) a typ sa volá
+`Izolace_ZD_120`. Precedens je v `AUDIT.md` §4: krytina na doske do dosky
+patrí.
+
+**Otvorená nesúmernosť:** `FS03.01.0008` a `.0009` sú agregované do stien,
+ktoré naozaj pokrývajú. Deväť kusov toho istého výrobku má tým dva rôzne
+celky, pričom `.0009` je obvodový pás dlhý 33 500 mm — tá istá vec ako
+kusy pod doskou. Zjednotenie čaká na rozhodnutie; pri preberaní to treba
+vedieť.
+
 ### 2.3 Zóny šácht mimo požiarneho rámca
 
 Sedem `IfcZone` nesie `ObjectType` `'ElevatorShaft'` (2) a `'RisingDuct'`
@@ -79,6 +91,23 @@ have its own shape representation"* — takže sa nič nefabrikuje. WR1
 
 Dôsledok: najvyššia zóna drží dva druhy členov — `IfcSpatialZone` pre
 1NP a 2NP, `IfcZone` pre 3NP. Je to nesúrodé a je to vedomé.
+
+**Väzba zón na priestory.** `PZ01`–`PZ10` dostali `IfcRelReferencedInSpatialStructure`
+na **42 priestorov**; zón bez väzby je 0. Schéma to výslovne povoľuje —
+pravidlo `AllowedRelatedElements` má výnimku *„an `IfcSpace` can be
+referenced by another spatial structure element, in particular by an
+`IfcSpatialZone`"*. Priraďovalo sa **podielom plochy z priemetu telesa**,
+nie bboxom: `PZ01` má bbox celého pôdorysu budovy, ale plochu 611,54 m²,
+takže bboxom by pohltila štyri susedné zóny. Prah je necitlivý — 0,3 aj
+0,7 dávajú rovnakých 42 väzieb.
+
+Zónu nedostalo 33 zo 75 priestorov a ani jeden prípad nie je vada: 22 je
+celé 3NP (nesie ho `IfcZone` vyššie), 9 sú služobné priestory 2NP mimo
+nájomnej zóny, 2 sú šachty mimo telies zón. Jedna vedomá odchýlka: `2.19`
+je šachta, ktorá geometricky leží vnútri `PZ10` „Nájomný priestor", a
+väzbu preto dostala — vzťah znamená „referenced in", nie „je
+prenajímateľná". Jej náprotivok na 3NP väzbu nemá, lebo tá zóna vznikla
+z legendy.
 
 ### 2.5 `IfcSystem` namiesto `IfcDistributionSystem`
 
@@ -120,6 +149,22 @@ a rozhodnutie projektanta. Tieto je nutné vedieť pri preberaní:
 | `WC02`, `WC04` | `TOILETPAN` | §7 |
 | `WC03`, `WC05` | `WASHHANDBASIN` | §7 |
 | `WC07` | `SINK` | §7 |
+| `DZ02` steny výťahových jám | `IfcWall / SOLIDWALL` | **návrat k originálu** — `data/ASR.ifc` má `IfcWall` s `Pset_WallCommon.LoadBearing = True`; na `IfcSlab` ju prepísala pôvodná pipeline. Spec: *„massive wall… concrete walls… that are load bearing"* |
+| `VP02` sklopné madlá WC | `IfcRailing / HANDRAIL` | popis „Bezbariérové WC – madlo sklopné"; spec *„support for loads applied by human occupants (at hand height)"* |
+| `ZV01.01` | `IfcRailing / GUARDRAIL` | „Zábradlí 1000 se svislou výplní"; spec *„guard… from falling off a stair, ramp or landing"* |
+| `ZV01.02`, `KV02` | `IfcRailing / HANDRAIL` | „Madlo 1000", „Madlo – kovové" — madlo, nie bariéra |
+| `OV02` prístrešky vstupov | `IfcBuiltElement`, `ObjectType = 'Prístrešok vstupu'` | `IfcShadingDevice` zamietnutý: entita je ochrana *„from the sunlight… or screening them from view"* a jej NOTE posiela prvky s iným primárnym účelom na `IfcBuiltElement`. Sklo netieni |
+| `OV04.03` poistný prepad | `IfcWasteTerminal / USERDEFINED`, `ObjectType = 'Poistný prepad'` | enum hodnotu pre prepad nemá; `ROOFDRAIN` ústi do systému, prepad ústi voľne von |
+| `ZV04.01` rebrík s košom | `IfcStair / LADDER` | spec: *„a series of bars or steps between two upright elements used for climbing"* |
+| `SC01` | `IfcStair / HALF_TURN_STAIR` | **zmerané, nie prevzaté z popisu**: smery stúpania oboch ramien zvierajú 180,0° na všetkých troch schodiskách |
+| `SD04` | `IfcStairFlight / STRAIGHT` | priame rameno 4500–5100 mm |
+
+**Dve triedy `PredefinedType` nemajú vôbec.** `IfcBuiltElement`
+ani `IfcBuiltElementType` ten atribút nedefinujú — význam nesie
+`ObjectType`, na type `ElementType`. Docs ten prípad menujú: *„when the
+concrete entity instantiated does not have a PredefinedType attribute…
+in some exceptional leaf classes"*. Preto `OV02` nesie meno výrobku
+v `ObjectType`, nie v enume.
 
 **`IfcCurtainWall` nemá čo nastaviť.** `IfcCurtainWallTypeEnum` obsahuje
 iba `USERDEFINED` a `NOTDEFINED`, takže `NOTDEFINED` na všetkých 67
@@ -185,11 +230,11 @@ Nájdené pri práci; model ich nekopíruje, ale ani neopravuje ticho.
 
 | tvrdenie | ako |
 |---|---|
-| geometria prvkov sa od pôvodného exportu neposunula | 2495 tvarov `IfcBuiltElement`, 0 zmenených, bboxy na 6 desatinných miest, `ASR.ifc` → `ASR_v16.ifc` |
+| geometria prvkov sa od pôvodného exportu **neposunula** | **0 posunutých bboxov** medzi `data/ASR.ifc` a `ASR_v21.ifc`, na 6 desatinných miest, 2542 spoločných tvarov. Jediný rozdiel v množine tvarov je prekreslenie priestorov 1NP pôvodnou pipeline (42 zaniklo, 22 vzniklo) — viď `AUDIT.md` §34 |
 | každý zrušený a nový GUID fáz 1–10 je vysvetlený | 560 + 1118 = 1678, presne veľkosť kumulatívneho allowlistu, 0 mimo neho |
 | model je schémovo platný | `validate(express_rules=True)` = 0 hlásení |
 | žiadne osirelé entity | invariant 4 = 0 |
 | kontajnment je exkluzívny | invariant 7 = 0 |
 | plný SNIM kód je jedinečný | invariant 6 = 0 |
 
-Brána na `ASR_v16.ifc`: **zlyhalo 0 zo 7**. `pytest` 9 z 9.
+Brána po každej fáze proti výstupu predošlej: **zlyhalo 0 zo 7** vo fázach 11, 12, 13 aj 14. `pytest` 8 z 8 (deviaty je pomalý test geometrie, beží na merge).
