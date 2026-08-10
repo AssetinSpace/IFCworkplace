@@ -849,3 +849,67 @@ hranice našiel a skončil bez zmeny.
 **Fáza 6 je tým uzavretá.** Ďalej je fáza 7 — `24_lop_fields.py`, 48
 vnorených `IfcCurtainWall`, `Ucw` a `Qto`. Tá zároveň otvorí okenné
 hranice, ktoré dnes chýbajú.
+
+---
+
+## 18. Fáza 7 — podklad k LOP, zisťovanie pred zásahom
+
+Model sa zatiaľ **nemenil**. Toto je zhrnutie toho, čo je overené, a jednej
+veci, ktorú bez rozhodnutia určiť nemožno.
+
+### Čo sedí
+
+**48 polí je potvrdených z dvoch nezávislých strán.** Výkres `D.1.1.08`
+delí fasádu na 5 polí na východe, 5 na západe, 3 na juhu a 3 na severe,
+teda 16 na podlažie × 3 podlažia. V modeli to sedí na osnovu: zhluky
+stĺpov dávajú **6 osí v X po 6500 mm** (30385…62885) a **4 osi v Y**
+(−7641, −1141, 6359, 12859). Šesť osí = 5 polí, štyri osi = 3 polia.
+Červené deliace čiary na výkrese ležia na tých istých osiach, takže
+delenie sa nemusí odčítavať z rastra — dá sa odvodiť z geometrie.
+
+**`Ucw` je v podkladoch, ktoré máme.** Poznámka výkresu `D.1.1.08`:
+*„uvažovaný súčiniteľ prestupu tepla podľa teplo-technickej analýzy
+U_cw = 0,64 W/m²K"*. Chýbajúca zložka `3 – Tepelná technika LOP` teda
+nie je pre `Pset_CurtainWallCommon.ThermalTransmittance` nutná. Plochy sa
+aj tak majú merať z geometrie, nie prepisovať.
+
+Tá istá poznámka uvádza systém **`SCHUECO FWS 50.SI`** — patrí do
+`Description` alebo do BEP.
+
+**12 `PL01` sedí:** 4 na podlažie, dve dlhé po 33500 mm (5 polí) a dve
+krátke po 21500 mm (3 polia). Súčet obálok 1579.51 m²; s `LP03` a `OV06`
+na 4NP 1761.57 m². Tepelná technika uvádzala 1603.63 m² — rozdiel patrí
+do zosúhlasenia, keď budú polia hotové.
+
+**Orientácia východ–západ je istá z modelu:** `2.02 Openspace - Východ`
+leží na `Y = −2703`, `2.01 Openspace - Západ` na `Y = +7922`, takže
+**−Y je východ a +Y západ**. Fasády `PL01.0001/.0005/.0009` sú východné,
+`.0004/.0008/.0012` západné.
+
+### Názvy polí z výkresu
+
+| pohľad | 1NP | 2NP | 3NP |
+|---|---|---|---|
+| východ | `I1-V` `K1-V` `L1-V` `K1-V` `D1-V` | `M2-V` `E2-V` `E2-V` `E2-V` `C2-V` | `M3-V` `E3-V` `E3-V` `E3-V` `C3-V` |
+| sever | `C1-S` `B1-S` `A1-S` | `C2-S` `B2-S` `A2-S` | `C3-S` `B3-S` `A3-S` |
+| juh | `A1-J` `B1-J` **`C1-S`** | `A2-J` `B2-J` `C2-J` | `A3-J` `B3-J` `C3-J` |
+
+Kód teda **nie je jedinečný na pole, ale na typ poľa** — `E3-V` je na
+východe trikrát. Pomenovanie inštancií preto potrebuje index.
+
+### Dve veci, ktoré bez rozhodnutia nejdú
+
+**1 · `C1-S` na južnom pohľade.** Systematicky tam patrí `C1-J`, ale
+výkres tam má `C1-S` a kód `C1-J` sa v celom výkrese nevyskytuje.
+Overené priblížením oboch pohľadov, nejde o preklep v čítaní. Je to vada
+podkladu rovnakej povahy ako #AV. Buď sa pole pomenuje `C1-J` s poznámkou
+o odchýlke, alebo `C1-S` dvakrát a padne jedinečnosť mena.
+
+**2 · Ktorá strana modelu je sever.** Východ a západ sú isté, sever a juh
+nie. Kompas na `D.1.1.01` ukazuje **šikmo**, teda objekt nie je natočený
+podľa svetových strán a názvy fasád sú priradené k najbližšej svetovej
+strane. Pôdorys je navyše kreslený tak, že `+X` ide doľava, čo smer
+z kompasu obracia. Určiť to odhadom by znamenalo označiť 18 zo 48 polí
+možno naopak, preto to nechávam otvorené. Rozhodne to jedna veta od
+Samuela alebo chýbajúca zložka `3 – Tepelná technika LOP`, ktorá polia
+vymenúva záväzne.
