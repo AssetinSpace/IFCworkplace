@@ -195,7 +195,7 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 | AI | **H** | ~~„Dřevo obecné" na krídle LOP~~ — vyriešilo sa rozhodnutím 27, `70d17af` |
 | AQ | **D** | ~~layer sety nesedia s výpisom~~ — **prvá polovica bola nesprávne prečítaná**, viď §21. Spádové kliny v modeli **sú**: `ST01.10a` (23 ks) nesie `Izolace EPS spádové kliny`, `ST01.10b` (2 ks) rovné dosky. Hydroizolácia patrí do druhej vrstvy strechy a v modeli tam aj je — `ST01.20` a `ST01.21` nesú po dvoch asfaltových pásoch. Zostáva ETICS: krytina nesie 1 vrstvu (izoláciu) zo 6 vo výpise; lepidlo, stierka, sieťka a omietka nemajú vlastnú geometriu a podľa §2 a §3 sa hrúbkový rozdiel **dokumentuje, nedopĺňa** |
 | AU | O | deklarovaná vs geometrická hrúbka: `FS01.10` 210/180, `FS01.11` 141/120, `FS01.12` 80/50, `FS01.20` 210/180, `ST01.10` 234–354/204 |
-| AS | O | materiál „Výchozí" ako dutinová podlaha v `PD03.*` |
+| AS | **H** | ~~materiál „Výchozí" ako dutinová podlaha v `PD03.*`~~ — fáza 8, §22: štyri vrstvy `PD03.*` nesú `IsVentilated` a materiál nemajú, ako žiada `IfcMaterialLayer` §8.10.3.6.1. Overené na `ASR_v21.ifc`: 0 vrstiev s materiálom „Výchozí". Riadok registra zostal omylom na **O**, hoci §23 ho medzi uzavretými uvádza |
 | AT | O | λ, ρ, c, μ z výpisu nie sú v `Pset_Material*` — samostatná fáza |
 
 ### Zdokumentovať, neopraviť
