@@ -147,7 +147,7 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 | AL | **H** | ~~`IH01.01` ako `IfcWall / STANDARD`~~ → `IfcCovering / MEMBRANE`, 4 occ + typ, `45ea35d` |
 | AB | **H** | ~~blok 0.41×1.25×0.30 ako `IfcStair`~~ → `IfcFooting / PAD_FOOTING`, `ZD02.05`, `45ea35d` |
 | AC | **H** | ~~`ZD02.03/.04` `FLOOR`; occurrence `ZD02.01` typovaná `ZD02.04`~~ — typ premenovaný, `BASESLAB`, `45ea35d` |
-| AM | O | `PredefinedType` — steny hotové (`45ea35d`): 159 occ podľa §5 + všetkých 12 `IfcWallType`. Číslo 383 = **314** `NOTDEFINED` + **69** `IfcFlowTerminal`, ktoré atribút v IFC4X3 nemajú vôbec (fáza 10). Otvorených ostáva **67** occurrences bez pravidla v §5: 8 `IfcSlab DZ02`, 19 `IfcCurtainWall`, 22 `IfcFurniture`, 12 `IfcRailing`, 5 `SC01`. **Odmerané na `ASR_v17.ifc` (§29):** 114 = 67 `IfcCurtainWall` (uzavreté schémou, §25) + 22 `IfcFurniture` + 12 `IfcRailing` + 8 `IfcSlab` + 3 `IfcStair` + 2 `IfcStairFlight`. §25 uvádzalo 21 `IfcFurniture` — chýbal v ňom `ZV04.01`. Rozhodnutia sú v §29, vykoná ich fáza 11 a 12 |
+| AM | O | `PredefinedType` — steny hotové (`45ea35d`): 159 occ podľa §5 + všetkých 12 `IfcWallType`. Číslo 383 = **314** `NOTDEFINED` + **69** `IfcFlowTerminal`, ktoré atribút v IFC4X3 nemajú vôbec (fáza 10). Otvorených ostáva **67** occurrences bez pravidla v §5: 8 `IfcSlab DZ02`, 19 `IfcCurtainWall`, 22 `IfcFurniture`, 12 `IfcRailing`, 5 `SC01`. **Odmerané na `ASR_v17.ifc` (§29):** 114 = 67 `IfcCurtainWall` (uzavreté schémou, §25) + 22 `IfcFurniture` + 12 `IfcRailing` + 8 `IfcSlab` + 3 `IfcStair` + 2 `IfcStairFlight`. §25 uvádzalo 21 `IfcFurniture` — chýbal v ňom `ZV04.01`. Rozhodnutia sú v §29. **Fáza 11 (§30) uzavrela 30 z nich** prekvalifikovaním — 114 → 84 bez `PredefinedType`, z toho 67 `IfcCurtainWall` uzavretých schémou. Zostáva **17**: `SC01` 3, `SD04` 2, `ZV01.01` 4, `ZV01.02` 6, `KV02` 2 — fáza 12 |
 | AN | **H** | ~~`KV01` `MOLDING`~~ → `COPING`, 2 occ + typ, `45ea35d` |
 | AO | **H** | ~~fasádne zateplenia mimo agregácie~~ — atika fáza 1 (`50c26c5`, 8× `IfcRelAggregates`, 18 dielov); zateplenia fáza 6a, 14 dielov `FS01` do 10 stien. **Otvorené zostáva 7 `FS03.01`**, pre ktoré sa nenašla stena — viď §16 |
 
@@ -1521,3 +1521,110 @@ prekvalifikovanie je zásah s vlastným rizikom a vlastnou bránou. Nastavenie
 atribútu je proti tomu lacné. Spojiť ich by znamenalo, že pri zlyhaní brány
 nevieme ktoré z dvoch ho spôsobilo — presne to, pred čím varuje
 `CLAUDE_CODE_START.md` § „Poradie a čo nerobiť naraz".
+
+---
+
+## 30. Fáza 11 — triedny model podruhé
+
+`out/ASR_v17.ifc` → `out/ASR_v18.ifc`, `src/30_fix_classes_2.py`.
+Prekvalifikovaných **30 occurrences a 6 typov**.
+
+| kód | ks | pred | po |
+|---|--:|---|---|
+| `DZ02` | 8 | `IfcSlab` | `IfcWall / SOLIDWALL` |
+| `VP02` | 12 | `IfcFurniture` | `IfcRailing / HANDRAIL` |
+| `OV02.01`, `OV02.02` | 7 | `IfcFurniture` | `IfcBuiltElement`, `ObjectType = 'Prístrešok vstupu'` |
+| `OV04.03` | 2 | `IfcFurniture` | `IfcWasteTerminal / USERDEFINED`, `ObjectType = 'Poistný prepad'` |
+| `ZV04.01` | 1 | `IfcFurniture` | `IfcStair / LADDER` |
+
+**`IfcFurniture` je v modeli 0.** Všetkých 22 kusov, ktoré tú triedu niesli,
+sú stavebné výrobky a majú teraz triedu podľa toho, čím sú.
+
+### `DZ02` — návrat, nie zmena
+
+Rozhodnutie Samuela znelo *„výťahové jamy sú normálne betón, doska a stena,
+netreba to komplikovať, proste nosná konštrukcia"*. Model to potvrdil sám:
+v `data/ASR.ifc` je `DZ02` **`IfcWall` s `Pset_WallCommon.LoadBearing = True`**
+a vlastným `IfcWallType`. Na `IfcSlab` ju prepísala **pôvodná pipeline
+(kroky 1–12, mimo tohto repa)** — trasa naprieč verziami je jednoznačná:
+`ASR.ifc` 8× `IfcWall`, `ASR_final_v2.ifc` už 8× `IfcSlab`, a odvtedy
+nezmenene až po `v17`. Naše fázy 1–10 sa jej nedotkli.
+
+Fáza 2 potom v dobrej viere premenovala `Pset_WallCommon` na
+`Pset_SlabCommon` (#B) a zahodila pri tom `ExtendToStructure`, ktoré je
+vlastnosť len steny. Fáza 11 vracia oboje: pset sa volá znova
+`Pset_WallCommon` a `ExtendToStructure = False` je prečítané späť
+z originálu, nie vymyslené.
+
+`SOLIDWALL` podľa spec: *„A massive wall construction … often masonry or
+concrete walls (both cast in-situ or precast) that are load bearing and fire
+protecting."* Zvažovaný `RETAININGWALL` (*„supporting wall used to protect
+against soil layers behind"*) by tiež sedel na jamu, ale rozhodnutie znelo
+nosná konštrukcia, nie oporná.
+
+### `OV02` — prečo nie `IfcShadingDevice`
+
+`AWNING` v `IfcShadingDeviceTypeEnum` znie ako trafa — *„a rooflike shelter …
+extending over a doorway … in order to provide protection"*. Entita ako celok
+je však definovaná ako ochrana *„from the sunlight, from natural light, or
+screening them from view"* a jej vlastná NOTE hovorí, že prvky s **iným
+primárnym účelom** patria na `IfcSlab` alebo iné podtypy `IfcBuiltElement`.
+Sklenený prístrešok netieni — chráni pred zrážkami. Preto `IfcBuiltElement`,
+ktorý je v IFC4.3 inštancovateľný (overené proti schéme, `is_abstract()`
+= `False`) a `PredefinedType` **nemá**; význam nesie `ObjectType`, na type
+`ElementType`. Docs ten prípad menujú: *„when the concrete entity instantiated
+does not have a PredefinedType attribute … in some exceptional leaf classes."*
+
+### `OV04.03` — trieda áno, enum nie
+
+`IfcWasteTerminalTypeEnum` hodnotu pre prepad nemá. `ROOFDRAIN` je *„pipe
+fitting … that collects rainwater for discharge into the rainwater system"* —
+poistný prepad do systému neústi, ústi voľne von. Preto `USERDEFINED`
+s `ObjectType`. Trieda drží rodinu `OV04` pokope; zvyšných 18 kusov ju má
+z fázy 10.
+
+**Do `IfcSystem` „Zoskupenie zariadení — strešné vpuste" sa `OV04.03`
+nepridal.** Prepad vpusť nie je a názov skupiny by prestal platiť. Členstvo
+je samostatné rozhodnutie, nie dôsledok triedy.
+
+### Allowlist a čo v ňom je
+
+Invariant 1 meria bboxy `IfcBuiltElement` a `IfcSpace`. `IfcFurniture` do tej
+množiny nepatrí, `IfcRailing`, `IfcStair` a `IfcBuiltElement` áno — takže
+**20 prvkov** (12 `VP02` + 7 `OV02` + 1 `ZV04.01`) sa invariantu javí ako
+nové tvary. Geometria je pritom nedotknutá a je to zmerané: bboxy všetkých
+30 dotknutých prvkov sú v `v17` aj `v18` zhodné na 6 desatinných miest,
+množina `GlobalId` je identická, `IfcBuiltElement` neubudlo ani jedno.
+Allowlist skript generuje sám z rozdielu tých dvoch množín, nie ručne.
+
+### Brána
+
+| inv | výsledok |
+|---|---|
+| 1 geometria | **OK** — 20 v allowliste, 0 zmenených bboxov |
+| 2 EXPRESS | **0 hlásení** — vrátane nových `IfcBuiltElement` a `IfcBuiltElementType` |
+| 3 GUID | **OK** — 0 zrušených, 0 nových; `reassign_class` zachováva `GlobalId` |
+| 4 osirelé | OK |
+| 5 prázdne SET | OK |
+| 6 jednoznačnosť | OK |
+| 7 kontajnment | OK |
+
+**Zlyhalo 0 zo 7.** Idempotencia overená: druhý beh hlási, že všetkých
+6 typov triedu už má. `pytest` 8 prešlo.
+
+Pozn. k referencii: `src/gate.py` má default `--reference data/ASR.ifc`, čo
+je správne pre reťazovú kontrolu, ale pre fázovú bránu treba
+`--reference out/ASR_v17.ifc`. Bez toho brána vypíše všetko, čo spravili
+fázy 1–10, a vyzerá to ako 12 778 porušení.
+
+### Posun oproti §29
+
+§29 plánovalo `PredefinedType` **všetkých** prvkov až do fázy 12. Pri
+prekvalifikovaní sa to ale oddeliť nedá — na `IfcStair` sa nedá prejsť bez
+toho, aby sme povedali `LADDER`. Fáza 11 preto nastavuje enum tam, kde je
+súčasťou rozhodnutia o triede. Fáze 12 zostáva **17 occurrences, ktoré si
+triedu ponechávajú**: `SC01` 3, `SD04` 2, `ZV01.01` 4, `ZV01.02` 6,
+`KV02` 2.
+
+Occurrences bez `PredefinedType`: 114 → **84**, z toho 67 `IfcCurtainWall`
+uzavretých schémou (§25) a 17 pre fázu 12.
