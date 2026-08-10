@@ -147,7 +147,7 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 | AL | **H** | ~~`IH01.01` ako `IfcWall / STANDARD`~~ → `IfcCovering / MEMBRANE`, 4 occ + typ, `45ea35d` |
 | AB | **H** | ~~blok 0.41×1.25×0.30 ako `IfcStair`~~ → `IfcFooting / PAD_FOOTING`, `ZD02.05`, `45ea35d` |
 | AC | **H** | ~~`ZD02.03/.04` `FLOOR`; occurrence `ZD02.01` typovaná `ZD02.04`~~ — typ premenovaný, `BASESLAB`, `45ea35d` |
-| AM | O | `PredefinedType` — steny hotové (`45ea35d`): 159 occ podľa §5 + všetkých 12 `IfcWallType`. Číslo 383 = **314** `NOTDEFINED` + **69** `IfcFlowTerminal`, ktoré atribút v IFC4X3 nemajú vôbec (fáza 10). Otvorených ostáva **67** occurrences bez pravidla v §5: 8 `IfcSlab DZ02`, 19 `IfcCurtainWall`, 22 `IfcFurniture`, 12 `IfcRailing`, 5 `SC01` |
+| AM | O | `PredefinedType` — steny hotové (`45ea35d`): 159 occ podľa §5 + všetkých 12 `IfcWallType`. Číslo 383 = **314** `NOTDEFINED` + **69** `IfcFlowTerminal`, ktoré atribút v IFC4X3 nemajú vôbec (fáza 10). Otvorených ostáva **67** occurrences bez pravidla v §5: 8 `IfcSlab DZ02`, 19 `IfcCurtainWall`, 22 `IfcFurniture`, 12 `IfcRailing`, 5 `SC01`. **Odmerané na `ASR_v17.ifc` (§29):** 114 = 67 `IfcCurtainWall` (uzavreté schémou, §25) + 22 `IfcFurniture` + 12 `IfcRailing` + 8 `IfcSlab` + 3 `IfcStair` + 2 `IfcStairFlight`. §25 uvádzalo 21 `IfcFurniture` — chýbal v ňom `ZV04.01`. Rozhodnutia sú v §29, vykoná ich fáza 11 a 12 |
 | AN | **H** | ~~`KV01` `MOLDING`~~ → `COPING`, 2 occ + typ, `45ea35d` |
 | AO | **H** | ~~fasádne zateplenia mimo agregácie~~ — atika fáza 1 (`50c26c5`, 8× `IfcRelAggregates`, 18 dielov); zateplenia fáza 6a, 14 dielov `FS01` do 10 stien. **Otvorené zostáva 7 `FS03.01`**, pre ktoré sa nenašla stena — viď §16 |
 
@@ -181,10 +181,10 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 | K | **H** | ~~10 dverí bez priestorového kontajnera~~ — namerané **0** už na `ASR_v9`; vyriešili to skoršie fázy, register bol zastaraný |
 | L | **H** | ~~`IfcRelSpaceBoundary` 0×~~ — fáza 6b, **649** `IfcRelSpaceBoundary1stLevel` na všetkých 75 priestoroch, bez `ConnectionGeometry`, `ParentBoundary` na 83 výplniach |
 | BA | O | **`C1-J` vo výkrese `D.1.1.08` chýba** — južný pohľad má v treťom poli 1NP kód `C1-S`, ktorý zároveň patrí severnému poľu. Vada podkladu rovnakej povahy ako #AV. Model používa `C1-J` (rozhodnutie Samuela), odchýlka do BEP |
-| AZ | O | **80 z 97 `IfcDoor` nemá `FillsVoids`** — dvere nie sú zviazané s otvorom, takže hostiteľskú stenu nemožno prečítať zo vzťahu. Fáza 6b ju pri 52 dverách odvodila z polohy a overila proti hraniciam tej istej miestnosti; 20 dverí zostáva bez `ParentBoundary`. Oprava väzby je samostatná vec |
+| AZ | O | **80 z 97 `IfcDoor` nemá `FillsVoids`** — dvere nie sú zviazané s otvorom, takže hostiteľskú stenu nemožno prečítať zo vzťahu. Fáza 6b ju pri 52 dverách odvodila z polohy a overila proti hraniciam tej istej miestnosti; 20 dverí zostáva bez `ParentBoundary`. Oprava väzby je samostatná vec. **Overené proti originálu (§29):** `data/ASR.ifc` má tých istých 80 z 97, rovnako 26 z 26 `IfcWindow` a 61 `IfcOpeningElement` — číslo do jedného sedí s `ASR_v17.ifc`. Vada prišla z Revit exportu, pipeline ju nespôsobila ani nezmenila |
 | Z | **H** | ~~22 rekonštruovaných priestorov bez `Qto_BodyGeometryValidation`~~ — dopočítané z geometrie, `20_fix_spaces.py` |
 | Q | **H** | ~~3NP nemá prenajímateľnú zónu~~ — fáza 5c, §15. **Premisa „nová zóna = vyrobiť geometriu" bola nesprávna** — `IfcZone` je podtyp `IfcSystem`/`IfcGroup`, nie `IfcProduct`, a spec hovorí doslova *„A zone does not have its own shape representation"* a *„it can not define an own geometric representation and placement"*. Rozhodnuté — vnorený `IfcZone` s 11 nájomnými priestormi 3NP (584.06 m² podľa legendy `D.1.1.03`) vložený do `IfcZone` `Pronajmutelné`. WR1 `IfcSpace` aj `IfcZone` ako členov výslovne povoľuje |
-| Q2 | O | `PZ01`–`PZ10` majú vlastnú geometriu a `PredefinedType = OCCUPANCY`, ale **nereferencujú ani jeden prvok či priestor** (`IfcRelReferencedInSpatialStructure` 0×). Prenajímateľnosť tak dnes nesie iba objem, nie väzba na miestnosti. Nájdené sondou §14 |
+| Q2 | O | `PZ01`–`PZ10` majú vlastnú geometriu a `PredefinedType = OCCUPANCY`, ale **nereferencujú ani jeden prvok či priestor** (`IfcRelReferencedInSpatialStructure` 0×). Prenajímateľnosť tak dnes nesie iba objem, nie väzba na miestnosti. Nájdené sondou §14. Rozhodnuté (§29): väzbu **odvodiť geometricky aj logicky**, fáza 13 |
 | R | **H** | ~~súčet plôch vs 2031.95 z handoveru~~ — zosúhlasené: 1NP 613.55 + 2NP 665.74 + 3NP 664.11 + 4NP 69.47 = **2012.88 m²** na 69 priestoroch. Rozdiel 19.07 m² je v handoveri, nie v modeli |
 | AW | **H** | ~~85 častí fasády súčasne agregovaných aj kontajnovaných~~ — fáza 6a, časti odobrané z kontajnmentu po overení, že ich celok v priestorovej štruktúre je. Pôvodne: **85 častí** — 70 `IfcMember` `LOP02` a 9 `AZ01`, 6 `IfcPlate` `TI06.01`. Časti sedia o podlažie vyššie než ich `IfcCurtainWall` (`PL01` v 3NP → časti v 4NP; `LP03.01` v 4NP → časti v 5NP). Invariant 7 na základni zlyháva, nie až po fáze 1 |
 
@@ -315,6 +315,10 @@ a boundaries, sweep a zaokrúhlenie posledné.
 | **8** | `25_layer_sets.py` | #AQ #AU #AS; layer sety na typoch; `IfcGroup` S1–S9 |
 | **9** | `26_fix_numeric.py`, `27_sweep_orphans.py` | #AJ #F + finálna kontrola |
 | **10** | `28_sanitary.py` | pôvodný krok 13 |
+| **11** | `30_fix_classes_2.py` | triedny model podruhé — 21 `IfcFurniture` a 8 `IfcSlab`, ktoré tou triedou nie sú; §29 |
+| **12** | `31_predefined_types.py` | `PredefinedType` schodísk, zábradlí a prekvalifikovaných prvkov — uzavrie #AM; §29 |
+| **13** | `32_zones_pz.py` | #Q2 — `PZ01`–`PZ10` naviazať na priestory |
+| **14** | | 7× `FS03.01` bez steny — čaká na rozhodnutie, §29 |
 
 Fáza 5c pribudla po sonde k #J — pôvodný plán s ňou nerátal, lebo predpokladal,
 že #J aj #Q sú len rozhodnutia, nie samostatný krok. Kroky 22–28 sa tým posunuli
@@ -1414,3 +1418,106 @@ Všetkých **osem skladieb** z výpisu je tým založených.
 
 Brána: inv 1 geometria 0 zmenených, inv 2 EXPRESS 0, inv 3 6 nových
 v allowliste, inv 4–7 OK — **zlyhalo 0 zo 7**. Idempotencia overená.
+
+---
+
+## 29. Pred fázou 11 — sonda k triedam a rozhodnutia z 10. 8.
+
+Vstup fázy 11 je `out/ASR_v17.ifc`. Reťaz `ASR_final_v2 → v3_a → v3 → … →
+v16 → v17` je neprerušená, každý skript berie výstup predošlého; `v17` je
+posledný a `report_final.py` na ňom prešiel.
+
+Sonda odpovedala na desať otázok, ktoré zostali po fáze 8b. Tri z nich
+odpovedali inak, než znel predpoklad — pri každej je uvedené meranie, nie
+dojem.
+
+### Čo sonda namerala
+
+**`DZ02` nie je doska a nie je podklad pod karuselom.** Osem kusov sú
+**zvislé pásy 100 mm hrubé a 700 mm vysoké** na kóte −1600…−900, teda pod
+základovou doskou `ZD02` (−800…−300) aj pod podkladným betónom `DZ01`
+(−900…−800). Tvoria dva uzavreté obdĺžniky a tie sú **súosé s výťahovými
+šachtami**: stred (42510, −166) sedí so šachtou `2.15` (`VT01 02`), stred
+(38785, 2109) so šachtou `2.18` (`VT01 01`) — obe na milimeter. Je to
+podkladný betón na stenách dvoch **výťahových jám**. Potvrdzuje to §14,
+kde už bolo namerané, že otvor `SD02` prelieza pod základovú škáru.
+
+**`FS03.01` nie je hydroizolácia a `IfcCovering` nie je dedičstvo.** Popis
+je `Izolace_ZD_120`, materiál `Izolace XPS` 120 mm, kóta −800…0. Je to
+**obvodová izolácia základovej dosky**: zvislé pásy po celom obvode budovy —
+33500 sever, 21380 východ, 21260 západ, 16385 + 14560 juh, plus výbežok
+2555 × 1100 na juhu a jeden vnútorný kus pri jadre. `IfcCovering /
+INSULATION` je teda vecne správne. Otvorené zostáva len to, do čoho má
+tých 7 voľných kusov agregovať — nelieha na stenu, ale na hranu základovej
+dosky, preto ich fáza 6a nenašla.
+
+**Schodisko už zgrupené je.** Tri `IfcStair` (`SC01.0001`–`.0003`), každé
+agreguje **2 ramená + 2 podesty + 3 zábradlia**. Strešné `SH04.03.0001` na
+4NP je zvlášť a agreguje 2 schodnice + rameno + 2 zábradlia `KV02`. Obava,
+že sú prvky porozdeľované podľa toho, čo dovolil Revit, sa nepotvrdila —
+delenie je vecné. Ramená sú 4500 mm na 2NP a 3NP a 4650/5100 mm na 1NP,
+čo je rozdiel podlažnej výšky, nie chyba. Chýba jediné: `PredefinedType`.
+
+**#AZ bolo v origináli.** `data/ASR.ifc` má tých istých **80 z 97**
+`IfcDoor` bez `FillsVoids`, rovnako **26 z 26** `IfcWindow` a **61**
+`IfcOpeningElement` — číslo do jedného sedí s `ASR_v17.ifc`. Pipeline vadu
+nespôsobila ani nezmenila. Prakticky to znamená, že hostiteľská stena sa
+nedá prečítať zo vzťahu; fáza 6b ju pri 52 dverách odvodila z polohy
+a zapísala cez `IfcRelSpaceBoundary.ParentBoundary`, čo je väzba, ktorú
+model nesie namiesto `FillsVoids`.
+
+**`VP02` potvrdil model sám.** Popis je doslova `Bezbariérové WC – madlo
+sklopné`, materiál `Chrom`, 12 kusov po dvoch v šiestich bezbariérových WC.
+
+**`OV02` sú prístrešky vstupov.** Sedem kusov na kóte 3720…4310, vyložené
+1500 mm **von** z obvodu budovy (obvod je X 29885…63385, Y −8141…13239),
+vždy nad vstupom. `IfcFurniture` je zjavne zlé.
+
+**Dvadsiaty druhý `IfcFurniture`.** §25 uvádzalo 21 a menovalo `VP02`,
+`OV02`, `OV04`. Chýbal `ZV04.01` „Žebřík s košem" — rebrík s ochranným
+košom na strechu.
+
+### Rozhodnutia Samuela z 10. 8.
+
+| vec | rozhodnutie |
+|---|---|
+| `ZV01.01` (4 ks, „Zábradlí 1000 se svislou výplní") | **`GUARDRAIL`** — spec: *„designed to guard human or vehicle occupants from falling off a stair, ramp or landing"* |
+| `ZV01.02` (6 ks, „Madlo 1000") | **`HANDRAIL`** — spec: *„structural support for loads applied by human occupants (at hand height). Generally located adjacent to ramps and stairs"* |
+| `VP02` | sklopné madlá bezbariérového WC, teda **nie nábytok** |
+| `OV04.03` | zástupný kváder, na nič sa nenapája — je to **diera s rúrkou v atike** |
+| #Q2 | väzbu zón odvodiť **geometricky aj logicky** |
+| #AT fyzika materiálov | **zatiaľ neriešiť** |
+| rozsah | fázy postupne, po jednej, brána po každej |
+
+`KV02` (2 ks, „Madlo – kovové", zábradlia strešného schodiska) spadá pod to
+isté pravidlo ako `ZV01.02` → `HANDRAIL`. Rozhodnutie o `ZV01` sa ho
+menovite netýkalo, treba ho potvrdiť spolu s fázou 12.
+
+### Návrhy, ktoré čakajú na potvrdenie
+
+| vec | návrh | opora / čo ešte treba |
+|---|---|---|
+| `SC01` (3 ks) | `IfcStair / HALF_TURN_STAIR` | spec: *„a stair making a 180° turn, consisting of two straight flights connected"* — sedí na geometriu dvoch ramien s podestou medzi nimi |
+| `SD04.0005/.0006` | `STRAIGHT` | ostatné 4 ramená ho už majú, aj ich typ |
+| `ZV04.01` | `IfcStair / LADDER` | IFC4.3 hodnotu má: *„a series of bars or steps between two upright elements used for climbing"* |
+| `OV02` (7 ks) | `IfcShadingDevice / AWNING` | spec: *„a rooflike shelter … extending over a doorway … in order to provide protection"*. Pred zápisom porovnať ešte s `IfcCovering` a `IfcBuiltElement` |
+| `OV04.03` (2 ks) | `IfcWasteTerminal`, `PredefinedType` otvorený | enum má `ROOFDRAIN`, `GULLYSUMP`, `FLOORWASTE` — ani jeden nie je „prepad". `USERDEFINED` + `ObjectType = 'Poistný prepad'` je čestnejšie než natiahnuť `ROOFDRAIN` |
+| `DZ02` (8 ks) | trieda otvorená | `IfcSlab` pre zvislý pás nesedí; `DZ01` (vodorovný podkladný betón) je `IfcSlab`, takže rozhodnutie ovplyvní oba |
+| `FS03.01` (7 ks) | agregácia otvorená | buď do `ZD02`, alebo nechať samostatné a zdokumentovať |
+| #AZ | nechať zdokumentované | oprava by znamenala vyrobiť 80 `IfcOpeningElement`, čo §8 zakazuje. Rozhodnutie o rozsahu zatiaľ nepadlo |
+
+### Rozdelenie na fázy
+
+| fáza | skript | obsah |
+|---|---|---|
+| **11** | `30_fix_classes_2.py` | prekvalifikovanie: `OV02` 7, `VP02` 12, `OV04.03` 2, `ZV04.01` 1, `DZ02` 8 |
+| **12** | `31_predefined_types.py` | `PredefinedType` na schodiskách, zábradliach a prekvalifikovaných prvkoch — uzavrie #AM |
+| **13** | `32_zones_pz.py` | #Q2 |
+| **14** | | `FS03.01` — až po rozhodnutí |
+
+Prečo triedy a `PredefinedType` zvlášť, keď ide o tie isté prvky:
+`reassign_class` na occurrence **kaskádovo prepíše zdieľaný typ**, takže
+prekvalifikovanie je zásah s vlastným rizikom a vlastnou bránou. Nastavenie
+atribútu je proti tomu lacné. Spojiť ich by znamenalo, že pri zlyhaní brány
+nevieme ktoré z dvoch ho spôsobilo — presne to, pred čím varuje
+`CLAUDE_CODE_START.md` § „Poradie a čo nerobiť naraz".
