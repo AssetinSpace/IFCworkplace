@@ -149,7 +149,7 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 | AC | **H** | ~~`ZD02.03/.04` `FLOOR`; occurrence `ZD02.01` typovaná `ZD02.04`~~ — typ premenovaný, `BASESLAB`, `45ea35d` |
 | AM | **H** | ~~`PredefinedType` chýba na 383~~ — steny hotové (`45ea35d`): 159 occ podľa §5 + všetkých 12 `IfcWallType`. Číslo 383 = **314** `NOTDEFINED` + **69** `IfcFlowTerminal`, ktoré atribút v IFC4X3 nemajú vôbec (fáza 10). Otvorených ostáva **67** occurrences bez pravidla v §5: 8 `IfcSlab DZ02`, 19 `IfcCurtainWall`, 22 `IfcFurniture`, 12 `IfcRailing`, 5 `SC01`. **Odmerané na `ASR_v17.ifc` (§29):** 114 = 67 `IfcCurtainWall` (uzavreté schémou, §25) + 22 `IfcFurniture` + 12 `IfcRailing` + 8 `IfcSlab` + 3 `IfcStair` + 2 `IfcStairFlight`. §25 uvádzalo 21 `IfcFurniture` — chýbal v ňom `ZV04.01`. Rozhodnutia sú v §29. **Fáza 11 (§30) uzavrela 30 z nich** prekvalifikovaním — 114 → 84 bez `PredefinedType`, z toho 67 `IfcCurtainWall` uzavretých schémou. Fáza 12 (§31) doplnila zvyšných 17 a **#AM je tým uzavreté**: bez `PredefinedType` zostalo 67 occurrences a všetkých 67 je `IfcCurtainWall` |
 | AN | **H** | ~~`KV01` `MOLDING`~~ → `COPING`, 2 occ + typ, `45ea35d` |
-| AO | **H** | ~~fasádne zateplenia mimo agregácie~~ — atika fáza 1 (`50c26c5`, 8× `IfcRelAggregates`, 18 dielov); zateplenia fáza 6a, 14 dielov `FS01` do 10 stien. **Otvorené zostáva 7 `FS03.01`**, pre ktoré sa nenašla stena — viď §16 |
+| AO | **H** | ~~fasádne zateplenia mimo agregácie~~ — atika fáza 1 (`50c26c5`, 8× `IfcRelAggregates`, 18 dielov); zateplenia fáza 6a, 14 dielov `FS01` do 10 stien. ~~Otvorené zostáva 7 `FS03.01`~~ — stena sa nenašla, lebo žiadnu nepokrývajú: dosadajú na základovú dosku. Agregované do `ZD02.01.0001`, fáza 14, §33. **#AO uzavreté** |
 
 ### Typy a identita
 | # | | vec |
@@ -1760,3 +1760,51 @@ v poriadku — ale rozdiel oproti 3NP je zaznamenaný, nie prehliadnutý.
 **Zlyhalo 0 zo 7.** Idempotencia overená, `pytest` 8/8.
 `IfcRelReferencedInSpatialStructure` je v modeli 15: 629 prvkov do
 podlaží z fázy 6a a **42 priestorov do zón** z tejto fázy.
+
+---
+
+## 33. Fáza 14 — sedem `FS03.01` dostalo celok
+
+`out/ASR_v20.ifc` → `out/ASR_v21.ifc`, `src/33_fs03_aggregate.py`.
+Agregovaných **7 kusov do `ZD02.01.0001`**, odobraných z kontajnmentu 7.
+
+### Prečo ich fáza 6a minula
+
+Hľadala **stenu**, ktorú krytina pokrýva. Tieto žiadnu nepokrývajú.
+Zmerané na `ASR_v20.ifc`: všetkých deväť kusov `FS03.01` dosadá na ten istý
+prvok — **základovú dosku `ZD02.01.0001`** (Z −800…−300). Sedem z nich sa
+nedotýka ničoho iného. Izolácia má Z −800…0, takže pokrýva celú zvislú
+hranu dosky (prekryv 500 mm = plná hrúbka dosky) a pokračuje 300 mm nad ňu.
+
+Typ sa volá `Izolace_ZD_120` — izolácia ZD, teda základovej dosky. Meno,
+geometria aj dotyk hovoria to isté.
+
+§4 test *„je časť fyzicky zviazaná s celkom a bez neho neexistuje?"* je
+kladný a precedens v §4 existuje: *„S3 | `PD02` na doske, `IH01` pod doskou
+| áno"*. Skript navyše pri každom kuse dosadanie **overí** a zastane, ak by
+väzba mala byť vymyslená.
+
+### Nesúmernosť, ktorá zostáva otvorená
+
+`FS03.01.0008` a `.0009` fáza 6a agregovala do stien (`SN02.02.0019`,
+`SN05.01.0005`) a stena, ktorú pokrývajú, tam naozaj je. Deväť kusov toho
+istého výrobku má tým dva rôzne celky — sedem dosku, dva stenu. `.0009` je
+pritom obvodový pás dlhý 33 500 mm, teda tá istá vec ako `.0004`–`.0007`.
+
+**Zjednotiť by znamenalo prerobiť časť fázy 6a**, čo je nad rámec položky
+registra, ktorá znie „7× `FS03.01` bez priradenej steny". Skript preto
+rieši tých sedem a nesúmernosť hlási. **Čaká na rozhodnutie Samuela:**
+nechať ako je, alebo presunúť `.0008` a `.0009` pod dosku tiež.
+
+### Brána
+
+| inv | výsledok |
+|---|---|
+| 1 geometria | **OK** |
+| 2 EXPRESS | **0 hlásení** |
+| 3 GUID | **OK** — 1 nový `IfcRelAggregates` v allowliste |
+| 7 kontajnment | **OK** — sedem kusov odobraných z podlažia, inak by boli agregované aj kontajnované |
+| 4, 5, 6 | OK |
+
+**Zlyhalo 0 zo 7.** Idempotencia overená, `pytest` 8/8.
+Prvkov kontajnovaných v podlažiach 405 → 398, `IfcRelAggregates` 96 → 97.
