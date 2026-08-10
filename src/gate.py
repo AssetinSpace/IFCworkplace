@@ -112,7 +112,10 @@ def main() -> int:
                 print("         … a ďalších %d" % (len(v) - args.show))
     print()
     print("zlyhalo %d z %d" % (failed, len(results)))
-    return 0
+    # Návratový kód musí zlyhanie ohlásiť, inak brána v CI nič nezastaví.
+    # Známe vady sa nepúšťajú cez výnimku v kóde, ale cez `--known`
+    # a `--allow-file` — teda menovite a viditeľne.
+    return 1 if failed else 0
 
 
 if __name__ == "__main__":
