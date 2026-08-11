@@ -216,6 +216,7 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 |---|---|---|
 | AR | **D** | `IH01` — chýba vodorovná plocha pod doskou. Doska končí na −0.800, podkladný betón začína na −0.800; na 8.2 mm nie je miesto. Vytvoriť ju by znamenalo posunúť existujúcu geometriu |
 | — | **D** | 9 prvkov s degenerovanou extrúziou (nulová výška) |
+| BP | **D** | **`DZ02` nesie `LoadBearing = True`, hoci je to 100 mm podkladný betón** — údaj z pôvodného exportu. Zmerané: 8 kusov, hrúbka 100 mm, jedna vrstva `Beton`, všetky celé pod terénom (z −1600 až −900), typ sa volá „Podkladný betón". Nosná konštrukcia to podľa hrúbky ani názvu nie je. **Neopravuje sa** — je to vada podkladu, nie náš záver; zapísané v `BEP_ANNEX.md` §5. Nájdené pri uzatváraní §38 bodu 3, §46 |
 | AV | **D** | výpis skladieb `S8` uvádza `SD02` tam, kde má byť `SN05.01` |
 | — | **D** | legenda 1NP: `PD02.31` vs `.30`; `1.17 WC Muži` má skopírovaný riadok elektrorozvodne |
 | — | **D** | súčet hrúbok prvkov skladby nikdy nedá hodnotu z výpisu (vzduchové medzery sa nemodelujú) |
@@ -2079,7 +2080,7 @@ prejdenie, nie zhrnutie.
 |---|---|---|
 | 1 psety a `Qto` proti triede | **hotové** | §39 nález, §40 oprava (fáza 19) |
 | 2 rozhodnutia o triede a type | **hotové** | §44 nález, §45 oprava (fáza 22) |
-| 3 `DZ02` `SOLIDWALL` × `RETAININGWALL` | **čaká na Samuela** | — |
+| 3 `DZ02` `SOLIDWALL` × `RETAININGWALL` | **hotové** | §46 — `RETAININGWALL` vylúčené meraním |
 | 4 fyzika materiálov proti PDF | **hotové** | §43 (fáza 21) |
 | 5 `IfcRelSpaceBoundary` | **hotové** | §41 nález, §42 oprava (fáza 20) |
 | 6 rekonštruované priestory 1NP | otvorené | — |
@@ -3167,3 +3168,45 @@ Všetko ostatné je na nule.
   ochranným zakončením atiky je plech `KV01`, ktorý `COPING` má; OSB doska pod
   ním atiku nechráni, vyrovnáva ju.
 * §38 body 6, 7 a 8 sa stále neprešli.
+
+---
+
+## 46. Revízia, bod 3 — `DZ02` uzavreté meraním
+
+§38 bod 3 stál otvorený od zadania: *„`SOLIDWALL` proti `RETAININGWALL` je
+otvorená otázka, jama zeminu naozaj zadržiava."* Otázka bola postavená zle
+a meranie to ukázalo.
+
+| | zmerané na `ASR_v29.ifc` |
+|---|---|
+| kusov | 8 `IfcWall`, typ `DZ02` |
+| hrúbka | **100 mm**, jedna vrstva |
+| materiál | `Beton`, `IfcMaterialLayerSet` s jedinou vrstvou 100 mm |
+| poloha | **všetkých 8 celé pod terénom**, z −1600 do −900 |
+| meno typu | „Podkladný betón" |
+| pset | `IsExternal = False`, `LoadBearing = True`, `ExtendToStructure = False` |
+
+`IfcWallTypeEnum.RETAININGWALL` je *„a supporting wall used to protect
+against soil layers behind."* **Sto milimetrov podkladného betónu
+nezadržiava 1,6 m zeminy** — to nie je hraničný prípad, ktorý by sa dal
+rozhodnúť úvahou, je to konštrukčne vylúčené. Druhé, nezávislé znamenie
+hovorí to isté: `IsExternal = False`. Zadržiavacia stena je zo svojej
+podstaty zemine vystavená; táto podľa vlastného psetu nie je.
+
+`SOLIDWALL` je *„a massive wall construction for the wall core being the
+single layer… concrete walls (both cast in-situ or precast) that are load
+bearing."* Jedna vrstva liateho betónu sedí; „massive" pri 100 mm je
+naťahovanie, ale zo štrnástich hodnôt enumerácie nesedí nič lepšie.
+
+**Zostáva `SOLIDWALL`**, rozhodnutie Samuela po tomto meraní. §38 bod 3 je
+tým vybavený a register vyčerpaný — otvorená nie je ani jedna položka.
+
+### Čo meranie neodstránilo — #BP
+
+`LoadBearing = True` na 100 mm hrubom podkladnom betóne sedí rovnako zle
+ako názov typu „Podkladný betón" na nosnú konštrukciu. Je to **údaj
+z pôvodného exportu**, nie náš, a mení sa tým len to, že je odteraz
+zapísaný ako vada podkladu (`BEP_ANNEX.md` §5), nie ako náš záver.
+Neopravuje sa: podklad sa nekopíruje, ale ani neprepisuje ticho.
+
+Presne tá istá logika ako pri #AV a #AZ.

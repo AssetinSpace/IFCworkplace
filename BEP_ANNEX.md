@@ -260,7 +260,7 @@ a rozhodnutie projektanta. Tieto je nutné vedieť pri preberaní:
 | `WC02`, `WC04` | `TOILETPAN` | §7 |
 | `WC03`, `WC05` | `WASHHANDBASIN` | §7 |
 | `WC07` | `SINK` | §7 |
-| `DZ02` steny výťahových jám | `IfcWall / SOLIDWALL` | **návrat k originálu** — `data/ASR.ifc` má `IfcWall` s `Pset_WallCommon.LoadBearing = True`; na `IfcSlab` ju prepísala pôvodná pipeline. Spec: *„massive wall… concrete walls… that are load bearing"* |
+| `DZ02` steny výťahových jám | `IfcWall / SOLIDWALL` | **návrat k originálu**, potvrdený meraním. `data/ASR.ifc` má `IfcWall` s `Pset_WallCommon.LoadBearing = True`; na `IfcSlab` ju prepísala pôvodná pipeline. Spec: *„massive wall… concrete walls… that are load bearing"*. **`RETAININGWALL` je vylúčené, nie zvážené**: všetkých 8 kusov je **100 mm** hrubých, jedna vrstva `Beton`, celé pod terénom (z −1600 až −900). Spec žiada *„a supporting wall used to protect against soil layers behind"* — 100 mm podkladného betónu 1,6 m zeminy nezadrží, a `IsExternal = False` hovorí to isté. `AUDIT.md` §46 |
 | `VP02` sklopné madlá WC | `IfcRailing / HANDRAIL` | popis „Bezbariérové WC – madlo sklopné"; spec *„support for loads applied by human occupants (at hand height)"* |
 | `ZV01.01` | `IfcRailing / GUARDRAIL` | „Zábradlí 1000 se svislou výplní"; spec *„guard… from falling off a stair, ramp or landing"* |
 | `ZV01.02`, `KV02` | `IfcRailing / HANDRAIL` | „Madlo 1000", „Madlo – kovové" — madlo, nie bariéra |
@@ -428,6 +428,7 @@ Nájdené pri práci; model ich nekopíruje, ale ani neopravuje ticho.
 | — | `D.1.1.01` | legenda: `PD02.31` vs `.30`; `1.17 WC Muži` má skopírovaný riadok elektrorozvodne |
 | AZ | model | 80 z 97 `IfcDoor` nemá `FillsVoids`, teda nie sú zviazané s otvorom |
 | Q2 | model | `PZ01`–`PZ10` nereferencujú ani jeden prvok či priestor |
+| BP | model | `DZ02` je 100 mm podkladný betón, ale nesie `Pset_WallCommon.LoadBearing = True`. Údaj je z pôvodného exportu a na 100 mm hrubú vrstvu sedí rovnako zle ako názov typu „Podkladný betón" na nosnú konštrukciu. Nemení sa — je to údaj podkladu, nie náš |
 
 ---
 
