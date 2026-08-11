@@ -203,6 +203,8 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 | AU | **D** | ~~deklarovaná vs geometrická hrúbka~~ — **zdokumentované, neopravuje sa.** Rozhodnutie Samuela 10. 8.: *„v `Qto` musí byť geometria, do `Description` keď tak rozsah, ale asi ani to nie — proste tam je sklon.“* Sú to **dve rôzne príčiny**: `ST01.10` 234–354/204 je spádový klin, teda sklon, a jedna hodnota hrúbky preň neexistuje; `FS01.10` 210/180, `FS01.11` 141/120, `FS01.12` 80/50 a `FS01.20` 210/180 je ETICS, kde lepidlo, stierka, sieťka a omietka vlastnú geometriu nemajú — to je #AQ. `Qto` v oboch prípadoch nesie skutočnú geometriu |
 | AS | **H** | ~~materiál „Výchozí" ako dutinová podlaha v `PD03.*`~~ — fáza 8, §22: štyri vrstvy `PD03.*` nesú `IsVentilated` a materiál nemajú, ako žiada `IfcMaterialLayer` §8.10.3.6.1. Overené na `ASR_v21.ifc`: 0 vrstiev s materiálom „Výchozí". Riadok registra zostal omylom na **O**, hoci §23 ho medzi uzavretými uvádza |
 | BB | **H** | **fyzika materiálu platí pre jednu skladbu, materiál ju nesie pre všetky.** IFC vlastnosti visia na `IfcMaterial`, nie na vrstve, takže `Izolace XPS` nesie λ=0,036 z `FS01.11` aj v `FS03.01`, `ST01.32` a `PD02.11` — a tie tri **výpis `D.1.1.09` neuvádza vôbec**. To isté pri `Izolace minerální` (doložené `FS01.10/.12/.20`, použité aj v `TI06.01`) a `Izolace EPS` (doložené `PD02`). **Rozhodnuté** (Samuel, 10. 8.): *„ber to tak, že majú rovnaké vlastnosti všetky XPS."* Materiál sa nerozdeľuje; to isté sa uplatňuje na minerálnu izoláciu a EPS. Zistené vo fáze 17 |
+| BI | **H** | **`Zdivo nosné` nesie μ = 20, ktoré mu výpis nedáva** — riadok muriva vo výpise `D.1.1.09` uvádza **len λ = 0,093**; μ = 20 patrí vrstve **o riadok vyššie**, „Suchá omietková zmes pre jadrové omietky… faktor difúzneho odporu μ = 20", čo je iný materiál. Overené **očami na vykreslenej strane**, nezávisle od `pdftotext`, a potvrdené na dvoch stranách naraz — S8 v.7 aj S9 v.7 dávajú murivu iba λ. Presne tá zámena, pred ktorou §38 bod 4 varoval: bez `-layout` dá `pdftotext` „odporu μ= 20" priamo pred riadok „Keramické murivo… λ=0,093", takže okno okolo muriva μ pohltí. Nájdené §43, **opravené** fázou 21 |
+| BJ | **H** | **`Izolace EPS` nemá ρ ani μ, hoci ich výpis dáva** — fáza 17 ten materiál čítala z `PD02` v.6, kde je len λ = 0,035. Tie isté dosky sú však aj v `ST01.10` v.10 a v.11 („Dosky z expandovaného penového polystyrénu, EPS 150, λ=0,035, **ρ=23-28 kg/m³, μ=30-70**") a materiál nesú: dve occurrences `ST01.10b` majú `Izolace EPS`. Hodnoty sú teda doložené, nie odvodené, a sú zhodné s tými, ktoré už nesie `Izolace EPS spadove kliny` — čo sedí s rozhodnutím #BB. Nájdené §43, **opravené** fázou 21 |
 | AT | **H** | ~~λ, ρ, c, μ z výpisu nie sú v `Pset_Material*`~~ — fáza 17, §36. Deväť materiálov, 15 `IfcMaterialProperties`, plus tri chýbajúce odvodené jednotky do `IfcUnitAssignment` |
 
 ### Zdokumentovať, neopraviť
@@ -1976,6 +1978,10 @@ entity and assigned to an `IfcMaterialDefinition`."* Nie sú to teda
 | `Hydroizolace - asfaltový pás` | — | — | — | 29000 |
 | `podlahový potěr/mazanina + kari síť KH 20` | — | 2100 | — | 19 |
 
+> **Táto tabuľka bola v dvoch riadkoch nesprávna.** Revízia §43 zistila, že
+> `Zdivo nosné` μ = 20 vôbec nemá (patrí vrstve o riadok vyššie) a že
+> `Izolace EPS` naopak ρ a μ má. Opravené vo fáze 21, §43.
+
 Každá hodnota nesie v `Specification` riadok výpisu, z ktorého pochádza.
 Priradenie stojí na tom, **ktorý materiál je v ktorej skladbe** — napr.
 `Izolace minerální` je v `FS01.10/.12/.20`, kde výpis uvádza reakciu na
@@ -2614,3 +2620,117 @@ hostiteľ `SN02.02.0046` medzi hranicami toho priestoru nebol. Teraz je.
   v metroch a násobí tisícom, takže dotyk nikdy nevyjde ako presná nula
   a poistka na `> 0` by skript zastavila na dotýkajúcich sa telesách.
   Skutočná najväčšia medzera sa preto vypisuje, nie iba porovnáva.
+
+---
+
+## 43. Revízia, bod 4 — fyzika materiálov proti výpisu
+
+`out/ASR_v27.ifc` → `out/ASR_v28.ifc`, `src/40_fix_material_physics.py`.
+
+§38 bod 4: *„Hodnoty fyziky proti PDF. Čítané cez `pdftotext`, ktorý vie
+zlúčiť stĺpce."* Varovanie bolo oprávnené — jedna hodnota je naozaj zlúčená
+z cudzieho riadku.
+
+### Ako sa to meralo
+
+Nie znova `pdftotext`. Desať strán výpisu `D.1.1.09` sa vykreslilo
+(`pdftoppm -r 150`) a **prečítalo očami**. To je iný nástroj aj iná cesta
+než tá, ktorou hodnoty do modelu prišli, takže chyba čítania sa nemôže
+zopakovať rovnako.
+
+Prejdených všetkých deväť materiálov a všetkých 10 strán. **Sedem
+materiálov sedí do bodky:**
+
+| materiál | hodnota | riadok výpisu | |
+|---|---|---|---|
+| `Beton - Železobeton` | λ 1,430 · C 1020 · ρ 2300 · μ 24 | S1/S2 v.14 SD02 | ✅ |
+| `Hydrofílna vata` | λ 0,037 | S1 v.3 | ✅ |
+| `Hydroizolace - asfaltový pás` | μ 29000 | S1/S2 v.7, v.8 | ✅ |
+| `Izolace EPS spadove kliny` | λ 0,035 · ρ 23–28 · μ 30–70 | S1/S2 v.9 | ✅ |
+| `Izolace XPS` | λ 0,036 | S5 v.4, reakcia E | ✅ |
+| `Izolace minerální` | λ 0,035 | S4/S8/S9 v.4, reakcia A1 | ✅ |
+| `podlahový potěr` | ρ 2100 · μ 19 | S3 v.4 | ✅ |
+
+### #BI — μ, ktoré murivu nepatrí
+
+`Zdivo nosné` nieslo **μ = 20**. Riadok muriva vo výpise ho nemá:
+
+> `SN05.01` / 7 / Nosná / **Keramické murivo, dutinové, brúsené, hr. 250 mm,
+> λ=0,093 [W/(m.K)]** / Vymurované / 250
+
+μ = 20 patrí vrstve **o riadok vyššie**:
+
+> 6 / Vzduchtesniaca / Suchá omietková zmes pre jadrové omietky, zrnitosť
+> 2,0 mm, pevnosť v tlaku 1,5-5 Mpa, **faktor difúzneho odporu μ = 20**
+
+Platí to na **dvoch stranách naraz** — S8 v.7 aj S9 v.7 — takže to nie je
+preklep v jednej tabuľke. Tá istá omietková zmes s μ = 20 je aj v S4 a S5.
+
+Ako sa to stalo, sa dá zopakovať príkazom. Bez `-layout` vypíše `pdftotext`:
+
+```
+odporu μ= 20
+Keramické murivo, dutinové, brúsené,
+hr. 250 mm, λ=0,093 [W/(m.K)]
+```
+
+Okno okolo riadku muriva teda μ pohltí. Presne ten mechanizmus, pred ktorým
+§38 varoval — a bez vykreslenia strany sa nedal odhaliť, lebo v texte
+vyzerá μ ako súčasť riadku muriva.
+
+**Opravené:** `Pset_MaterialHygroscopic` na `Zdivo nosné` zmazaný celý —
+niesol iba tú dvojicu a `Properties` je `SET [1:?]`. Prepísaný aj **riadok
+pôvodu na λ**, ktorý μ = 20 tiež citoval; inak by v modeli zostal svedok
+vlastnej chyby. Nové znenie menuje aj to, že výpis ten riadok značí `SD02`
+namiesto `SN05.01` (#AV).
+
+### #BJ — ρ a μ, ktoré EPS patria a nemal ich
+
+`Izolace EPS` malo iba λ = 0,035, čítané z `PD02` v.6 — a tam naozaj nič
+iné nie je. Lenže **tie isté dosky sú aj v `ST01.10` v.10 a v.11**:
+
+> Dosky z expandovaného penového polystyrénu, EPS 150, λ=0,035 W.m⁻¹.K⁻¹,
+> **ρ=23-28 kg/m³, μ=30-70**, pevnosť v tlaku pri 10% stlačení 150 KPa,
+> reakcia na oheň E
+
+a ten materiál nesú: dve occurrences `ST01.10b` (rovné dosky, §21) majú
+`Izolace EPS`. Overené v modeli — **55 occurrences** ho nesie celkovo, nie
+predpokladané. Hodnoty sú teda doložené, nie odvodené, a zhodujú sa s tými,
+ktoré už nesie `Izolace EPS spadove kliny`. Sedí to s rozhodnutím #BB:
+rovnaký výrobok má rovnaké vlastnosti.
+
+**Doplnené:** ρ = 23–28 ako `IfcPropertyBoundedValue`, μ = 30–70 ako
+dvojica `Lower`/`Upper`, zápis kopíruje fázu 17.
+
+### Brány
+
+| kontrola | výsledok |
+|---|---|
+| brána proti `ASR_v27.ifc` | **zlyhalo 0 zo 7** |
+| `pytest` | 9 z 9 |
+| druhý beh skriptu | *„NETREBA NIČ — model je už opravený"* |
+| `probe_psets.py` | 2 — obe `MassDensity` ako `IfcPropertyBoundedValue`, teda tá istá vedomá odchýlka fázy 17, teraz na dvoch materiáloch |
+
+Účtovníctvo GUID: **0 / 0**. `IfcMaterialProperties` nie je `IfcRoot`,
+takže `GlobalId` nemá a v allowliste sa neobjaví; `IfcMaterialProperties`
+15 → 16.
+
+### Čo skript overí, kým niečo zmení
+
+* materiál musí v modeli existovať;
+* mazaný `Pset_MaterialHygroscopic` musí niesť **iba** tú dvojicu μ — inak
+  by zmazanie celej sady vzalo viac, než má;
+* riadok pôvodu na λ musí vyzerať presne tak, ako skript čaká, inak
+  neprepisuje naslepo;
+* EPS musí niesť aspoň jedna occurrence — bez toho by opora z `ST01.10`
+  v.10/11 neplatila;
+* druhý beh **ohlási, že netreba nič**, nespadne. To je rozdiel: prvá verzia
+  skriptu na druhom behu skončila chybou, čo je síce bezpečné, ale §8 žiada
+  idempotenciu ohlásiť.
+
+### Čo zostáva
+
+Parotesniaci pás s AL fóliou (λ=0,21, c=1470, ρ=1400, μ=370 000, S1/S2 v.12)
+vo výpise je, ale samostatný materiál preň v modeli nie je — zostáva ako
+v §36. Suchá omietková zmes s μ = 20 je na tom rovnako: vlastný materiál
+nemá, takže jej μ nemá kam ísť. Práve preto sadlo na murivo.
