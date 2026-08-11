@@ -191,7 +191,7 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 | Q | **H** | ~~3NP nemá prenajímateľnú zónu~~ — fáza 5c, §15. **Premisa „nová zóna = vyrobiť geometriu" bola nesprávna** — `IfcZone` je podtyp `IfcSystem`/`IfcGroup`, nie `IfcProduct`, a spec hovorí doslova *„A zone does not have its own shape representation"* a *„it can not define an own geometric representation and placement"*. Rozhodnuté — vnorený `IfcZone` s 11 nájomnými priestormi 3NP (584.06 m² podľa legendy `D.1.1.03`) vložený do `IfcZone` `Pronajmutelné`. WR1 `IfcSpace` aj `IfcZone` ako členov výslovne povoľuje |
 | Q2 | **H** | ~~`PZ01`–`PZ10` nereferencujú ani jeden priestor~~ — fáza 13, §32. Pôvodne: — majú vlastnú geometriu a `PredefinedType = OCCUPANCY`, ale **nereferencujú ani jeden prvok či priestor** (`IfcRelReferencedInSpatialStructure` 0×). Prenajímateľnosť tak dnes nesie iba objem, nie väzba na miestnosti. Nájdené sondou §14. Rozhodnuté (§29): väzbu **odvodiť geometricky aj logicky**. Doplnených 10 `IfcRelReferencedInSpatialStructure` na 42 priestorov; zón bez väzby 0 |
 | R | **H** | ~~súčet plôch vs 2031.95 z handoveru~~ — zosúhlasené: 1NP 613.55 + 2NP 665.74 + 3NP 664.11 + 4NP 69.47 = **2012.88 m²** na 69 priestoroch. Rozdiel 19.07 m² je v handoveri, nie v modeli |
-| BH | O | **20 chýbajúcich `IfcRelSpaceBoundary`** — keď sú dvere hranicou priestoru, musí ňou byť aj stena, v ktorej sedia: dvere sú otvor **v nej**. V modeli to na 20 miestach neplatí a je to presne tých 20 výplní, ktoré nemajú `ParentBoundary` — nemajú ho preto, že ich hostiteľ medzi hranicami toho priestoru nie je. Nájdené `src/probe_boundaries.py`, §41. **Nie je to hraničný prípad:** všetkých 20 stien lieha na priestor s medzerou **0 mm**, voľná plocha steny voči priestoru má medián **6,78 m²** (min 0,87, max 15,91) proti plošnému prahu fázy 6b 0,05 m², a 16 z 20 tých stien hranicou iného priestoru je. Hostiteľ je v každom z 20 prípadov jednoznačný — práve jeden kandidát. Mechanizmus je v `23_space_boundaries.py`: lúč testuje **bbox**, nie teleso, a výplň má v okne `TIE` prednosť pred stenou, takže bbox dverí cez celý otvor zoberie stene všetky trojuholníky tej steny priestoru a stena skončí bez hranice. Spec k `IfcRelSpaceBoundary1stLevel`: hranice *„form a closed shell around the space… and include overlapping boundaries representing openings (filled or not) in the building elements"* |
+| BH | **H** | ~~20 chýbajúcich `IfcRelSpaceBoundary`~~ — **doplnené**, fáza 20, §42: 16 nových hraníc (20 výplní ich zdieľa), 20 `ParentBoundary` napojených. Výplní bez rodiča 0, chýbajúcich hostiteľov 0. Pôvodne: keď sú dvere hranicou priestoru, musí ňou byť aj stena, v ktorej sedia: dvere sú otvor **v nej**. V modeli to na 20 miestach neplatí a je to presne tých 20 výplní, ktoré nemajú `ParentBoundary` — nemajú ho preto, že ich hostiteľ medzi hranicami toho priestoru nie je. Nájdené `src/probe_boundaries.py`, §41. **Nie je to hraničný prípad:** všetkých 20 stien lieha na priestor s medzerou **0 mm**, voľná plocha steny voči priestoru má medián **6,78 m²** (min 0,87, max 15,91) proti plošnému prahu fázy 6b 0,05 m², a 16 z 20 tých stien hranicou iného priestoru je. Hostiteľ je v každom z 20 prípadov jednoznačný — práve jeden kandidát. Mechanizmus je v `23_space_boundaries.py`: lúč testuje **bbox**, nie teleso, a výplň má v okne `TIE` prednosť pred stenou, takže bbox dverí cez celý otvor zoberie stene všetky trojuholníky tej steny priestoru a stena skončí bez hranice. Spec k `IfcRelSpaceBoundary1stLevel`: hranice *„form a closed shell around the space… and include overlapping boundaries representing openings (filled or not) in the building elements"* |
 | AW | **H** | ~~85 častí fasády súčasne agregovaných aj kontajnovaných~~ — fáza 6a, časti odobrané z kontajnmentu po overení, že ich celok v priestorovej štruktúre je. Pôvodne: **85 častí** — 70 `IfcMember` `LOP02` a 9 `AZ01`, 6 `IfcPlate` `TI06.01`. Časti sedia o podlažie vyššie než ich `IfcCurtainWall` (`PL01` v 3NP → časti v 4NP; `LP03.01` v 4NP → časti v 5NP). Invariant 7 na základni zlyháva, nie až po fáze 1 |
 
 ### Materiály a skladby
@@ -2568,3 +2568,49 @@ prednosti, je to chyba testovania proti bboxu.
 * Okenné hranice stále nie sú (§17) — všetkých 26 `IfcWindow` je vo fasáde
   bez `FillsVoids`, takže lúč z miestnosti trafí najprv panel. To je známe
   a zapísané v `BEP_ANNEX.md` §6.
+
+---
+
+## 42. Fáza 20 — #BH, chýbajúce hranice doplnené
+
+`out/ASR_v26.ifc` → `out/ASR_v27.ifc`, `src/39_fix_boundaries.py`.
+
+Doplnených **16 `IfcRelSpaceBoundary1stLevel`** — 20 výplní ich zdieľa,
+lebo v `2.13`, `3.13`, `4.03` a `1.18` visí na jednej stene viac dverí.
+Potom **20 `ParentBoundary`** napojených. Hraníc 649 → **665**.
+
+Nefabrikuje sa geometria: vzniká vzťah počítaný z geometrie, ktorá
+v modeli už je, presne ako pri zvyšných 649 vo fáze 6b. Bez
+`ConnectionGeometry`, ako všetky ostatné (rozhodnutie 23). Atribúty
+prevzaté doslova — `PHYSICAL`, `InternalOrExternalBoundary` z `IsExternal`
+prvku, meno `"<priestor> / <prvok>"`.
+
+### Brány
+
+| kontrola | výsledok |
+|---|---|
+| sonda `probe_boundaries.py` na `ASR_v27.ifc` | výplní bez rodiča **0**, chýbajúcich hostiteľov **0** |
+| držaná vzorka | **24 / 24** trafených, 0 omylov, 0 nenájdených |
+| geometrický test priradení | kalibrácia **24 / 24**, meranie **71 / 71** |
+| brána proti `ASR_v26.ifc`, allowlist 16 | **zlyhalo 0 zo 7** |
+| reťazová brána proti `data/ASR.ifc`, allowlist 1833 | **zlyhalo 0 zo 6** |
+| sonda `probe_psets.py` | 1 (vedomé rozhodnutie fázy 17, nezmenené) |
+| druhý beh skriptu | 0 zmien |
+| `pytest` | 9 z 9 |
+
+Držaná vzorka sa opravou zlepšila z 23/24 na **24/24**: ten jeden prípad,
+kde odvodenie „nič nenašlo", bol `DD04.06.01` v `4.03` — nenašlo preto, že
+hostiteľ `SN02.02.0046` medzi hranicami toho priestoru nebol. Teraz je.
+
+### Čo skript overil, kým čokoľvek zmenil
+
+* **kritérium prešlo držanú vzorku celú** (24 z 24). Keby neprešlo, skript
+  sa zastaví a nič nezmení — to je poučenie zo §41, kde prvé kritérium
+  označilo za podozrivé aj dvojice s `FillsVoids`, teda isté;
+* hostiteľ je **jednoznačný** — práve jeden kandidát vo všetkých 20;
+* stena ešte hranicou toho priestoru nebola;
+* stena na priestor **lieha**. Prah je 1 mm, nie nula, a je to podstatné:
+  najväčšia nameraná medzera je **1,46·10⁻¹¹ mm**. Bbox sa počíta
+  v metroch a násobí tisícom, takže dotyk nikdy nevyjde ako presná nula
+  a poistka na `> 0` by skript zastavila na dotýkajúcich sa telesách.
+  Skutočná najväčšia medzera sa preto vypisuje, nie iba porovnáva.
