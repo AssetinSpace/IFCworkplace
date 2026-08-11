@@ -202,7 +202,7 @@ a rozhodnutie projektanta. Tieto je nutné vedieť pri preberaní:
 | `SN11.01/.02` | `IfcWall / PARTITIONING` | test „nie je prevažne zvislý → `IfcPlate`" tu neplatí |
 | strecha | 2× `IfcRoof / FLAT_ROOF` | `Decomposes` je `SET[0:1]` |
 | `OV01.01` | `IfcWasteTerminal / GULLYTRAP` | výkres „krytá pochôdznou mriežkou"; spec `GULLYTRAP` „fitted with a grating… discharges water through a trap" |
-| `OV04.01/.02/.04/.05` | `IfcWasteTerminal / ROOFDRAIN` | „set into the roof, collects rainwater" |
+| `OV04.01/.02/.04/.05` | `IfcWasteTerminal / ROOFDRAIN` | „Pipe fitting, set into the roof, that collects rainwater for discharge into the rainwater system" |
 | `WC01` | `IfcSanitaryTerminal / URINAL` | §7 |
 | `WC02`, `WC04` | `TOILETPAN` | §7 |
 | `WC03`, `WC05` | `WASHHANDBASIN` | §7 |
@@ -229,6 +229,65 @@ nepoužíva; zaznamenané preto, aby to nevyzeralo ako prehliadnutie.
 iba `USERDEFINED` a `NOTDEFINED`, takže `NOTDEFINED` na všetkých 67
 fasádach a poliach je jediná zmysluplná hodnota bez zavedenia vlastného
 `ObjectType`.
+
+---
+
+## 3a. Rozhodnutia, ktoré padli pravidlom na skupinu
+
+§3 zapisuje rozhodnutia, ktoré si vyžiadali úvahu nad jedným prvkom.
+Rozhodnutí je ale v modeli **591** — toľko GUID má inú triedu alebo iný
+`PredefinedType` než pôvodný export. Zvyšok padol pravidlom na celú
+skupinu a do §3 sa nedostal. Sonda `src/probe_classes.py` ukázala, že
+tri z tých pravidiel nie sú zapísané **nikde** (#BM, `AUDIT.md` §44):
+slová `FLOORING`, `ROOFING` ani `CEILING` sa v dokumentácii nevyskytli
+ani raz, hoci ich nesie **146** prvkov a typov.
+
+Počty sú odmerané na `ASR_v28.ifc` a sú za occurrences aj typy spolu.
+
+| skupina | trieda / typ | ks | opora |
+|---|---|--:|---|
+| `PD02.*` (61), `PD03.*` (14) vrstvy podlahy | `IfcCovering / FLOORING` | 75 | *„The covering is used to represent a flooring"* |
+| `ST01.20`, `ST01.21` vrstvy strechy | `IfcCovering / ROOFING` | 45 | *„The covering is used to represent a roof covering"* |
+| `PH01.*` podhľady | `IfcCovering / CEILING` | 26 | *„The covering is used to represent a ceiling"* |
+| `ST01.*` (45), `FS01.*` (16), `FS03.01` (10), `FS02.01` (2) zateplenia | `IfcCovering / INSULATION` | 73 | *„used to insulate an element for thermal or acoustic purposes"* |
+
+Kódy vrstiev podlahy menovite, aby sa dali prejsť: `PD02.10`, `PD02.11`,
+`PD02.30`, `PD02.31`, `PD02.40`, `PD02.41`, `PD02.43`, `PD02.44`,
+`PD02.50`, `PD02.51`, `PD02.52`, `PD02.53`, `PD02.54`, `PD02.60`,
+`PD02.70`, `PD03.30`, `PD03.31`, `PD03.60`, `PD03.70`.
+
+**`FS02.01` rozhodlo meranie, nie popis.** Typ sa volá „Podkladný blok
+LOP" a ako `INSULATION` by sa z toho názvu obhájiť nedal. Jediná vrstva
+jeho `IfcMaterialLayerSet` sa však volá **„Izolácia - LOP"** a má 300 mm.
+Zapisuje sa to preto, že pri preberaní to inak vyzerá ako omyl.
+
+**Prečo `IfcCovering` a nie pôvodná trieda.** Vrstvy skladby prišli
+z Revitu ako `IfcSlab`, `IfcRoof` alebo `IfcWall` — teda ako samostatné
+konštrukcie. Vrstva skladby konštrukcia nie je; #T a #V to riešia
+v `AUDIT.md` §3. `IfcCovering` je pre ne správna trieda a hodnota
+`PredefinedType` už len hovorí, čoho vrstva to je.
+
+---
+
+## 3b. Čo o triedach preveril `probe_classes.py`
+
+Meranie na `ASR_v28.ifc` proti publikovaným docs IFC4.3, `AUDIT.md` §44.
+Pri preberaní to je to, čo netreba merať znova.
+
+| tvrdenie | ako |
+|---|---|
+| každá hodnota `PredefinedType` je vo svojej enumerácii | 0 mimo; enumerácie čítané z `IFC4X3_DEV_60a6175.exp` **aj** z `lexical/`, nezhoda oboch zdrojov 0 na 22 enumeráciách |
+| occurrence nemá typ inej triedy | `CorrectTypeAssigned` 0 porušení |
+| `USERDEFINED` má vždy `ObjectType`/`ElementType` | 0 porušení na všetkých 21 — 17 dverí, `OV04.03` s typom, 1 `IfcSpace` |
+| hodnota na occurrence si neprotirečí s hodnotou na type | 0 nezhôd na 2609 dvojiciach |
+| žiadna trieda v modeli nie je zrušená | 43 tried; `DEPRECATION` sa našla len pri atribúte (#BL) |
+| citácie §3 z docs sú doslovné | 6 zo 7; siedma opravená ako #BN |
+| rozhodnutia z popisu obstoja geometrii | 7 z 8 zmeraných bez výhrady, `AUDIT.md` §44 |
+
+**Dve otázky zostávajú otvorené** a sú v `AUDIT.md` §44: `ST01.31`
+`TOPPING` proti `COPING` (OSB zakončenie atiky pod plechom, ktorý `COPING`
+má) a `ZD02.05` `PAD_FOOTING`, ktorého definícia hovorí o zaťažení stĺpa,
+kým ten blok nesie schodisko.
 
 ---
 
