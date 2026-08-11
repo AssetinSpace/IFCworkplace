@@ -1,7 +1,7 @@
 # BEP — príloha k modelu OCB
 
 Zoznam rozšírení SNIM a odchýlok od dokumentovaného IFC vzoru, ktoré
-model `ASR_v27.ifc` obsahuje. Každá položka uvádza, čo sa spravilo, prečo,
+model `ASR_v28.ifc` obsahuje. Každá položka uvádza, čo sa spravilo, prečo,
 a o akú oporu sa opiera.
 
 Register vád, meranie a postup sú v `AUDIT.md`; táto príloha je jeho
@@ -259,14 +259,19 @@ kódy s inými skladbami a priradenie podľa kódu by bolo nesprávne.
 
 ## 4b. Fyzika materiálov
 
-Deväť materiálov nesie λ, ρ, c a μ z výpisu `D.1.1.09`. Zápis je podľa
+Deväť materiálov nesie λ, ρ, c a μ z výpisu `D.1.1.09`. Hodnoty sú
+**overené proti vykresleným stranám výpisu**, nie iba proti textu z
+`pdftotext` — a dva riadky sa pri tom opravili (`AUDIT.md` §43): `Zdivo
+nosné` μ vôbec nemá, lebo μ = 20 patrí omietkovej zmesi o riadok vyššie,
+a `Izolace EPS` naopak ρ = 23–28 a μ = 30–70 má, doložené v `ST01.10`
+v.10/11. Zápis je podľa
 schémy v `IfcMaterialProperties` na `IfcMaterial`, nie v `IfcPropertySet`
 na prvku — psety `Pset_MaterialThermal`, `Pset_MaterialCommon`
 a `Pset_MaterialHygroscopic` sú `PSET_MATERIALDRIVEN`.
 
 μ je v `Pset_MaterialHygroscopic` ako dvojica `Lower`/`UpperVaporResistanceFactor`;
-`Pset_MaterialThermal` ho nemá. Rozsah `ρ = 23–28` nesie
-`IfcPropertyBoundedValue` — šablóna psetu predpisuje jednu hodnotu, tá by
+`Pset_MaterialThermal` ho nemá. Rozsahy `ρ = 23–28` nesie
+`IfcPropertyBoundedValue` (dva materiály, obe EPS 150) — šablóna psetu predpisuje jednu hodnotu, tá by
 rozsah zahodila. Každá hodnota má v `Specification` riadok výpisu, z ktorého
 pochádza.
 
