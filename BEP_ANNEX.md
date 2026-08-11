@@ -318,7 +318,7 @@ Nájdené pri práci; model ich nekopíruje, ale ani neopravuje ticho.
 
 | tvrdenie | ako |
 |---|---|
-| geometria prvkov sa od pôvodného exportu **neposunula** | **0 posunutých bboxov** medzi `data/ASR.ifc` a `ASR_v21.ifc`, na 6 desatinných miest, 2542 spoločných tvarov. Jediný rozdiel v množine tvarov je prekreslenie priestorov 1NP pôvodnou pipeline (42 zaniklo, 22 vzniklo) — viď `AUDIT.md` §34 |
+| geometria prvkov sa od pôvodného exportu **neposunula** | **0 posunutých bboxov** medzi `data/ASR.ifc` a `ASR_v28.ifc`, na 6 desatinných miest, 2542 spoločných tvarov (invariant 1 reťazovej brány, prebehnutý znova na `ASR_v28.ifc`). Jediný rozdiel v množine tvarov je prekreslenie priestorov 1NP pôvodnou pipeline (42 zaniklo, 22 vzniklo) — viď `AUDIT.md` §34 |
 | každý zrušený a nový GUID fáz 1–10 je vysvetlený | 560 + 1118 = 1678, presne veľkosť kumulatívneho allowlistu, 0 mimo neho |
 | model je schémovo platný | `validate(express_rules=True)` = 0 hlásení |
 | žiadne osirelé entity | invariant 4 = 0 |
@@ -328,4 +328,4 @@ Nájdené pri práci; model ich nekopíruje, ale ani neopravuje ticho.
 | **hranice priestorov sú úplné a rodičia doložení** | `IfcRelSpaceBoundary` 665 na 75 priestoroch. Odvodenie hostiteľa dverí z polohy (#AZ — 80 z 97 dverí nemá `FillsVoids`) je overené na **držanej vzorke**: dvere, ktoré `FillsVoids` majú, dávajú istú pravdu, a odvodenie na nich trafí **24 z 24** bez jediného omylu. Nezávislý geometrický test priradení: kalibrácia 24/24, meranie **71/71**. Výplní bez `ParentBoundary` **0** |
 | pri tej oprave sa nič nestratilo | meranie údaj po údaji medzi `v25` a `v26`: prebytok **362 z 362** je doložene v `Description`. Zmizlo 32 vlastností a všetkých 32 je zámer — 28× neplatná hodnota `PanelPosition`, 4× nuly po `IfcStair` |
 
-Brána po každej fáze proti výstupu predošlej: **zlyhalo 0 zo 7** vo fázach 11 až 20. Reťazová brána `ASR_v27.ifc` proti `data/ASR.ifc`: **zlyhalo 0 zo 6** (invariant 3 sa v nej nepúšťa, viď `AUDIT.md` §34). `pytest` 9 z 9.
+Brána po každej fáze proti výstupu predošlej: **zlyhalo 0 zo 7** vo fázach 11 až 21. Reťazová brána `ASR_v28.ifc` proti `data/ASR.ifc`, allowlist 1833 GlobalId: **zlyhalo 0 zo 6** (invariant 3 sa v nej nepúšťa, viď `AUDIT.md` §34). `pytest` 9 z 9.
