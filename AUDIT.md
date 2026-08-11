@@ -138,11 +138,11 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 | F | **H** | ~~48 osirelých entít~~ — zametené vo fáze 9b, 48 koreňov a 204 entít v kaskáde, 0 zrušených `GlobalId`. Invariant 4 odvtedy prechádza |
 | AY | **H** | ~~`#16` `IfcGeometricRepresentationSubContext` „Box" nepoužitý (0 reprezentácií). Má 0 inverzov, lebo väzbu na rodiča drží **dopredný** `ParentContext`, nie inverzný `HasSubContexts` — do whitelistu invariantu 4 patrí alebo sa má zmazať~~ — **zmazaný**, fáza 18, §37. Rozhodnutie Samuela: *„tak ho zmaž, keď to nič nepokazí."* Overené: 0 reprezentácií, 0 detí, 0 inverzov |
 | AJ | **H** | ~~2653 hodnôt s FP šumom~~ — fáza 9a, zaokrúhlené na 6 desatinných miest. Opravených **15135** (širšie kritérium než pôvodný odhad), najväčšia oprava 5e-07 |
-| BC | **H** | ~~251 psetov a `Qto` na triede, ktorá ich nepripúšťa~~ — **opravené**, fáza 19, §40: 217 sád premenovaných, 34 zmazaných, prebytok 362 vlastností do `SNIM_Properties`/`SNIM_Quantities`. Sonda po oprave hlási 0. Pôvodne: odtlačok pôvodnej triedy prvku, ktorý po prekvalifikovaní nikto neodstránil. Presne tá vada, ktorú §38 bod 1 predpovedal, a #A/#B/#E boli len jej menovite nájdené kusy. Nájdené `src/probe_psets.py`, §39. **Všetkých 251 má doloženú provenanciu proti `data/ASR.ifc`**: 246 pset v origináli na prvku bol a je odtlačkom jeho vtedajšej triedy, 5 pridalo zlučovanie typov fázy 1. Rozpis: 48 + 48 `Pset_RoofCommon`/`Qto_RoofBaseQuantities` na `IfcCovering` (pôvodne `IfcRoof`, #T/#V), 36 + 36 `Pset_SlabCommon`/`Qto_SlabBaseQuantities` na `IfcCovering` (pôvodne `IfcSlab`), 25 `Pset_ReinforcementBarPitchOfSlab` + 19 `Pset_SlabCommon` + 5 `Pset_WallCommon` + 5 `Pset_ReinforcementBarPitchOfWall` + 4 `Pset_RoofCommon` na `IfcCoveringType`, 10 `Qto_SpaceBaseQuantities` na `IfcSpatialZone` (**dvojička #E** — pset sa opravil, `Qto` nie), 9 `Qto_WallBaseQuantities` na `IfcSlab` a 4 na `IfcCovering` (**dvojička #B**), 2 `Pset_StairCommon` na `IfcFooting`/`IfcFootingType` (`ZD02.05`, #AB). Dotknutých **142 prvkov a typov**. Oprava nie je mechanická: cieľové šablóny sú chudobnejšie a čistý presun by zahodil údaje, ktoré sú vecne správne a inde v modeli nie sú — **30 `Description` s plným zložením skladby z výpisu `D.1.1.09`** (schované v `Pset_ReinforcementBarPitchOf*`; vlastný atribút `Description` tých typov je obsadený iným textom, overené 30 z 30), **36 `PitchAngle`** so sklonom strechy (pre `IfcCovering` nemá IFC4.3 štandardné miesto), `ProjectedArea` na 48 vrstvách strechy, `GrossFloorArea`/`NetFloorArea` na 10 zónach `PZ01`–`PZ10` a `GrossVolume`/`NetVolume`/`Perimeter`/`Length` na 36 vrstvách podlahy. Bez straty sa dá zmazať jediné: `Pset_StairCommon` na `ZD02.05` (samé nuly po `IfcStair`). **Čaká na rozhodnutie**, §39 |
+| BC | **H** | ~~251 psetov a `Qto` na triede, ktorá ich nepripúšťa~~ — **opravené**, fáza 19, §40: 217 sád premenovaných, 34 zmazaných, prebytok 362 údajov dopísaný do `Description` dotknutého objektu ako ďalšie riadky (rozhodnutie Samuela: *„nechcem určite nič ako SNIM_quantities, tie veci doplň do description ako nový riadok“*). Overené 362 z 362. Sonda po oprave hlási 0. Pôvodne: odtlačok pôvodnej triedy prvku, ktorý po prekvalifikovaní nikto neodstránil. Presne tá vada, ktorú §38 bod 1 predpovedal, a #A/#B/#E boli len jej menovite nájdené kusy. Nájdené `src/probe_psets.py`, §39. **Všetkých 251 má doloženú provenanciu proti `data/ASR.ifc`**: 246 pset v origináli na prvku bol a je odtlačkom jeho vtedajšej triedy, 5 pridalo zlučovanie typov fázy 1. Rozpis: 48 + 48 `Pset_RoofCommon`/`Qto_RoofBaseQuantities` na `IfcCovering` (pôvodne `IfcRoof`, #T/#V), 36 + 36 `Pset_SlabCommon`/`Qto_SlabBaseQuantities` na `IfcCovering` (pôvodne `IfcSlab`), 25 `Pset_ReinforcementBarPitchOfSlab` + 19 `Pset_SlabCommon` + 5 `Pset_WallCommon` + 5 `Pset_ReinforcementBarPitchOfWall` + 4 `Pset_RoofCommon` na `IfcCoveringType`, 10 `Qto_SpaceBaseQuantities` na `IfcSpatialZone` (**dvojička #E** — pset sa opravil, `Qto` nie), 9 `Qto_WallBaseQuantities` na `IfcSlab` a 4 na `IfcCovering` (**dvojička #B**), 2 `Pset_StairCommon` na `IfcFooting`/`IfcFootingType` (`ZD02.05`, #AB). Dotknutých **142 prvkov a typov**. Oprava nie je mechanická: cieľové šablóny sú chudobnejšie a čistý presun by zahodil údaje, ktoré sú vecne správne a inde v modeli nie sú — **30 `Description` s plným zložením skladby z výpisu `D.1.1.09`** (schované v `Pset_ReinforcementBarPitchOf*`; vlastný atribút `Description` tých typov je obsadený iným textom, overené 30 z 30), **36 `PitchAngle`** so sklonom strechy (pre `IfcCovering` nemá IFC4.3 štandardné miesto), `ProjectedArea` na 48 vrstvách strechy, `GrossFloorArea`/`NetFloorArea` na 10 zónach `PZ01`–`PZ10` a `GrossVolume`/`NetVolume`/`Perimeter`/`Length` na 36 vrstvách podlahy. Bez straty sa dá zmazať jediné: `Pset_StairCommon` na `ZD02.05` (samé nuly po `IfcStair`). **Čaká na rozhodnutie**, §39 |
 | BD | **H** | ~~`Qto_WallBaseQuantities.GrossFootprintArea` × 128~~ — premenované na `GrossFootPrintArea`, fáza 19. Pôvodne: IFC4.3 tú veličinu píše `GrossFootPrintArea` (veľké P). Meno z modelu v šablóne nie je, takže odberateľ, ktorý hľadá podľa docs, ju nenájde. Vada **originálu**: `data/ASR.ifc` je `IFC4X3_ADD2` a nesie 139 rovnako. Premenovanie nič nestráca |
 | BE | **H** | ~~`Qto_BodyGeometryValidation` nesie `NetArea` a `GrossArea` na 36 prvkoch~~ — 72 veličín odobraných zo sady, fáza 19; entity žijú ďalej v `Qto_CoveringBaseQuantities`, lebo boli **zdieľané** (`id()` totožné, nie len hodnota). Pôvodne: šablóna má `GrossSurfaceArea`/`NetSurfaceArea`/`GrossVolume`/`NetVolume`/`SurfaceGenus*` a plošné veličiny tohto mena nepozná. Ide o tých istých 36 `ST01.*`, ktoré boli v origináli `IfcSlab`; **hodnoty sú na 6 desatinných miest totožné** s `GrossArea`/`NetArea` v ich `Qto_SlabBaseQuantities`, teda duplicita, nie údaj navyše. Vada originálu. Zmazanie z `Qto_BodyGeometryValidation` nestráca nič |
 | BF | **H** | ~~`Pset_DoorPanelProperties` × 28: `PanelOperation` a `PanelPosition` ako `IfcPropertySingleValue`~~ — fáza 19: `PanelOperation` prepnuté na `IfcPropertyEnumeratedValue` (hodnoty nedotknuté), `PanelPosition` vypustené. Pôvodne: šablóna žiada `IfcPropertyEnumeratedValue` nad `PEnum_DoorPanelOperationEnum`/`PEnum_DoorPanelPositionEnum`. Pri `PanelOperation` je chybný len nosič, hodnoty sedia (`NOTDEFINED` 21, `SWINGING` 6, `DOUBLE_ACTING` 1 — všetky tri v enumerácii sú). Pri **`PanelPosition` je chybná aj hodnota**: všetkých 28 nesie `NOTDEFINED`, ale `PEnum_DoorPanelPositionEnum` má iba `LEFT`, `MIDDLE`, `RIGHT`, `OTHER`, `NOTKNOWN`, `UNSET` — `NOTDEFINED` v nej **nie je**, zhodne v `annex-a-psd.zip` aj v `lexical/PEnum_DoorPanelPositionEnum.html`. Poloha krídla teda nie je len zle zabalená, ona v modeli nie je vôbec. **Zaviedla to pôvodná pipeline mimo tohto repa** — v `ASR_final_v2.ifc` už tých 28 je, v `data/ASR.ifc` ani jeden. Súvisiaci uzavretý nález je v §39 |
-| BG | O | **`PEnum_AddressType` ako `IfcPropertySet` na `IfcActor` „IfcOpenShell"** — stopa nástroja, nie údaj o stavbe: `#379850 IfcOrganization('IfcOpenShell'…)`, `#379851 IfcApplication(…'Bonsai')`, `#379853 IfcActor`, a pset s `Purpose`/`UserDefinedPurpose`/`WWWHomePageURL = https://ifcopenshell.org`. To sú atribúty `IfcTelecomAddress`, nie property set, a `PEnum_` je predpona pre `IfcPropertyEnumeration`. V `data/ASR.ifc` nie je; v `ASR_final_v2.ifc` už áno — pôvodná pipeline mimo repa |
+| BG | **H** | ~~`PEnum_AddressType` ako `IfcPropertySet` na `IfcActor` „IfcOpenShell"~~ — **zmazané**, fáza 19. Rozhodnutie Samuela, rovnako ako pri #AY. So stopou odišli aj 3 osirelé `IfcOwnerHistory`, ktoré si priniesla so sebou; invariant 4 je čistý. Pôvodne: stopa nástroja, nie údaj o stavbe: `#379850 IfcOrganization('IfcOpenShell'…)`, `#379851 IfcApplication(…'Bonsai')`, `#379853 IfcActor`, a pset s `Purpose`/`UserDefinedPurpose`/`WWWHomePageURL = https://ifcopenshell.org`. To sú atribúty `IfcTelecomAddress`, nie property set, a `PEnum_` je predpona pre `IfcPropertyEnumeration`. V `data/ASR.ifc` nie je; v `ASR_final_v2.ifc` už áno — pôvodná pipeline mimo repa |
 
 ### Triedny model
 | # | | vec |
@@ -2316,57 +2316,49 @@ Do brány sa kontrola pridáva **až po oprave #BC**, ako invariant 8. Teraz
 by ju zhodila na 251 kusoch a účtovanie „zlyhalo 0 zo 7“, o ktoré sa opiera
 každá fáza od jedenástej, by prestalo byť porovnateľné.
 
-### Otvorené rozhodnutia
+### Rozhodnutia (10. 8., Samuel)
 
-1. **Prebytok pri prekvalifikovaných prvkoch (#BC).** Tri cesty:
-   *(a)* premenovať na správny pset a čo cieľová šablóna nepozná, zahodiť —
-   schéma čistá, ale zloženie skladieb, sklon strechy, `ProjectedArea`
-   a prenajímateľné plochy sú preč;
-   *(b)* premenovať a prebytok presunúť do `IfcPropertySet` /
-   `IfcElementQuantity` s **vlastným menom bez vyhradenej predpony** —
-   schéma čistá aj údaj zostáva. Cenou je neštandardné meno, ktoré však
-   `lexical/IfcPropertySet.html` pre neštandardné sady priamo predpisuje:
-   *„Property sets that are not declared as part of the IFC specification
-   shall have a Name value not including the "Pset_" prefix."* Presne tak
-   je v modeli vedený `AIMviewer_Provenance`, takže precedens už stojí;
-   *(c)* nechať tak a zdokumentovať do BEP.
-   Odporúčanie: **(b)**. Zadanie znie „validný voči schéme **a** správne
-   nesúci všetky podstatné informácie" a (b) je jediná cesta, ktorá drží
-   oboje. (a) by ako vedľajší účinok zmazala údaje, ktoré nikto nežiadal
-   zmazať, a to je presne ten druh tichej straty, ktorý tento audit hľadá.
-2. **Meno pre tie neštandardné sady**, ak padne (b). Model už používa
-   `AIMviewer_Provenance`; pre projektové sady sa ponúka `SNIM_`, lebo
-   názvoslovie modelu je SNIM (`BEP_ANNEX.md` §1).
-3. **`DZ02` `SOLIDWALL` × `RETAININGWALL`** — §38 bod 3, nezávislé od #BC.
-4. **#BG** — zmazať stopu nástroja, alebo nechať a zdokumentovať. Tvarom
-   je to ten istý prípad ako #AY, kde rozhodnutie znelo *„tak ho zmaž, keď
-   to nič nepokazí"*.
+1. **Prebytok pri prekvalifikovaných prvkoch (#BC).** Ani (a) zahodiť, ani
+   (b) vlastná sada. Samuel: *„nechcem určite nič ako SNIM_quantities, tie
+   veci doplň do description ako nový riadok."* Prebytok teda ide do
+   atribútu `Description` toho objektu, ktorý pset niesol, ako ďalšie
+   riadky pod existujúci text. Vykonané vo fáze 19, §40.
+
+   Cena je vedomá a treba ju vedieť pri preberaní: z `IfcQuantityArea` sa
+   stane veta, takže výkazový nástroj ju už neprečíta. Čísla sú ale
+   dopočítateľné z geometrie, ktorá je overene nedotknutá, kým zloženie
+   skladby sa nedopočíta odnikiaľ — a to zostalo. Preto sa ku každému
+   číslu píše jednotka z `IfcUnitAssignment` modelu: projekt má dĺžku
+   v mm, ale plochu v m² a objem v m³, takže holé číslo by nešlo prečítať.
+
+2. **#BG** — zmazať. Rovnako ako pri #AY.
+3. **`PanelPosition`** — nechať vypustenú. Neplatná hodnota sa nenahrádza
+   platnou náhradou; o polohe krídla model nikdy nič neniesol.
+4. **`DZ02` `SOLIDWALL` × `RETAININGWALL`** — §38 bod 3, stále otvorené,
+   nezávislé od #BC.
 
 ---
 
-## 40. Fáza 19 — #BC, #BD, #BE, #BF opravené
+## 40. Fáza 19 — #BC, #BD, #BE, #BF, #BG opravené
 
 `out/ASR_v25.ifc` → `out/ASR_v26.ifc`, `src/38_fix_psets_class.py`.
-Rozhodnutie: cesta **(b)** zo §39 — premenovať na pset, ktorý trieda
-pripúšťa, a čo cieľová šablóna nepozná, presunúť do sady s vlastným menom,
-nie zahodiť. Dôvod je v zadaní: model má byť validný voči schéme **a**
-zároveň správne niesť všetky podstatné informácie. Cesta (a) by dala prvé
-za cenu druhého.
+Rozhodnutia sú na konci §39.
 
-Poradie operácií je B, C, D, A — B zjednotí názvoslovie veličín skôr, než
-ich A presúva, a C odstráni duplicitu skôr, než by ju A odniesla do
-prebytkovej sady.
+Poradie operácií je B, C, D, A, E — B zjednotí názvoslovie veličín skôr,
+než ich A presúva, a C odstráni duplicitu skôr, než by ju A odniesla do
+textu.
 
 | | čo | koľko |
 |---|---|--:|
 | A | sád premenovaných na pset, ktorý trieda pripúšťa | 217 |
 | A | sád zmazaných, lebo z nich nič neprežilo | 34 |
-| A | prebytkových vlastností do `SNIM_*` | 362 |
-| A | nových sád `SNIM_Properties` (66) a `SNIM_Quantities` (107) | 173 |
+| A | prebytkových údajov dopísaných do `Description` | 362 |
+| A | objektov, ktorým `Description` narástol | 137 |
 | B | `GrossFootprintArea` → `GrossFootPrintArea` | 128 |
 | C | duplicitných veličín von z `Qto_BodyGeometryValidation` | 72 |
 | D | `PanelOperation` → `IfcPropertyEnumeratedValue` | 28 |
 | D | `PanelPosition` vypustené | 28 |
+| E | zmazaná stopa nástroja (#BG) | 2 |
 
 217 + 34 = **251**, teda každý jeden nález bodu 2 je vyúčtovaný.
 
@@ -2374,21 +2366,39 @@ prebytkovej sady.
 
 | kontrola | výsledok |
 |---|---|
-| sonda `probe_psets.py` na `ASR_v26.ifc` | **509 → 2** |
-| brána proti `ASR_v25.ifc`, allowlist 351 | **zlyhalo 0 zo 7** |
-| reťazová brána proti `data/ASR.ifc`, allowlist 2130 | **zlyhalo 0 zo 6** |
-| druhý beh skriptu | 0 zmien vo všetkých ôsmich operáciách |
+| sonda `probe_psets.py` na `ASR_v26.ifc` | **509 → 1** |
+| brána proti `ASR_v25.ifc`, allowlist 38 | **zlyhalo 0 zo 7** |
+| reťazová brána proti `data/ASR.ifc`, allowlist 1817 | **zlyhalo 0 zo 6** |
+| druhý beh skriptu | 0 zmien vo všetkých deviatich operáciách |
 | `pytest` | 9 z 9 |
 
-Zvyšné dve hlásenia sondy sú obe očakávané a ani jedno nie je nová vada:
-**#BG** (čaká na rozhodnutie, je to zmazanie) a `Pset_MaterialCommon.MassDensity`
-ako `IfcPropertyBoundedValue`, čo je vedomé rozhodnutie fázy 17
-(`BEP_ANNEX.md` §4b).
+Jediné zvyšné hlásenie sondy je `Pset_MaterialCommon.MassDensity` ako
+`IfcPropertyBoundedValue`, čo je vedomé rozhodnutie fázy 17
+(`BEP_ANNEX.md` §4b), nie vada.
 
-Účtovníctvo GUID: −35, +316. Mínus sú zmazané sady a ich vzťahy, plus sú
-173 nových `SNIM_*` sád a 143 `IfcRelDefinesByProperties`, ktorými visia na
-occurrences. Typy ich nesú cez `HasPropertySets`, lebo `IfcTypeObject`
-v `IfcRelDefinesByProperties` schéma zakazuje (pravidlo `NoRelatedTypeObject`).
+Účtovníctvo GUID: **−38, +0**. Nič nového nepribudlo, lebo prebytok sa
+nesie atribútom, nie novou entitou. Mínus sú zmazané sady, ich vzťahy
+a stopa nástroja.
+
+### Ako vyzerá výsledok
+
+```
+IfcCoveringType ST01.20.Description
+    Vegetačné súvrstvie od HI vrstvy (vr. HI)
+    Skladba: Extenzívna vegetačná rohož, minerálny substrát, hydrofilné
+      dosky, filtračná geotextília, drenážna fólia, separačná geotextília…
+
+IfcSpatialZone PZ01.Description
+    GrossCeilingArea = 611.54375 m²
+    GrossFloorArea = 611.54375 m²
+    GrossPerimeter = 176640 mm
+    NetFloorArea = 611.54375 m²
+```
+
+Pôvodný text sa **nezahadzuje**, pridáva sa pod neho. Jednotka pri každom
+čísle je z `IfcUnitAssignment` modelu, nie predpokladaná — projekt mieša
+mm, m² a m³ a holé číslo by nešlo prečítať. Riadok, ktorý v `Description`
+už je, sa nepridá druhý raz, takže druhý beh text nezdvojí.
 
 ### Čo skript overil, kým čokoľvek zmenil
 
@@ -2398,16 +2408,14 @@ Päť kontrol, z ktorých každá skript zastaví:
    odmerané 251 z 251 má práve jedného, takže premenovanie nemôže
    zasiahnuť cudzí prvok;
 2. cieľové meno na vlastníkovi nie je obsadené. Kontrola beží **pred**
-   prvou zmenou, nie po nej — zastavenie uprostred by nechalo model
-   rozrobený;
+   prvou zmenou — zastavenie uprostred by nechalo model rozrobený;
 3. veličina sa z `Qto_BodyGeometryValidation` odoberie, len keď je **tá
    istá entita** doložene aj v inej `IfcElementQuantity`. Porovnáva sa
    `id()`, nie hodnota, takže to nie je „vyzerá rovnako", ale „je to ono";
 4. pri #BF je vlastnosť práve v jednom psete;
-5. sada, z ktorej nič neprežilo, sa maže celá — `HasProperties` aj
-   `Quantities` sú `SET [1:?]` a prázdna sada by bola porušenie schémy.
-   To isté pri `HasPropertySets` na type: keď zostane prázdne, atribút sa
-   nenastaví na prázdnu množinu, ale na `None`.
+5. sada, z ktorej nič neprežilo, sa maže celá — `HasProperties`
+   aj `Quantities` sú `SET [1:?]`. To isté pri `HasPropertySets` na type:
+   keď zostane prázdne, atribút sa nastaví na `None`, nie na prázdnu množinu.
 
 Dva `IfcCoveringType` (`ST01.10a`, `ST01.20`) niesli `Pset_RoofCommon`
 aj `Pset_SlabCommon` naraz, teda dva zdroje mieriace na jeden cieľ.
@@ -2415,38 +2423,34 @@ Zlúčili sa do jedného `Pset_CoveringCommon`; obe niesli
 `ThermalTransmittance` s **rovnakou hodnotou**, a keby sa líšili, skript
 by zastal.
 
+### Zametanie po #BG
+
+Zmazanie stopy nástroja nechalo tri osirelé `IfcOwnerHistory` a brána ich
+zachytila — `ifcutil.CHILD_ATTRS` `OwnerHistory` nesleduje, a správne, lebo
+v Revitovom súbore ju zdieľajú tisíce prvkov. Stopa nástroja si však
+priniesla **vlastnú**. Doplnené dvojako: mazaný koreň dá na zametenie svoju
+`IfcOwnerHistory` aj osobu, organizáciu a aplikáciu za ňou, a `sweep_orphans`
+sa volá dokola, kým je čo brať — inak by organizácia osirela až v kole,
+ktoré by už neprebehlo. Každý kandidát sa aj tak preveruje na 0 inverzov,
+takže zdieľané entity prežijú.
+
 ### Čo sa stratilo — menovite
 
-Nezávislé meranie „vlastnosť po vlastnosti" medzi `v25` a `v26` na všetkých
-prvkoch: zmizlo **32** vlastností, a všetkých 32 je zámer.
+Nezávislé meranie údaj po údaji medzi `v25` a `v26`:
 
-| koľko | čo | prečo |
-|--:|---|---|
-| 28 | `PanelPosition` | jediná hodnota bola `NOTDEFINED`, ktorá v `PEnum_DoorPanelPositionEnum` nie je. Chýbajúca vlastnosť je pravdivá, neplatná hodnota nie |
-| 4 | `IsExternal`, `NosingLength`, `NumberOfRiser`, `NumberOfTreads` na `ZD02.05` | `False`, `0`, `0`, `0` — nuly po `IfcStair` (#AB), a `Pset_FootingCommon` nepozná ani jednu |
-
-Hodnotu zmenilo **28** vlastností a všetkých 28 je `PanelOperation`, kde sa
-zmenil nosič, nie hodnota (`NOTDEFINED` 21, `SWINGING` 6, `DOUBLE_ACTING` 1
-pred aj po).
-
-Prebytok prežil celý — 362 členov, medzi nimi **30 `Description`** so
-zložením skladieb, **36 `PitchAngle`**, **48 `ProjectedArea`**,
-**10 `GrossFloorArea` + 10 `NetFloorArea`** na zónach `PZ01`–`PZ10`.
-
-### Kde prebytok býva
-
-`SNIM_Properties` a `SNIM_Quantities`, obe s `Description`, ktorý hovorí
-odkiaľ pochádzajú — napr. *„prebytok zo šablóny Pset_ReinforcementBarPitchOfWall"*.
-Provenancia tak zostáva v modeli, nielen v tomto dokumente. Meno bez
-vyhradenej predpony je to, čo `lexical/IfcPropertySet.html` pre neštandardné
-sady predpisuje, a model ten vzor už mal v `AIMviewer_Provenance`.
+* **362 z 362** prebytkových údajov je doložene v `Description` cieľového
+  objektu — 30 `Skladba:`, 36 `PitchAngle`, 48 `ProjectedArea`,
+  10 `GrossFloorArea` + 10 `NetFloorArea` a zvyšok objemy, obvody a dĺžky;
+* zmizlo **32** vlastností a všetkých 32 je zámer: 28× `PanelPosition`
+  (jediná hodnota `NOTDEFINED` v enumerácii nie je) a 4× nuly po `IfcStair`
+  na `ZD02.05` (`IsExternal = False`, `NosingLength`, `NumberOfRiser`,
+  `NumberOfTreads` = 0);
+* hodnotu zmenilo **28** vlastností a všetkých 28 je `PanelOperation`, kde
+  sa zmenil nosič, nie hodnota (`NOTDEFINED` 21, `SWINGING` 6,
+  `DOUBLE_ACTING` 1 pred aj po).
 
 ### Čo zostáva otvorené
 
-* **#BG** — zmazanie stopy nástroja. Skript to vie (`--drop-tool-trace`),
-  ale nespustil to, lebo je to zmazanie a rozhodnutie je Samuelovo.
-* **`PanelPosition`** — vypustené. Ak má byť namiesto toho `UNSET`, stačí
-  `--panel-position unset`.
-* Kontrola sa dá teraz **pridať do brány ako invariant 8**, lebo model ju
-  spĺňa až na dve zdôvodnené výnimky. Do rozhodnutia o #BG sa nepridáva.
+* Kontrola sa dá teraz **pridať do brány ako invariant 8** — model ju
+  spĺňa až na jednu zdôvodnenú výnimku (`MassDensity`).
 * §38 body 2–8 sa ešte neprešli. Bod 1 je tým vybavený.

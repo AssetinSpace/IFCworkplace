@@ -3,7 +3,7 @@
     python src/38_fix_psets_class.py                     # dry-run
     python src/38_fix_psets_class.py --apply             # zapíše out/ASR_v26.ifc
     python src/38_fix_psets_class.py --surplus drop      # cesta (a) z §39
-    python src/38_fix_psets_class.py --drop-tool-trace   # aj #BG
+    python src/38_fix_psets_class.py --keep-tool-trace   # #BG ponechať
 
 Nález opravuje ``src/probe_psets.py`` (§39). Poradie operácií je
 zámerné: **B, C, D, A** — B zjednotí názvoslovie veličín skôr, než ich
@@ -16,14 +16,20 @@ Pset sa premenuje na ten, ktorý trieda pripúšťa; čo cieľová šablóna
 nepozná, je **prebytok**. Precedens #B (``16_fix_psets.py``) hovorí
 prebytok zahodiť — tu sa to nedá, lebo prebytok nie je Revitový zvyšok,
 ale plné zloženie skladieb, sklon strechy, ``ProjectedArea`` a
-prenajímateľné plochy (§39). Preto ``--surplus keep`` (default): prebytok
-ide do sady s **vlastným menom bez vyhradenej predpony**, ako to pre
-neštandardné sady predpisuje ``lexical/IfcPropertySet.html``:
+prenajímateľné plochy (§39).
 
-    Property sets that are not declared as part of the IFC specification
-    shall have a Name value not including the "Pset_" prefix.
+Rozhodnutie Samuela: *„nechcem určite nič ako SNIM_quantities, tie veci
+doplň do description ako nový riadok."* Prebytok teda ide do atribútu
+``Description`` toho objektu, ktorý pset niesol — occurrence alebo typ —
+ako ďalšie riadky. Existujúci text sa **nezahadzuje**, pridáva sa pod
+neho. ``--surplus drop`` je cesta (a) zo §39, teda prebytok zahodiť.
 
-``--surplus drop`` je cesta (a) zo §39 — čistejšia schéma, menej údajov.
+Cena tej voľby je vedomá: z ``IfcQuantityArea`` sa stane veta, takže
+výkazový nástroj ju už neprečíta. Čísla sú ale dopočítateľné z geometrie,
+ktorá je overene nedotknutá, kým zloženie skladby sa nedopočíta odnikiaľ.
+Preto sa k číslu vždy píše **jednotka z ``IfcUnitAssignment`` modelu**,
+nie predpokladaná — projekt má dĺžku v mm, ale plochu v m² a objem v m³,
+takže holé číslo by bolo nečitateľné.
 
 Jediná výnimka, ktorá sa maže vždy: ``Pset_StairCommon`` na ``ZD02.05``
 (#AB). Nesie ``IsExternal = False``, ``NosingLength = 0``,
@@ -36,7 +42,8 @@ D · #BF — ``PanelOperation`` na ``IfcPropertyEnumeratedValue``;
           ``PanelPosition`` sa vypúšťa, lebo jeho jediná hodnota
           ``NOTDEFINED`` v ``PEnum_DoorPanelPositionEnum`` nie je
           (``--panel-position unset`` ju namiesto toho prepíše na ``UNSET``)
-E · #BG — stopa nástroja; **len s ``--drop-tool-trace``**, lebo je to zmazanie
+E · #BG — stopa nástroja ``IfcOpenShell``/``Bonsai`` sa maže. Rozhodnutie
+          Samuela; ``--keep-tool-trace`` ju ponechá
 
 Čo skript overuje, kým niečo zmení
 ----------------------------------
@@ -48,7 +55,9 @@ E · #BG — stopa nástroja; **len s ``--drop-tool-trace``**, lebo je to zmazan
   v inej ``IfcElementQuantity`` — porovnáva sa ``id()``, nie hodnota;
 * pri D je vlastnosť práve v jednom psete;
 * prázdna sada sa nezapíše — ``HasProperties`` aj ``Quantities`` sú
-  ``SET [1:?]``, takže sada bez členov sa maže celá.
+  ``SET [1:?]``, takže sada bez členov sa maže celá;
+* riadok sa do ``Description`` nepridá, keď tam už je — druhý beh teda
+  text nezdvojí.
 
 Ktorákoľvek z týchto kontrol skript zastaví. Radšej nespraviť nič než
 spraviť to potichu zle.
@@ -104,13 +113,61 @@ MAP = {
     ("Qto_SpaceBaseQuantities", "IfcSpatialZone"): "Qto_SpatialZoneBaseQuantities",
 }
 
-# Maže sa vždy, aj pri --surplus keep. Dôvod v §39: samé nuly po IfcStair.
+# Maže sa vždy, aj pri --surplus description. Dôvod v §39: nuly po IfcStair.
 ZMAZAT_BEZ_STRATY = {
     ("Pset_StairCommon", "IfcFooting"),
     ("Pset_StairCommon", "IfcFootingType"),
 }
 
-PREFIX = "SNIM_"
+# Značka veličiny → typ jednotky, pod ktorým ju model deklaruje.
+KIND_UNIT = {
+    "IfcQuantityLength": "LENGTHUNIT",
+    "IfcQuantityArea": "AREAUNIT",
+    "IfcQuantityVolume": "VOLUMEUNIT",
+    "IfcQuantityWeight": "MASSUNIT",
+    "IfcQuantityTime": "TIMEUNIT",
+    "IfcQuantityCount": None,
+}
+
+# Meno SI jednotky (+ prefix) → symbol. Čo tu nie je, sa vypíše menom
+# zo schémy — radšej neestetické než vymyslené.
+SI_SYMBOL = {
+    ("METRE", "MILLI"): "mm",
+    ("METRE", None): "m",
+    ("SQUARE_METRE", None): "m²",
+    ("CUBIC_METRE", None): "m³",
+    ("GRAM", "KILO"): "kg",
+    ("SECOND", None): "s",
+}
+
+
+def jednotky_projektu(model):
+    """UnitType → symbol, prečítané z ``IfcUnitAssignment`` modelu."""
+    out = {}
+    for p in model.by_type("IfcProject"):
+        if p.UnitsInContext is None:
+            continue
+        for u in p.UnitsInContext.Units or []:
+            out[u.UnitType] = symbol(u)
+    return out
+
+
+def symbol(u):
+    if u is None:
+        return ""
+    if u.is_a("IfcSIUnit"):
+        return SI_SYMBOL.get((u.Name, u.Prefix), u.Name)
+    if u.is_a("IfcConversionBasedUnit"):
+        return {"DEGREE": "°"}.get((u.Name or "").upper(), u.Name or "")
+    return getattr(u, "UnitType", "") or ""
+
+
+def cislo(v):
+    """Hodnota bez chvosta núl. Model je zaokrúhlený na 6 miest (#AJ)."""
+    if isinstance(v, float):
+        s = ("%.6f" % v).rstrip("0").rstrip(".")
+        return s if s not in ("", "-") else "0"
+    return str(v)
 
 
 def sablony():
@@ -142,6 +199,66 @@ def enum_hodnoty(pset, prop):
     return None, []
 
 
+def stopa_okolo(e):
+    """Sprievodné entity mazaného koreňa, ktoré môžu osirieť.
+
+    ``ifcutil.CHILD_ATTRS`` ``OwnerHistory`` nesleduje — a nemá, lebo
+    v Revitovom súbore ju zdieľajú tisíce prvkov. Tu je iná: stopa
+    nástroja si so sebou priniesla **vlastnú** ``IfcOwnerHistory``
+    a k nej osobu, organizáciu a aplikáciu. Vracajú sa len ako
+    kandidáti — ``sweep_orphans`` každého ešte overí na 0 inverzov,
+    takže zdieľané prežijú.
+    """
+    ids = []
+    oh = getattr(e, "OwnerHistory", None)
+    if oh is not None:
+        ids.append(oh.id())
+        for a in ("OwningUser", "OwningApplication",
+                  "LastModifyingUser", "LastModifyingApplication"):
+            v = getattr(oh, a, None)
+            if v is not None:
+                ids.append(v.id())
+                for b in ("ThePerson", "TheOrganization", "ApplicationDeveloper",
+                          "Roles"):
+                    w = getattr(v, b, None)
+                    if w is None:
+                        continue
+                    if isinstance(w, ifcopenshell.entity_instance):
+                        ids.append(w.id())
+                    else:
+                        ids += [z.id() for z in w]
+    act = getattr(e, "TheActor", None)
+    if act is not None:
+        ids.append(act.id())
+        for z in (getattr(act, "Roles", None) or []):
+            ids.append(z.id())
+    return ids
+
+
+def riadok(x, jednotky):
+    """Jeden prebytkový údaj ako riadok do ``Description``.
+
+    Text sa píše ako text; číslo vždy s jednotkou z ``IfcUnitAssignment``,
+    lebo projekt mieša mm, m² a m³ a holé číslo by nešlo prečítať.
+    Vlastná ``Unit`` veličiny má prednosť pred projektovou.
+    """
+    if x.is_a("IfcPhysicalSimpleQuantity"):
+        j = symbol(x.Unit) if getattr(x, "Unit", None) else \
+            jednotky.get(KIND_UNIT.get(x.is_a()) or "", "")
+        return "%s = %s%s" % (x.Name, cislo(x[3]), (" " + j) if j else "")
+    if x.is_a("IfcPropertySingleValue") and x.NominalValue is not None:
+        v = x.NominalValue
+        # zloženie skladby nesie property menom „Description"; písať
+        # „Description = …" do Description je nezmysel, je to skladba
+        if x.Name == "Description" and v.is_a() in ("IfcText", "IfcLabel"):
+            return "Skladba: " + str(v.wrappedValue)
+        j = jednotky.get("PLANEANGLEUNIT", "") \
+            if v.is_a() == "IfcPlaneAngleMeasure" else ""
+        return "%s = %s%s" % (x.Name, cislo(v.wrappedValue),
+                              (" " + j) if j else "")
+    return ""
+
+
 def cleny(pdef):
     if pdef.is_a("IfcPropertySet"):
         return list(pdef.HasProperties or []), "HasProperties"
@@ -171,8 +288,14 @@ def vlastnici(model, pdef):
     return out
 
 
-def odpoj(model, pdef, owner, removed):
-    """Odoberie definíciu od vlastníka. Vráti ju na zametenie."""
+def odpoj(model, pdef, owner, removed, candidates=None):
+    """Odoberie definíciu od vlastníka.
+
+    Keď pritom zanikne ``IfcRelDefinesByProperties``, jeho
+    ``OwnerHistory`` ide medzi kandidátov — pri Revitových vzťahoch
+    ju zdieľajú tisíce prvkov a prežije, pri stope nástroja (#BG) je
+    vlastná a osirie.
+    """
     if owner.is_a("IfcTypeObject") and pdef in (owner.HasPropertySets or []):
         zvysok = [p for p in owner.HasPropertySets if p.id() != pdef.id()]
         # HasPropertySets je OPTIONAL SET [1:?] — prázdna množina by bola
@@ -187,6 +310,8 @@ def odpoj(model, pdef, owner, removed):
         else:
             if getattr(r, "GlobalId", None):
                 removed.append(r.GlobalId)
+            if candidates is not None and r.OwnerHistory is not None:
+                candidates.append(r.OwnerHistory.id())
             model.remove(r)
 
 
@@ -209,16 +334,21 @@ def main() -> int:
     ap.add_argument("--in", dest="src", default=IN)
     ap.add_argument("--out", dest="dst", default=OUT)
     ap.add_argument("--apply", action="store_true")
-    ap.add_argument("--surplus", choices=("keep", "drop"), default="keep")
+    ap.add_argument("--surplus", choices=("description", "drop"),
+                    default="description")
     ap.add_argument("--panel-position", choices=("drop", "unset"), default="drop")
-    ap.add_argument("--drop-tool-trace", action="store_true")
+    ap.add_argument("--keep-tool-trace", action="store_true",
+                    help="#BG ponechať; default je zmazať (rozhodnutie Samuela)")
     args = ap.parse_args()
     dry = not args.apply
 
     tpl = sablony()
     model = ifcopenshell.open(args.src)
+    jednotky = jednotky_projektu(model)
     print("vstup    :", args.src)
-    print("prebytok :", args.surplus, " PanelPosition:", args.panel_position)
+    print("prebytok :", args.surplus, " PanelPosition:", args.panel_position,
+          " stopa nástroja:", "ponechať" if args.keep_tool_trace else "zmazať")
+    print("jednotky :", ", ".join("%s=%s" % kv for kv in sorted(jednotky.items()) if kv[1]))
     print()
 
     removed: list = []
@@ -351,7 +481,8 @@ def main() -> int:
                 sys.exit("A: %s už nesie %s, premenovanie by ho zdvojilo. "
                          "Zastavené." % (owner.Name, ciel))
 
-    premenovane = zmazane = prebytok_prop = prebytok_sad = 0
+    premenovane = zmazane = prebytok_prop = 0
+    prebytok_riadkov = prebytok_objektov = 0
     for oid, polozky in sorted(plan.items()):
         owner = model.by_id(oid)
         zlucit = collections.defaultdict(list)   # cieľ → [členovia]
@@ -406,7 +537,7 @@ def main() -> int:
             if c is not None:
                 continue
             if not dry:
-                odpoj(model, pdef, owner, removed)
+                odpoj(model, pdef, owner, removed, candidates)
                 if getattr(pdef, "GlobalId", None):
                     removed.append(pdef.GlobalId)
                 # členov, ktorí prežili v zlúčenej sade, nezametať
@@ -415,30 +546,24 @@ def main() -> int:
                 model.remove(pdef)
             zmazane += 1
 
-        # prebytok
-        if prebytok and args.surplus == "keep":
-            for trieda, meno in (("IfcPropertySet", PREFIX + "Properties"),
-                                 ("IfcElementQuantity", PREFIX + "Quantities")):
-                vyber = [(src, x) for src, x in prebytok
-                         if (trieda == "IfcPropertySet") == x.is_a("IfcProperty")]
-                if not vyber:
-                    continue
-                popis = "prebytok zo šablóny " + ", ".join(
-                    sorted({s for s, _ in vyber}))
-                prebytok_prop += len(vyber)
-                prebytok_sad += 1
-                if dry:
-                    continue
-                gid = ifcopenshell.guid.new()
-                kw = {"GlobalId": gid, "OwnerHistory": owner.OwnerHistory,
-                      "Name": meno, "Description": popis}
-                if trieda == "IfcPropertySet":
-                    kw["HasProperties"] = [x for _, x in vyber]
-                else:
-                    kw["Quantities"] = [x for _, x in vyber]
-                nova = model.create_entity(trieda, **kw)
-                added.append(gid)
-                pripoj(model, nova, owner, added)
+        # prebytok — do Description ako ďalšie riadky (rozhodnutie Samuela)
+        if prebytok and args.surplus == "description":
+            riadky = []
+            for _, x in sorted(prebytok, key=lambda t: t[1].Name or ""):
+                r = riadok(x, jednotky)
+                if r:
+                    riadky.append(r)
+            maju = (owner.Description or "").split("\n")
+            nove = [r for r in riadky if r not in maju]
+            prebytok_prop += len(prebytok)
+            prebytok_riadkov += len(nove)
+            if nove:
+                prebytok_objektov += 1
+            if not dry:
+                if nove:
+                    owner.Description = "\n".join(
+                        ([owner.Description] if owner.Description else []) + nove)
+                candidates += [x.id() for _, x in prebytok]
         elif prebytok:
             prebytok_prop += len(prebytok)
             if not dry:
@@ -446,21 +571,23 @@ def main() -> int:
 
     log["A · premenovaných sád"] = premenovane
     log["A · zmazaných sád (nič neprežilo)"] = zmazane
-    log["A · prebytkových vlastností %s" % args.surplus] = prebytok_prop
-    log["A · nových prebytkových sád"] = prebytok_sad
+    log["A · prebytkových vlastností (%s)" % args.surplus] = prebytok_prop
+    log["A · riadkov dopísaných do Description"] = prebytok_riadkov
+    log["A · objektov, ktorým Description narástol"] = prebytok_objektov
 
     # ---------- E · #BG ----------------------------------------------------
-    if args.drop_tool_trace:
+    if not args.keep_tool_trace:
         n = 0
         for p in list(model.by_type("IfcPropertySet")):
             if p.Name != "PEnum_AddressType":
                 continue
             for o in vlastnici(model, p):
                 if not dry:
-                    odpoj(model, p, o, removed)
+                    odpoj(model, p, o, removed, candidates)
             if not dry:
                 removed.append(p.GlobalId)
                 candidates += [x.id() for x in (p.HasProperties or [])]
+                candidates += stopa_okolo(p)
                 model.remove(p)
             n += 1
         for a in list(model.by_type("IfcActor")):
@@ -471,6 +598,7 @@ def main() -> int:
                     ifcutil.detach_object_from_rels(model, a, removed,
                                                     candidates, dead)
                     removed.append(a.GlobalId)
+                    candidates += stopa_okolo(a)
                     model.remove(a)
                 n += 1
         log["E · zmazaná stopa nástroja (#BG)"] = n
@@ -487,7 +615,16 @@ def main() -> int:
         print("\nDRY-RUN — nič sa nezapísalo. Spusti s --apply.")
         return 0
 
-    zamet = ifcutil.sweep_orphans(model, candidates, removed, dead)
+    # Dokola, kým je čo brať: sweep sleduje len CHILD_ATTRS, takže keď
+    # zmizne IfcOwnerHistory, jej osoba a aplikácia osirejú až v ďalšom
+    # kole. Kandidát, ktorý kolo neprežil ako osirelý, sa v ňom znova
+    # preverí — do `dead` sa dostane iba skutočne zmazaný.
+    zamet = collections.Counter()
+    while True:
+        kolo = ifcutil.sweep_orphans(model, candidates, removed, dead)
+        if not sum(kolo.values()):
+            break
+        zamet += kolo
     print("\nzametené osirelé:", sum(zamet.values()),
           dict(zamet.most_common()) if zamet else "")
     model.write(args.dst)
