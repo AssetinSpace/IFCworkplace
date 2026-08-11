@@ -1,7 +1,7 @@
 # BEP — príloha k modelu OCB
 
 Zoznam rozšírení SNIM a odchýlok od dokumentovaného IFC vzoru, ktoré
-model `ASR_v28.ifc` obsahuje. Každá položka uvádza, čo sa spravilo, prečo,
+model `ASR_v29.ifc` obsahuje. Každá položka uvádza, čo sa spravilo, prečo,
 a o akú oporu sa opiera.
 
 Register vád, meranie a postup sú v `AUDIT.md`; táto príloha je jeho
@@ -184,6 +184,59 @@ len tam, kde void existujúceho otvoru dokazuje, že šachta tým podlažím
 prechádza. Tvar sa preberá z otvoru a oreže na pásmo podlažia; výťahové
 šachty sa nekreslili.
 
+### 2.8 Výška podlažia je vo vlastnosti, nie v atribúte
+
+`IfcBuildingStorey.Elevation` je v IFC4.3 zrušený — *„This attribute is
+deprecated and shall no longer be used. Within Pset_BuildingStoreyCommon
+use ElevationOfSSLRelative or ElevationOfFFLRelative instead."* Model ho
+niesol na všetkých piatich podlažiach; fáza 22 ho presunula.
+
+Docs nepovedia, **ktorú** z tých dvoch vlastností použiť, a nie je to
+jedno: `SSL` je úroveň nosnej dosky, `FFL` úroveň nášľapnej vrstvy.
+Rozhodlo meranie — horná hrana vrstiev podlahy sedí na pôvodnú hodnotu
+s Δ 0 mm, kým horná hrana nosných dosiek je stabilne 150 mm pod ňou.
+Zapísaná je preto **`ElevationOfFFLRelative`**.
+
+Napriek menu je hodnota **absolútna**, nie odstup od podlažia: docs
+k obom vlastnostiam hovoria *„given in elevation above the local zero
+height"*. Prenesená je preto nezmenená, vrátane toho, že 2NP nesie
+`4999.999999999999` — tak to bolo v atribúte a zaokrúhliť by znamenalo
+údaj zmeniť, nie presunúť.
+
+**5NP vlastnosť nemá.** Nesie štyri vpuste a jednu vrstvu strechy, žiadnu
+podlahu; docs vynechanie pripúšťajú. Výška 16954 sa tým nestráca —
+`ObjectPlacement` ju nesie na všetkých piatich podlažiach zhodne
+s pôvodným atribútom (najväčšia odchýlka 9,09·10⁻¹³ mm, čo je float šum
+z prepočtu metrov na milimetre).
+
+**Čo treba vedieť pri preberaní.** Nástroj, ktorý číta `Elevation`
+priamo, ho v modeli nenájde. Výška podlažia je v `ObjectPlacement`
+a duplicitne v `Pset_BuildingStoreyCommon.ElevationOfFFLRelative`.
+
+### 2.9 `PredefinedType` zostáva aj tam, kde prvok má typ
+
+2416 occurrences nesie `PredefinedType`, hoci má priradený typ, ktorý
+nesie tú istú hodnotu. Docs to na dvanástich triedach neodporúčajú:
+*„NOTE The PredefinedType shall only be used, if no IfcCoveringType is
+assigned, providing its own IfcCoveringType.PredefinedType."*
+
+**Ponechané zámerne**, rozhodnutie Samuela. Dôvody, prečo to nie je vada:
+
+* nie je to protirečenie, ale redundancia — hodnota na occurrence sa od
+  hodnoty na jej type **nelíši ani raz** z 2609 dvojíc, čo je zmerané;
+* je to `NOTE`, nie EXPRESS pravidlo, takže model zostáva schémovo platný;
+* **2416 z 2416 hodnôt pochádza z pôvodného Revitovho exportu** — táto
+  pipeline nezaložila ani jednu;
+* zmazanie by malo opačné riziko: prehliadač, ktorý typ nerozbaľuje
+  a číta `PredefinedType` priamo na prvku, by po ňom videl `NOTDEFINED`.
+
+Najviac ich je na fasáde — 1376 `IfcMember/MULLION` a 524
+`IfcPlate/CURTAIN_PANEL`. Vetu nesie 12 z 22 occurrence tried;
+`IfcDoor`, `IfcRailing`, `IfcSanitaryTerminal`, `IfcWasteTerminal`
+a `IfcFooting` ju nemajú, takže tých 193 kusov odchýlka nie je vôbec.
+
+`AUDIT.md` #BK a §44.
+
 ---
 
 ## 3. Rozhodnutia o triede a type, ktoré nemá excel
@@ -194,7 +247,7 @@ a rozhodnutie projektanta. Tieto je nutné vedieť pri preberaní:
 | prvok | trieda / typ | opora |
 |---|---|---|
 | `IH01.01` | `IfcCovering / MEMBRANE` | „nepriepustná vrstva… hydroizolačný materiál" |
-| `ST01.31` OSB | `IfcCovering / TOPPING` | „vrstva na vyrovnanie povrchu" |
+| `ST01.31` OSB | `IfcCovering / TOPPING` | „vrstva na vyrovnanie povrchu" — **nie `COPING`**, viď nižšie |
 | `KV01` | `IfcCovering / COPING` | „ochranné zakončenie steny či atiky" |
 | `SN02.01` atika | `IfcWall / PARAPET` | — |
 | `ZD02.03/.04` | `IfcSlab / BASESLAB` | základové dosky nie sú `IfcFooting` |
@@ -225,6 +278,25 @@ význam by niesol `ObjectType`, na type `ElementType`. Docs ten prípad menujú:
 attribute… in some exceptional leaf classes“*. V modeli sa nakoniec
 nepoužíva; zaznamenané preto, aby to nevyzeralo ako prehliadnutie.
 
+**`ST01.31` je `TOPPING`, hoci sa volá „Zakončenie atiky".** Slovo
+*zakončenie* zvádza ku `COPING` — *„a protective capping or covering of
+a wall or a parapet"* — a `KV01`, oplechovanie tej istej atiky, `COPING`
+naozaj má. Rozhodnutie znie inak a stojí na tom, čo ktorá vrstva robí:
+ochranným zakončením atiky je **plech**, nie 44 mm OSB doska pod ním.
+Doska atiku nechráni, vyrovnáva ju pre plech, a to je `TOPPING` —
+*„a layer of material used for leveling or flattening a surface"*.
+Zmerané: OSB je v z 16113–16158, plech v z 16092–16176, teda plech leží
+na doske. Deľba `KV01` = `COPING`, `ST01.31` = `TOPPING` je preto vecná,
+nie náhodná. Otázku otvorila sonda `probe_classes.py`, `AUDIT.md` §44;
+rozhodnutie Samuela: nechať `TOPPING`.
+
+**`ZD02.05` `PredefinedType` nemá.** `IfcFootingTypeEnum` hodnotu pre
+blok pod schodiskom neponúka — `PAD_FOOTING` je *„an element that
+transfers the load of a single column"* a nad tým blokom žiadny stĺp
+nie je. Occurrence je preto bez hodnoty, typ nesie `NOTDEFINED`, lebo na
+type je atribút povinný. Význam nesie `Name` a `Description`. Fáza 22,
+`AUDIT.md` §45.
+
 **`IfcCurtainWall` nemá čo nastaviť.** `IfcCurtainWallTypeEnum` obsahuje
 iba `USERDEFINED` a `NOTDEFINED`, takže `NOTDEFINED` na všetkých 67
 fasádach a poliach je jediná zmysluplná hodnota bez zavedenia vlastného
@@ -242,7 +314,7 @@ tri z tých pravidiel nie sú zapísané **nikde** (#BM, `AUDIT.md` §44):
 slová `FLOORING`, `ROOFING` ani `CEILING` sa v dokumentácii nevyskytli
 ani raz, hoci ich nesie **146** prvkov a typov.
 
-Počty sú odmerané na `ASR_v28.ifc` a sú za occurrences aj typy spolu.
+Počty sú odmerané na `ASR_v29.ifc` a sú za occurrences aj typy spolu.
 
 | skupina | trieda / typ | ks | opora |
 |---|---|--:|---|
@@ -271,7 +343,7 @@ v `AUDIT.md` §3. `IfcCovering` je pre ne správna trieda a hodnota
 
 ## 3b. Čo o triedach preveril `probe_classes.py`
 
-Meranie na `ASR_v28.ifc` proti publikovaným docs IFC4.3, `AUDIT.md` §44.
+Meranie na `ASR_v29.ifc` proti publikovaným docs IFC4.3, `AUDIT.md` §44.
 Pri preberaní to je to, čo netreba merať znova.
 
 | tvrdenie | ako |
@@ -284,10 +356,10 @@ Pri preberaní to je to, čo netreba merať znova.
 | citácie §3 z docs sú doslovné | 6 zo 7; siedma opravená ako #BN |
 | rozhodnutia z popisu obstoja geometrii | 7 z 8 zmeraných bez výhrady, `AUDIT.md` §44 |
 
-**Dve otázky zostávajú otvorené** a sú v `AUDIT.md` §44: `ST01.31`
-`TOPPING` proti `COPING` (OSB zakončenie atiky pod plechom, ktorý `COPING`
-má) a `ZD02.05` `PAD_FOOTING`, ktorého definícia hovorí o zaťažení stĺpa,
-kým ten blok nesie schodisko.
+Sonda otvorila **dve otázky a obe sú rozhodnuté** (`AUDIT.md` §44 a §45):
+`ST01.31` zostáva `TOPPING` s dôvodom dopísaným v §3 vyššie, `ZD02.05`
+`PredefinedType` stratil. Po fáze 22 hlási sonda jediný nález — 2416
+z §2.9, teda vedomú odchýlku.
 
 ---
 
@@ -377,7 +449,7 @@ Nájdené pri práci; model ich nekopíruje, ale ani neopravuje ticho.
 
 | tvrdenie | ako |
 |---|---|
-| geometria prvkov sa od pôvodného exportu **neposunula** | **0 posunutých bboxov** medzi `data/ASR.ifc` a `ASR_v28.ifc`, na 6 desatinných miest, 2542 spoločných tvarov (invariant 1 reťazovej brány, prebehnutý znova na `ASR_v28.ifc`). Jediný rozdiel v množine tvarov je prekreslenie priestorov 1NP pôvodnou pipeline (42 zaniklo, 22 vzniklo) — viď `AUDIT.md` §34 |
+| geometria prvkov sa od pôvodného exportu **neposunula** | **0 posunutých bboxov** medzi `data/ASR.ifc` a `ASR_v29.ifc`, na 6 desatinných miest, 2542 spoločných tvarov (invariant 1 reťazovej brány, prebehnutý znova na `ASR_v29.ifc`). Jediný rozdiel v množine tvarov je prekreslenie priestorov 1NP pôvodnou pipeline (42 zaniklo, 22 vzniklo) — viď `AUDIT.md` §34 |
 | každý zrušený a nový GUID fáz 1–10 je vysvetlený | 560 + 1118 = 1678, presne veľkosť kumulatívneho allowlistu, 0 mimo neho |
 | model je schémovo platný | `validate(express_rules=True)` = 0 hlásení |
 | žiadne osirelé entity | invariant 4 = 0 |
@@ -385,6 +457,7 @@ Nájdené pri práci; model ich nekopíruje, ale ani neopravuje ticho.
 | plný SNIM kód je jedinečný | invariant 6 = 0 |
 | **prvok nesie len tie psety a `Qto`, ktoré jeho trieda pripúšťa** | systematická kontrola proti **760** definíciám z `annex-a-psd.zip`, krížom overeným proti `lexical/*.html`: **509 porušení → 1**. To jediné zvyšné je `MassDensity` ako `IfcPropertyBoundedValue`, vedomé rozhodnutie fázy 17 (§4b) |
 | **hranice priestorov sú úplné a rodičia doložení** | `IfcRelSpaceBoundary` 665 na 75 priestoroch. Odvodenie hostiteľa dverí z polohy (#AZ — 80 z 97 dverí nemá `FillsVoids`) je overené na **držanej vzorke**: dvere, ktoré `FillsVoids` majú, dávajú istú pravdu, a odvodenie na nich trafí **24 z 24** bez jediného omylu. Nezávislý geometrický test priradení: kalibrácia 24/24, meranie **71/71**. Výplní bez `ParentBoundary` **0** |
+| **trieda a `PredefinedType` obstoja proti docs** | osem kontrol proti `IFC4X3_DEV_60a6175.exp` a `lexical/*.html`, navzájom overeným (nezhoda 0 na 22 enumeráciách). Hodnota mimo enumerácie **0 z 2931**, `CorrectTypeAssigned` 0, `USERDEFINED` bez `ObjectType` 0, hodnota na occurrence proti hodnote na type **0 nezhôd z 2609**, zrušený atribút naplnený **0**. Zoznam rozhodnutí sa neberie z registra, ale odvodzuje z modelu proti `data/ASR.ifc` — **591 rozhodnutí**, z nich dokumentáciou nepokrytých **0**. Jediný zvyšný nález je 2416 z §2.9, vedomá odchýlka |
 | pri tej oprave sa nič nestratilo | meranie údaj po údaji medzi `v25` a `v26`: prebytok **362 z 362** je doložene v `Description`. Zmizlo 32 vlastností a všetkých 32 je zámer — 28× neplatná hodnota `PanelPosition`, 4× nuly po `IfcStair` |
 
-Brána po každej fáze proti výstupu predošlej: **zlyhalo 0 zo 7** vo fázach 11 až 21. Reťazová brána `ASR_v28.ifc` proti `data/ASR.ifc`, allowlist 1833 GlobalId: **zlyhalo 0 zo 6** (invariant 3 sa v nej nepúšťa, viď `AUDIT.md` §34). `pytest` 9 z 9.
+Brána po každej fáze proti výstupu predošlej: **zlyhalo 0 zo 7** vo fázach 11 až 22. Reťazová brána `ASR_v29.ifc` proti `data/ASR.ifc`, allowlist 1833 GlobalId: **zlyhalo 0 zo 6** (invariant 3 sa v nej nepúšťa, viď `AUDIT.md` §34). `pytest` 9 z 9 na základni; proti `ASR_v29.ifc` 7 prešlo a 2 sú zámerne preskočené (`#F` a `#AP`/`#AX` platia pre základňu).

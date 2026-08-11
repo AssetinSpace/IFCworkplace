@@ -1,5 +1,5 @@
 {
- "subject": "/home/user/IFCworkplace/out/ASR_v28.ifc",
+ "subject": "out/ASR_v29.ifc",
  "reference": "/home/user/IFCworkplace/data/ASR.ifc",
  "docs": "/workspace/bs-output/IFC/RELEASE/IFC4_3",
  "enum_exp_vs_lexical": [],
@@ -24166,51 +24166,6 @@
    "hodnota": "WINDOW",
    "hodnota_typu": "WINDOW",
    "typ_meno": "LP01"
-  },
-  {
-   "bod": 8,
-   "gid": "2VefEmfcj8sx0WLKr$GNnn",
-   "trieda": "IfcBuildingStorey",
-   "meno": "1NP",
-   "atribut": "Elevation",
-   "hodnota": "0.0",
-   "docs": "0-DEPRECATION This attribute is deprecated and shall no longer be used."
-  },
-  {
-   "bod": 8,
-   "gid": "27hbQtAoP6qvoEYhPARoI7",
-   "trieda": "IfcBuildingStorey",
-   "meno": "2NP",
-   "atribut": "Elevation",
-   "hodnota": "4999.999999999999",
-   "docs": "0-DEPRECATION This attribute is deprecated and shall no longer be used."
-  },
-  {
-   "bod": 8,
-   "gid": "3ig6N2jJz05g7H9Fq$ftkL",
-   "trieda": "IfcBuildingStorey",
-   "meno": "3NP",
-   "atribut": "Elevation",
-   "hodnota": "9200.0",
-   "docs": "0-DEPRECATION This attribute is deprecated and shall no longer be used."
-  },
-  {
-   "bod": 8,
-   "gid": "3ig6N2jJz05g7H9Fq$ftkU",
-   "trieda": "IfcBuildingStorey",
-   "meno": "4NP",
-   "atribut": "Elevation",
-   "hodnota": "13400.0",
-   "docs": "0-DEPRECATION This attribute is deprecated and shall no longer be used."
-  },
-  {
-   "bod": 8,
-   "gid": "3ig6N2jJz05g7H9Fq$ften",
-   "trieda": "IfcBuildingStorey",
-   "meno": "5NP",
-   "atribut": "Elevation",
-   "hodnota": "16954.0",
-   "docs": "0-DEPRECATION This attribute is deprecated and shall no longer be used."
   }
  ]
 }

@@ -155,7 +155,9 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 | AM | **H** | ~~`PredefinedType` chýba na 383~~ — steny hotové (`45ea35d`): 159 occ podľa §5 + všetkých 12 `IfcWallType`. Číslo 383 = **314** `NOTDEFINED` + **69** `IfcFlowTerminal`, ktoré atribút v IFC4X3 nemajú vôbec (fáza 10). Otvorených ostáva **67** occurrences bez pravidla v §5: 8 `IfcSlab DZ02`, 19 `IfcCurtainWall`, 22 `IfcFurniture`, 12 `IfcRailing`, 5 `SC01`. **Odmerané na `ASR_v17.ifc` (§29):** 114 = 67 `IfcCurtainWall` (uzavreté schémou, §25) + 22 `IfcFurniture` + 12 `IfcRailing` + 8 `IfcSlab` + 3 `IfcStair` + 2 `IfcStairFlight`. §25 uvádzalo 21 `IfcFurniture` — chýbal v ňom `ZV04.01`. Rozhodnutia sú v §29. **Fáza 11 (§30) uzavrela 30 z nich** prekvalifikovaním — 114 → 84 bez `PredefinedType`, z toho 67 `IfcCurtainWall` uzavretých schémou. Fáza 12 (§31) doplnila zvyšných 17 a **#AM je tým uzavreté**: bez `PredefinedType` zostalo 67 occurrences a všetkých 67 je `IfcCurtainWall` |
 | AN | **H** | ~~`KV01` `MOLDING`~~ → `COPING`, 2 occ + typ, `45ea35d` |
 | AO | **H** | ~~fasádne zateplenia mimo agregácie~~ — atika fáza 1 (`50c26c5`, 8× `IfcRelAggregates`, 18 dielov); zateplenia fáza 6a, 14 dielov `FS01` do 10 stien. ~~Otvorené zostáva 7 `FS03.01`~~ — stena sa nenašla, lebo žiadnu nepokrývajú: dosadajú na základovú dosku. Agregované do `ZD02.01.0001`, fáza 14, §33. **#AO uzavreté** |
-| BK | **O** | **2416 occurrences nesie `PredefinedType`, hoci má priradený typ** — `lexical/IfcCovering.html` a ďalších desať stránok pri tom atribúte doslova: *„NOTE The PredefinedType shall only be used, if no IfcCoveringType is assigned, providing its own IfcCoveringType.PredefinedType."* Vetu nesie **12 z 22** occurrence tried s `PredefinedType`; `IfcDoor`, `IfcRailing`, `IfcSanitaryTerminal`, `IfcWasteTerminal` a `IfcFooting` ju **nemajú**, takže tých 193 kusov sa nezapočítava — paušálne pravidlo by hlásilo viac, než docs žiadajú. Najviac `IfcMember/MULLION` (1376) a `IfcPlate/CURTAIN_PANEL` (524), teda fasáda. **Nie je to protirečenie, je to redundancia:** hodnota na occurrence sa od hodnoty na type nelíši ani raz z 2609. **Provenancia: 2416 z 2416 nieslo hodnotu už `data/ASR.ifc`** — v origináli prázdna 0, nový GUID 0. Táto pipeline nezaložila ani jednu; tých 69, ktoré naozaj založila (sanita a vpuste), sedí na triedach bez NOTE. Zmazanie **nestojí nič**, lebo typ nesie tú istú hodnotu, ale mení 2416 prvkov kvôli vete, ktorá je NOTE, nie EXPRESS — `validate(express_rules=True)` je na ňu slepý rovnako, ako bol na applicability psetov pri #BC. Nájdené `src/probe_classes.py`, §44. **Čaká na rozhodnutie** |
+| BK | **D** | **2416 occurrences nesie `PredefinedType`, hoci má priradený typ** — **rozhodnuté: zostáva**, zapísané ako vedomá odchýlka v `BEP_ANNEX.md` §2.9. Samuel: *„šak dobre že majú zapísaný predefined type, všetko ok, nič nerieš.“* Nález: `lexical/IfcCovering.html` a ďalších jedenásť stránok pri tom atribúte doslova: *„NOTE The PredefinedType shall only be used, if no IfcCoveringType is assigned, providing its own IfcCoveringType.PredefinedType."* Vetu nesie **12 z 22** occurrence tried s `PredefinedType`; `IfcDoor`, `IfcRailing`, `IfcSanitaryTerminal`, `IfcWasteTerminal` a `IfcFooting` ju **nemajú**, takže tých 193 kusov sa nezapočítava — paušálne pravidlo by hlásilo viac, než docs žiadajú. Najviac `IfcMember/MULLION` (1376) a `IfcPlate/CURTAIN_PANEL` (524), teda fasáda. **Nie je to protirečenie, je to redundancia:** hodnota na occurrence sa od hodnoty na type nelíši ani raz z 2609. **Provenancia: 2416 z 2416 nieslo hodnotu už `data/ASR.ifc`** — v origináli prázdna 0, nový GUID 0. Táto pipeline nezaložila ani jednu; tých 69, ktoré naozaj založila (sanita a vpuste), sedí na triedach bez NOTE. Zmazanie by nestálo žiadny údaj, ale riziko je opačné: prehliadače, ktoré typ nerozbaľujú a čítajú `PredefinedType` priamo na prvku, by videli `NOTDEFINED`. Nájdené `src/probe_classes.py`, §44 |
+| BL | **H** | ~~`IfcBuildingStorey.Elevation` je v IFC4.3 zrušené, model ho nesie na všetkých piatich~~ — **presunuté**, fáza 22, §45: `ElevationOfFFLRelative` v `Pset_BuildingStoreyCommon` na 1NP–4NP, atribút zmazaný na všetkých piatich. Pôvodne: 0, 5000, 9200, 13400, 16954 mm a `lexical/IfcBuildingStorey.html`: *„IFC4.3.0.0-DEPRECATION This attribute is deprecated and shall no longer be used. Within Pset_BuildingStoreyCommon use ElevationOfSSLRelative or ElevationOfFFLRelative instead."* **Ktorá z tých dvoch, rozhodlo meranie, nie odhad** — sú to dve rôzne veci a docs nepovedia, ktorú Revit myslel: horná hrana vrstiev podlahy (`PD02.*`, `PD03.*`) sedí na `Elevation` s Δ **0 mm**, kým horná hrana nosných dosiek je stabilne **150 mm** pod ňou. Je to teda nášľapná vrstva. **5NP vlastnosť nedostalo** — nesie 5 prvkov, 4 vpuste a jednu vrstvu strechy, a **žiadnu podlahu**; docs to pripúšťajú (*„this property may be omitted"*) a hodnota sa nestráca, lebo `placement z` = 16954. Atribút bolo bezpečné zmazať: `placement z` sa rovná `Elevation` na všetkých piatich, najväčšia odchýlka **9,09·10⁻¹³ mm**, a docs hovoria *„The value of Elevation is for informational purposes only."* Bol to jediný zrušený atribút, ktorý model napĺňal — preverených 43 tried. Nájdené `src/probe_classes.py`, §44 |
+| BO | **H** | ~~`ZD02.05` má `PAD_FOOTING`, hoci nad ním žiadny stĺp nie je~~ — **PredefinedType odstránený**, fáza 22, §45. Rozhodnutie Samuela: *„kľudne aj bez predefined type.“* Docs k `PAD_FOOTING`: *„an element that transfers the load of a single column (possibly two) to the ground"* — zmerané 412 × 1250 × 300 mm, z −300 až 0, popis „Schodiskový blok základového systému“, a nesie schodisko, nie stĺp. `STRIP_FOOTING` (*„a linear element… from a continuous element, such as a wall"*) ani `FOOTING_BEAM` nesedia tiež. **Nesúmernosť schémy, ktorú treba vedieť:** na occurrence je atribút `OPTIONAL`, na type nie, takže occurrence hodnotu stratila úplne a typ dostal `NOTDEFINED` — prázdny povinný atribút by bol porušenie schémy. Význam prvku nesie `Name` a `Description`, ktoré sa nemenia. Precedens #BF: chýbajúca hodnota je pravdivá, nesediaca nie. Nájdené `src/probe_classes.py`, §44 |
 | BM | **H** | ~~146 prvkov nesie hodnotu, ktorú dokumentácia nemenuje ani raz~~ — **zapísané**, `BEP_ANNEX.md` §3a. Pôvodne: `FLOORING`, `ROOFING` ani `CEILING` v `AUDIT.md` a `BEP_ANNEX.md` neboli **ani raz**, hoci ich nesie **146** prvkov a typov (`FLOORING` 75, `ROOFING` 45, `CEILING` 26); `PD02.*`/`PD03.*` (16 kódov, 59 ks) a `FS02.01` (2 ks) dokumentácia nemenovala vôbec. Rozhodnutí je v modeli **591**, register ich mal 27 — rozdiel sú tie, čo padli pravidlom na celú skupinu a nikto ich nezapísal. **Vecne obstoja všetky:** `FLOORING` *„The covering is used to represent a flooring"* na vrstvách podlahy, `ROOFING` *„a roof covering"* na `ST01.20/.21`. `FS02.01` „Podkladný blok LOP" ako `INSULATION` je z popisu neobhájiteľné, ale **rozhodlo meranie, nie popis**: jediná vrstva jeho `IfcMaterialLayerSet` sa volá „Izolácia - LOP" a má 300 mm. Vada je v zápise, nie v modeli. Nájdené `src/probe_classes.py`, §44 |
 
 ### Typy a identita
@@ -217,7 +219,6 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 | AV | **D** | výpis skladieb `S8` uvádza `SD02` tam, kde má byť `SN05.01` |
 | — | **D** | legenda 1NP: `PD02.31` vs `.30`; `1.17 WC Muži` má skopírovaný riadok elektrorozvodne |
 | — | **D** | súčet hrúbok prvkov skladby nikdy nedá hodnotu z výpisu (vzduchové medzery sa nemodelujú) |
-| BL | **O** | **`IfcBuildingStorey.Elevation` je v IFC4.3 zrušené, model ho nesie na všetkých piatich** — 0, 5000, 9200, 13400, 16954 mm. `lexical/IfcBuildingStorey.html`: *„IFC4.3.0.0-DEPRECATION This attribute is deprecated and shall no longer be used. Within Pset_BuildingStoreyCommon use ElevationOfSSLRelative or ElevationOfFFLRelative instead."* **Nie je to strata dát ani pri zmazaní** — tá istá stránka o riadok vyššie: *„The local placement of the IfcBuildingStorey is determined by the ObjectPlacement. The value of Elevation is for informational purposes only."*, a umiestnenie je overene nedotknuté (§34). Docs pomenúvajú aj náhradu, takže presun má kam ísť. Je to jediný zrušený atribút, ktorý model napĺňa — preverených 43 tried. Nájdené `src/probe_classes.py`, §44. **Čaká na rozhodnutie**: zmazať, presunúť do `Pset_BuildingStoreyCommon`, alebo nechať a zapísať ako vedomú odchýlku |
 | BN | **H** | ~~citácia `ROOFDRAIN` v registri nie je doslovná~~ — **opravené**, `BEP_ANNEX.md` §3. Pôvodne: register uvádzal „set into the roof, collects rainwater", docs majú *„Pipe fitting, set into the roof, **that** collects rainwater for discharge into the rainwater system."* Vypadlo slovo a výpustka `…` sa neoznačila, hoci register ju inde používa. Význam sa nemení a rozhodnutie platí. Zvyšných šesť citácií z docs sedí doslova vrátane všetkých s výpustkou — `GULLYTRAP`, `SOLIDWALL`, `HANDRAIL`, `GUARDRAIL`, `AWNING`, `LADDER`. Nájdené `src/probe_classes.py`, §44 |
 
 ### AIM Viewer
@@ -2077,7 +2078,7 @@ prejdenie, nie zhrnutie.
 | bod | | kde |
 |---|---|---|
 | 1 psety a `Qto` proti triede | **hotové** | §39 nález, §40 oprava (fáza 19) |
-| 2 rozhodnutia o triede a type | **hotové** | §44 nález (#BK, #BL, #BM, #BN) |
+| 2 rozhodnutia o triede a type | **hotové** | §44 nález, §45 oprava (fáza 22) |
 | 3 `DZ02` `SOLIDWALL` × `RETAININGWALL` | **čaká na Samuela** | — |
 | 4 fyzika materiálov proti PDF | **hotové** | §43 (fáza 21) |
 | 5 `IfcRelSpaceBoundary` | **hotové** | §41 nález, §42 oprava (fáza 20) |
@@ -2085,14 +2086,14 @@ prejdenie, nie zhrnutie.
 | 7 polia LOP | otvorené | — |
 | 8 oficiálny validátor / IDS | otvorené | — |
 
-Model je **`out/ASR_v28.ifc`**. Reťazová brána proti `data/ASR.ifc`
-zlyhalo 0 zo 6, `pytest` 9 z 9, obe sondy (`probe_psets.py`,
-`probe_boundaries.py`) čisté až na jednu vedomú odchýlku fázy 17.
+Model je **`out/ASR_v29.ifc`**. Reťazová brána proti `data/ASR.ifc`
+zlyhalo 0 zo 6, `pytest` 9 z 9, všetky tri sondy (`probe_psets.py`,
+`probe_boundaries.py`, `probe_classes.py`) čisté až na dve vedomé
+odchýlky — fyzika materiálov fázy 17 a #BK.
 
-Bod 2 model **nezmenil** — §44 je nález, nie fáza. Otvorené po ňom
-zostávajú tri rozhodnutia pre Samuela: **#BK** (2416 redundantných
-`PredefinedType`), **#BL** (`Elevation`) a dvojica otázok `ST01.31`
-`TOPPING` × `COPING` a `ZD02.05` `PAD_FOOTING`.
+Bod 2 dal štyri nálezy a štyri rozhodnutia; tri z nich model zmenili
+(fáza 22, §45), #BK zostáva zapísané ako vedomá odchýlka. Otvorená
+z pôvodných otázok zostáva jediná — bod 3, `DZ02`.
 
 ### Čo netreba robiť znova
 
@@ -2150,14 +2151,14 @@ schému, nie zmysluplnosť pre konkrétny MVD.
 ### Ako to spustiť
 
 ```
-python src/report_final.py --in out/ASR_v28.ifc          # vecné meranie
-python src/gate.py out/ASR_v28.ifc --reference data/ASR.ifc --skip 3 \
+python src/report_final.py --in out/ASR_v29.ifc          # vecné meranie
+python src/gate.py out/ASR_v29.ifc --reference data/ASR.ifc --skip 3 \
     --allow-file tests/allowlist_prepipeline.json \
     $(for f in out/ASR_v*.ifc.allowlist.json; do echo --allow-file $f; done)
 
-python src/probe_psets.py     --in out/ASR_v28.ifc        # bod 1
-python src/probe_boundaries.py --in out/ASR_v28.ifc       # bod 5
-python src/probe_classes.py   --in out/ASR_v28.ifc \
+python src/probe_psets.py      --in out/ASR_v29.ifc       # bod 1
+python src/probe_boundaries.py --in out/ASR_v29.ifc       # bod 5
+python src/probe_classes.py    --in out/ASR_v29.ifc \
     --json out/class_report.json                          # bod 2
 ```
 
@@ -3053,3 +3054,116 @@ vypísané menovite, aby sa dali prejsť očami.
   opiera každá fáza od jedenástej, by prestalo byť porovnateľné. To isté
   rozhodnutie ako pri #BC v §39: brána až po oprave.
 * §38 body 6, 7 a 8 sa ešte neprešli. Bod 2 je tým vybavený.
+
+---
+
+## 45. Fáza 22 — #BL a `ZD02.05` podľa rozhodnutí z §44
+
+`out/ASR_v28.ifc` → `out/ASR_v29.ifc`, `src/41_storey_footing.py`.
+
+Rozhodnutia Samuela k nálezu §44:
+
+| | rozhodnutie | dôsledok |
+|---|---|---|
+| **#BK** | *„šak dobre že majú zapísaný predefined type, všetko ok, nič nerieš."* | model sa nemení, `BEP_ANNEX.md` §2.9 |
+| **#BL** | presunúť do psetu | fáza 22, časť A |
+| **`ZD02.05`** | *„kľudne aj bez predefined type."* | fáza 22, časť B |
+| **`ST01.31`** | nechať `TOPPING`, doplniť dôvod | `BEP_ANNEX.md` §3, zápis |
+
+### A · Ktorá z tých dvoch vlastností — rozhodlo meranie
+
+Docs pri zrušenom `Elevation` menujú náhradu takto: *„use ElevationOfSSLRelative
+or ElevationOfFFLRelative instead."* **Nepovedia ktorú**, a nie je to detail —
+`SSL` je úroveň nosnej dosky, `FFL` úroveň nášľapnej vrstvy, a medzi nimi je
+skladba podlahy. Vybrať zle by znamenalo tvrdiť o modeli nepravdu.
+
+Zmerané, nie odhadnuté: horná hrana vrstiev podlahy proti hornej hrane nosných
+dosiek, obe proti `Elevation`.
+
+| podlažie | `Elevation` | najbližšia SSL | Δ | najbližšia FFL | Δ |
+|---|--:|--:|--:|--:|--:|
+| 1NP | 0 | 0 | 0 | 0 | **0** |
+| 2NP | 5000 | 4850 | −150 | 5000 | **0** |
+| 3NP | 9200 | 9050 | −150 | 9200 | **0** |
+| 4NP | 13400 | 13250 | −150 | 13400 | **0** |
+
+Nosná doska je stabilne **150 mm** pod hodnotou, nášľapná vrstva sedí na
+**nulu**. Je to teda `ElevationOfFFLRelative`. Skript si tú zhodu **meria sám**
+a vlastnosť zapíše len tam, kde ju našiel — 21, 14, 14 a 4 vrstvy podlahy na
+príslušnej úrovni.
+
+**Slovo „Relative" zvádza** k tomu, že ide o odstup od `Elevation` podlažia.
+Nejde: docs k obom vlastnostiam hovoria *„given in elevation above the local
+zero height"*, teda absolútne. Zapisuje sa preto tá istá hodnota, akú niesol
+atribút — vrátane toho, že 2NP má v origináli `4999.999999999999`. Zaokrúhliť
+by znamenalo zmeniť údaj, ktorý sa mal len presunúť.
+
+### 5NP vlastnosť nedostalo
+
+Nesie päť prvkov — štyri vpuste `OV04` a jednu vrstvu strechy `ST01` —
+a **žiadnu podlahu**. Zapísať tam nášľapnú vrstvu by bolo tvrdenie o niečom,
+čo v modeli nie je. Docs to výslovne pripúšťajú: *„If the level varies and
+there is no significantly more prominent elevation, then this property may be
+omitted."*
+
+Hodnota sa tým nestráca. `placement z` je 16954 rovnako ako atribút — a to
+platí na **všetkých piatich** podlažiach, najväčšia odchýlka **9,09·10⁻¹³ mm**.
+Je to ten istý float šum ako v §42: bbox aj umiestnenie sa počítajú v metroch
+a násobia tisícom, takže zhoda nikdy nevyjde ako presná nula. Prah je preto
+1 mm a skutočná odchýlka sa vypisuje.
+
+Skript sa **zastaví**, keby `placement z` a `Elevation` nesedeli — vtedy by
+atribút niesol údaj, ktorý inde nie je, a zmazať ho by bola strata.
+
+### B · `ZD02.05` — nesúmernosť, ktorú má schéma
+
+```
+ENTITY IfcFooting      … PredefinedType : OPTIONAL IfcFootingTypeEnum;
+ENTITY IfcFootingType  … PredefinedType :          IfcFootingTypeEnum;
+```
+
+Na occurrence je atribút voliteľný, na type **nie**. Occurrence teda hodnotu
+stratila úplne (`$`), typ dostal `NOTDEFINED` — *„The type of footing is not
+defined."* Zmazať ju z typu sa nedá; prázdny povinný atribút by bol porušenie
+schémy, ktoré by zachytil invariant 2.
+
+Význam prvku zostáva v `Name` a `Description` („Základový blok pod schodiskom",
+„Schodiskový blok základového systému"), ktoré sa nemenia. Precedens je #BF:
+*chýbajúca hodnota je pravdivá, nesediaca nie.*
+
+Skript pred zmenou vypíše, aké psety tie dva prvky nesú — `AIMviewer_Provenance`
+a `Qto_BodyGeometryValidation` na occurrence, žiadny na type. Ani jeden nie je
+viazaný na `PAD_FOOTING`, takže zmena hodnoty žiadny pset neodpojí.
+
+### Brány
+
+| kontrola | výsledok |
+|---|---|
+| brána proti `ASR_v28.ifc`, allowlist 0 | **zlyhalo 0 zo 7** |
+| reťazová brána proti `data/ASR.ifc`, allowlist 1833 | **zlyhalo 0 zo 6** |
+| `probe_classes.py` na `ASR_v29.ifc` | bod 8 **5 → 0**, body 6, 7a, 7b **0** |
+| `pytest` | 9 z 9 na základni; proti `ASR_v29.ifc` 7 prešlo, 2 preskočené |
+| druhý beh skriptu | *„NETREBA NIČ — model je už opravený"* |
+
+Tie dve preskočené sú `#F` a `#AP/#AX` — testy, ktoré platia pre základňu
+`ASR_final_v2.ifc` a `skipif` ich mimo nej vypína zámerne. Nie je to nový
+stav, tak sa správa každá verzia od fázy 1.
+
+Účtovníctvo GUID: **0 / 0**. `Pset_BuildingStoreyCommon` na podlažiach už bol
+(nesie `AboveGround`), takže sa nezakladal nový `IfcPropertySet` ani
+`IfcRelDefinesByProperties`; `IfcPropertySingleValue` nie je `IfcRoot`
+a `GlobalId` nemá. Allowlist je preto prázdny z oboch strán — čo je aj kontrola:
+keby skript sadu zakladal, brána by to ukázala.
+
+### Čo po fáze 22 zostáva zo §44
+
+Sonda hlási **2416**, a to je presne #BK — teda to, čo bolo rozhodnuté nechať.
+Všetko ostatné je na nule.
+
+* **#BK** je zapísané ako vedomá odchýlka, `BEP_ANNEX.md` §2.9. Do brány sa
+  kontrola 4 preto nepridáva ani teraz; kontroly 1, 2, 3 a 5 sú čisté a pridať
+  sa dajú kedykoľvek.
+* **`ST01.31`** zostáva `TOPPING` a `BEP_ANNEX.md` §3 teraz hovorí prečo —
+  ochranným zakončením atiky je plech `KV01`, ktorý `COPING` má; OSB doska pod
+  ním atiku nechráni, vyrovnáva ju.
+* §38 body 6, 7 a 8 sa stále neprešli.
