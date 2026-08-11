@@ -1,7 +1,7 @@
 # BEP — príloha k modelu OCB
 
 Zoznam rozšírení SNIM a odchýlok od dokumentovaného IFC vzoru, ktoré
-model `ASR_v26.ifc` obsahuje. Každá položka uvádza, čo sa spravilo, prečo,
+model `ASR_v27.ifc` obsahuje. Každá položka uvádza, čo sa spravilo, prečo,
 a o akú oporu sa opiera.
 
 Register vád, meranie a postup sú v `AUDIT.md`; táto príloha je jeho
@@ -320,6 +320,7 @@ Nájdené pri práci; model ich nekopíruje, ale ani neopravuje ticho.
 | kontajnment je exkluzívny | invariant 7 = 0 |
 | plný SNIM kód je jedinečný | invariant 6 = 0 |
 | **prvok nesie len tie psety a `Qto`, ktoré jeho trieda pripúšťa** | systematická kontrola proti **760** definíciám z `annex-a-psd.zip`, krížom overeným proti `lexical/*.html`: **509 porušení → 1**. To jediné zvyšné je `MassDensity` ako `IfcPropertyBoundedValue`, vedomé rozhodnutie fázy 17 (§4b) |
+| **hranice priestorov sú úplné a rodičia doložení** | `IfcRelSpaceBoundary` 665 na 75 priestoroch. Odvodenie hostiteľa dverí z polohy (#AZ — 80 z 97 dverí nemá `FillsVoids`) je overené na **držanej vzorke**: dvere, ktoré `FillsVoids` majú, dávajú istú pravdu, a odvodenie na nich trafí **24 z 24** bez jediného omylu. Nezávislý geometrický test priradení: kalibrácia 24/24, meranie **71/71**. Výplní bez `ParentBoundary` **0** |
 | pri tej oprave sa nič nestratilo | meranie údaj po údaji medzi `v25` a `v26`: prebytok **362 z 362** je doložene v `Description`. Zmizlo 32 vlastností a všetkých 32 je zámer — 28× neplatná hodnota `PanelPosition`, 4× nuly po `IfcStair` |
 
-Brána po každej fáze proti výstupu predošlej: **zlyhalo 0 zo 7** vo fázach 11 až 19. Reťazová brána `ASR_v26.ifc` proti `data/ASR.ifc`: **zlyhalo 0 zo 6** (invariant 3 sa v nej nepúšťa, viď `AUDIT.md` §34). `pytest` 9 z 9.
+Brána po každej fáze proti výstupu predošlej: **zlyhalo 0 zo 7** vo fázach 11 až 20. Reťazová brána `ASR_v27.ifc` proti `data/ASR.ifc`: **zlyhalo 0 zo 6** (invariant 3 sa v nej nepúšťa, viď `AUDIT.md` §34). `pytest` 9 z 9.
