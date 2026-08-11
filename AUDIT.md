@@ -2068,6 +2068,23 @@ vyčerpaný, ale to znamená len „všetko, čo sme si zapísali, je vybavené"
 nie „nič sme neprehliadli". Táto kapitola je zadanie pre nezávislé
 prejdenie, nie zhrnutie.
 
+### Stav zadania
+
+| bod | | kde |
+|---|---|---|
+| 1 psety a `Qto` proti triede | **hotové** | §39 nález, §40 oprava (fáza 19) |
+| 2 rozhodnutia o triede a type | otvorené | — |
+| 3 `DZ02` `SOLIDWALL` × `RETAININGWALL` | **čaká na Samuela** | — |
+| 4 fyzika materiálov proti PDF | **hotové** | §43 (fáza 21) |
+| 5 `IfcRelSpaceBoundary` | **hotové** | §41 nález, §42 oprava (fáza 20) |
+| 6 rekonštruované priestory 1NP | otvorené | — |
+| 7 polia LOP | otvorené | — |
+| 8 oficiálny validátor / IDS | otvorené | — |
+
+Model je **`out/ASR_v28.ifc`**. Reťazová brána proti `data/ASR.ifc`
+zlyhalo 0 zo 6, `pytest` 9 z 9, obe sondy (`probe_psets.py`,
+`probe_boundaries.py`) čisté až na jednu vedomú odchýlku fázy 17.
+
 ### Čo netreba robiť znova
 
 | tvrdenie | ako je overené |
