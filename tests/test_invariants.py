@@ -1,6 +1,7 @@
 """Invarianty modelu OCB.
 
-Sedem invariantov podľa ``CLAUDE_CODE_START.md`` § „Invarianty po každom kroku".
+Osem invariantov. Sedem podľa ``CLAUDE_CODE_START.md`` § „Invarianty po
+každom kroku", ôsmy pribudol po fáze 19 (viď :func:`inv8_spatial_fit`).
 
 Konvencia (zámerná, viď AUDIT.md §8 „každý skript overí, čo tvrdí"):
 
@@ -24,12 +25,17 @@ import csv
 import multiprocessing
 import os
 import re
+import sys
 from dataclasses import dataclass, field
 from typing import Iterable, Sequence
 
 import ifcopenshell
 import ifcopenshell.geom
 import ifcopenshell.validate
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(
+    os.path.abspath(__file__))), "src"))
+import spatial  # noqa: E402
 
 # --------------------------------------------------------------------------
 # cesty
@@ -516,6 +522,103 @@ def inv7_containment_vs_aggregation(
 
 
 # --------------------------------------------------------------------------
+# 8 — priestorové zaradenie sedí s geometriou
+# --------------------------------------------------------------------------
+
+#: koľko výšky prvku musí padnúť do pásma podlažia, v ktorom je zaradený
+MIN_IN_ZONE = 0.5
+
+#: zaokrúhlenie Z pri hľadaní geometricky zhodných súrodencov (mm)
+SIBLING_STEP = 50.0
+
+#: koľko výšky musí prvok mať v pásme svojho podlažia, aby sa dal považovať
+#: za zámerne rozkročený cez rozhranie. Pod týmto podielom už referencia na
+#: druhé podlažie nie je priznanie rozkročenia, ale zakrytie zlého zaradenia
+#: — presne tak vyzeralo 24 stĺpov pred fázou 19: 4 % v podlaží, v ktorom
+#: viseli, a referencia na to, v ktorom naozaj stoja.
+MIN_STRADDLE = 0.2
+
+
+def inv8_spatial_fit(subject, allowlist: Iterable[str] = ()) -> list[Violation]:
+    """Prvok je zaradený v podlaží, ktorého pásmo ho naozaj drží.
+
+    Vznikol po fáze 19, kde sa ukázalo, že 117 prvkov viselo o podlažie
+    nižšie, než kde stoja — vrátane 8 strešných vpustí na 3NP a 24 stĺpov,
+    ktoré tým boli rozdelené medzi dve podlažia. Kontroluje sa dvojmo:
+
+    **a** prvok kontajnovaný v podlaží (alebo v priestore toho podlažia)
+    má v jeho pásme aspoň :data:`MIN_IN_ZONE` svojej výšky. Prvok zámerne
+    rozkročený cez rozhranie výnimku dostane, ak v pásme má aspoň
+    :data:`MIN_STRADDLE` a na druhé podlažie má
+    ``IfcRelReferencedInSpatialStructure`` — presne to je schémou určený
+    zápis pre prvok cez viac podlaží.
+
+    **b** prvky rovnakej triedy, rovnakého typu a rovnakého Z-rozsahu sú
+    v jednom podlaží. Toto je tá kontrola, ktorá by pôvodnú vadu chytila
+    aj bez pásiem: 16 stĺpov `SL02.01` s rozsahom `9050…13000` bolo 6× na
+    2NP a 10× na 3NP a jedno z toho muselo byť zle.
+    """
+    sub = _model(subject)
+    zones = spatial.storey_zones(sub)
+    elements = [e for e in sub.by_type("IfcElement")
+                if e.Representation is not None
+                and not getattr(e, "Decomposes", None)
+                and spatial.container_of(e) is not None]
+    box = spatial.boxes(sub, elements)
+    out: list[Violation] = []
+
+    for e in elements:
+        b = box.get(e.GlobalId)
+        if b is None:
+            continue
+        storey = spatial.storey_of(spatial.container_of(e))
+        if storey is None or storey not in zones:
+            continue
+        share = spatial.zone_share(b, zones[storey])
+        if share >= MIN_IN_ZONE:
+            continue
+        best, _ = spatial.zone_storey(b, zones)
+        if (share >= MIN_STRADDLE
+                and any(x.id() == best.id() for x in spatial.references_of(e))):
+            continue                       # rozkročený a priznaný referenciou
+        out.append(Violation(
+            8, e.GlobalId, e.is_a(),
+            "je v %r, ale len %.0f %% jeho výšky (z=%.0f…%.0f) je v pásme "
+            "tohto podlažia; patrí do %r"
+            % (storey.Name, share * 100, b[2], b[5], best.Name)))
+
+    groups: dict[tuple, list] = {}
+    for e in elements:
+        b = box.get(e.GlobalId)
+        if b is None:
+            continue
+        typ = (e.IsTypedBy[0].RelatingType.Name
+               if getattr(e, "IsTypedBy", None) else None)
+        key = (e.is_a(), typ,
+               round(b[2] / SIBLING_STEP), round(b[5] / SIBLING_STEP))
+        groups.setdefault(key, []).append(e)
+    for key, items in groups.items():
+        seen = {}
+        for e in items:
+            st = spatial.storey_of(spatial.container_of(e))
+            if st is not None:
+                seen.setdefault(st.Name, []).append(e)
+        if len(seen) < 2:
+            continue
+        rozpad = {k: len(v) for k, v in sorted(seen.items())}
+        for e in items:
+            st = spatial.storey_of(spatial.container_of(e))
+            if st is None:
+                continue
+            out.append(Violation(
+                8, e.GlobalId, e.is_a(),
+                "typ %r, z=%.0f…%.0f — zhodné prvky sú rozdelené medzi "
+                "podlažia %s" % (key[1], key[2] * SIBLING_STEP,
+                                 key[3] * SIBLING_STEP, rozpad)))
+    return _filter(out, allowlist)
+
+
+# --------------------------------------------------------------------------
 # register
 # --------------------------------------------------------------------------
 
@@ -527,6 +630,7 @@ ALL = {
     5: inv5_empty_sets,
     6: inv6_uniqueness,
     7: inv7_containment_vs_aggregation,
+    8: inv8_spatial_fit,
 }
 
 
@@ -671,6 +775,31 @@ def test_inv7_containment_vs_aggregation(model):
     """#AW je odložená do fázy 6/7 — mimo nej nesmie byť nič."""
     allow = known_baseline("AW") if os.path.exists(KNOWN_BASELINE_PATH) else set()
     assert inv7_containment_vs_aggregation(model, allow) == []
+
+
+@pytest.mark.slow
+@pytest.mark.skipif(SUBJECT == BASELINE,
+                    reason="#BC je vo vstupe, rieši ju fáza 19")
+def test_inv8_spatial_fit():
+    """Po fáze 19 nesmie žiadny prvok visieť v cudzom podlaží."""
+    assert inv8_spatial_fit(SUBJECT) == []
+
+
+@pytest.mark.slow
+@pytest.mark.skipif(not os.path.exists(BASELINE), reason="chýba základňa")
+def test_inv8_catches_the_defect_it_was_written_for():
+    """Kontrola musí vadu naozaj chytiť, nie len prejsť na opravenom modeli.
+
+    Základňa má 24 stĺpov a 8 strešných vpustí zaradených o podlažie
+    vedľa — to je presne to, čo Samuel videl v strome ako „random".
+    Vpuste sú v základni ešte ``IfcFlowTerminal``; na ``IfcWasteTerminal``
+    ich prepísala až fáza 11, preto sa trieda terminálu neviaže presne.
+    """
+    found = inv8_spatial_fit(BASELINE)
+    triedy = {v.entity for v in found}
+    assert "IfcColumn" in triedy
+    assert {"IfcFlowTerminal", "IfcWasteTerminal"} & triedy
+    assert any("rozdelené medzi podlažia" in v.detail for v in found)
 
 
 def test_two_level_codes_cover_csv():

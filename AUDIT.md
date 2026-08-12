@@ -187,6 +187,8 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 | Q2 | **H** | ~~`PZ01`–`PZ10` nereferencujú ani jeden priestor~~ — fáza 13, §32. Pôvodne: — majú vlastnú geometriu a `PredefinedType = OCCUPANCY`, ale **nereferencujú ani jeden prvok či priestor** (`IfcRelReferencedInSpatialStructure` 0×). Prenajímateľnosť tak dnes nesie iba objem, nie väzba na miestnosti. Nájdené sondou §14. Rozhodnuté (§29): väzbu **odvodiť geometricky aj logicky**. Doplnených 10 `IfcRelReferencedInSpatialStructure` na 42 priestorov; zón bez väzby 0 |
 | R | **H** | ~~súčet plôch vs 2031.95 z handoveru~~ — zosúhlasené: 1NP 613.55 + 2NP 665.74 + 3NP 664.11 + 4NP 69.47 = **2012.88 m²** na 69 priestoroch. Rozdiel 19.07 m² je v handoveri, nie v modeli |
 | AW | **H** | ~~85 častí fasády súčasne agregovaných aj kontajnovaných~~ — fáza 6a, časti odobrané z kontajnmentu po overení, že ich celok v priestorovej štruktúre je. Pôvodne: **85 častí** — 70 `IfcMember` `LOP02` a 9 `AZ01`, 6 `IfcPlate` `TI06.01`. Časti sedia o podlažie vyššie než ich `IfcCurtainWall` (`PL01` v 3NP → časti v 4NP; `LP03.01` v 4NP → časti v 5NP). Invariant 7 na základni zlyháva, nie až po fáze 1 |
+| BC | **H** | ~~117 prvkov visí o podlažie vedľa, lebo pásmo sa počítalo z `Elevation`~~ — fáza 19, §39. `Elevation` je čistá podlaha, ale stĺp aj priečka toho istého podlažia začínajú na **vrchu nosnej dosky**, teda 150 mm nižšie. Preto bolo 24 stĺpov, 83 stien a 8 strešných vpustí zaradených o podlažie nižšie a **tá istá rada stĺpov bola rozdelená medzi dve podlažia** — to je „random" z Samuelovho hlásenia. #G z fázy 6a vpuste z openspace dostalo, ale do 3NP namiesto 4NP. Pásmo sa odteraz počíta z dosiek; stráži to invariant 8 |
+| BD | **H** | ~~dvere a stĺpy len na podlaží, nie v miestnostiach~~ — fáza 20, §40. **Rozhodnutie 24 sa mení**: exkluzivita kontajnmentu neznamená „žiadna miestnosť", ale „jedna miestnosť". 84 dverí kontajnovaných do obsluhovanej miestnosti (nie do chodby), 35 stĺpov do miestnosti, v ktorej stoja, 17 stĺpov na rozhraní ostáva na podlaží s referenciami na obe miestnosti. Plus 22 skladieb podlahy a podhľadov k správnej miestnosti, 2 podlahové vpuste a 48 chýbajúcich hraníc dverí |
 
 ### Materiály a skladby
 | # | | vec |
@@ -2097,6 +2099,10 @@ pôvodu — dá sa to prejsť očami za pár minút a stojí to za to.
 a 52 dverí, ktorým fáza 6b odvodila hostiteľa **z polohy**, lebo
 `FillsVoids` chýba (#AZ). Odvodenie nebolo nezávisle preverené.
 
+> Táto kapitola je zadanie napísané po fáze 18. Fázy 19 a 20 (§39–§41) na
+> tri jej body odpovedali — hraníc je dnes 697 a priestorové zaradenie má
+> vlastný invariant. Zvyšok zadania platí ďalej.
+
 **6 · Rekonštruované priestory 1NP.** Dvadsaťdva priestorov `1.01`–`1.23`
 vzniklo v pôvodnej pipeline mimo tohto repa; 42 pôvodných zaniklo (§34).
 Plochy sedia s legendou na 0,46 m², ale tvary nikto neporovnal s výkresom.
@@ -2112,8 +2118,288 @@ schému, nie zmysluplnosť pre konkrétny MVD.
 ### Ako to spustiť
 
 ```
-python src/report_final.py --in out/ASR_v25.ifc          # vecné meranie
-python src/gate.py out/ASR_v25.ifc --reference data/ASR.ifc --skip 3 \
+python src/report_final.py --in out/ASR_v27.ifc          # vecné meranie
+python src/gate.py out/ASR_v27.ifc --reference data/ASR.ifc --skip 3 \
     --allow-file tests/allowlist_prepipeline.json \
     $(for f in out/ASR_v*.ifc.allowlist.json; do echo --allow-file $f; done)
 ```
+
+---
+
+## 39. Fáza 19 — #BC, pásma podlaží z nosných dosiek
+
+`out/ASR_v25.ifc` → `out/ASR_v26.ifc`, `src/38_storey_zones.py`.
+
+Samuel hlásil tri veci: strešné vpuste na 3NP, stĺpy „úplne random" na
+podlaží a dvere len na podlaží. Prvé dve sú **jedna vada** a majú jednu
+príčinu.
+
+### Príčina
+
+Každé doterajšie pravidlo, ktoré rozhodovalo „do ktorého podlažia prvok
+patrí", počítalo pásmo ako ⟨`Elevation(N)`, `Elevation(N+1)`). To je zle,
+lebo `Elevation` je v tomto modeli **čistá podlaha**, kým prvky toho istého
+podlažia začínajú na **vrchu nosnej dosky**, teda o hrúbku podlahovej
+skladby nižšie:
+
+| podlažie | `Elevation` | vrch nosnej dosky | rozdiel |
+|---|--:|--:|--:|
+| 2NP | 5000 | 4850 | 150 |
+| 3NP | 9200 | 9050 | 150 |
+| 4NP | 13400 | 13250 | 150 |
+| 5NP | 16954 | 16750 | 204 |
+
+Stĺp `SL02.01.0030` má rozsah `4850…8800`. V naivnom pásme 1NP má **4 %**
+svojej výšky, v 2NP 96 % — a bol v 1NP. Presne tak vyzeralo všetkých 24
+stĺpov a 83 stien. Rozdiel nie je konštanta, ktorú by sa dalo uhádnuť
+(150 vs 204), preto sa vrchy dosiek **čítajú z modelu**: `IfcSlab`
+s `PredefinedType` `FLOOR`, `BASESLAB` alebo `ROOF`.
+
+### Prečo to v strome vyzeralo ako náhoda
+
+Pôvodný export nebol nedôsledný v jednom smere, ale v oboch. Šestnásť
+stĺpov `SL02.01` s **rovnakým** rozsahom `9050…13000` je 6× v 2NP a 10×
+v 3NP. Rovnaká rada, rovnaký typ, rovnaká výška — dve podlažia. To je to,
+čo Samuel videl.
+
+Strešné vpuste sú ten istý prípad na rozhraní: telo vpuste sedí
+v súvrství `13040…13836`, ktoré ide cez rozhranie 3NP/4NP, takže ťažisko
+raz padlo pod a raz nad. Osem skončilo v 3NP a osem v 4NP, hoci obe
+skupiny prechádzajú tou istou strechou `ST01.0001`, ktorá je v 4NP.
+Fáza 6a (#G) ich z openspace dostala von — ale do 3NP.
+
+### Čo sa spravilo
+
+| presun | ks |
+|---|--:|
+| `IfcWall` 2NP → 3NP | 44 |
+| `IfcWall` 1NP → 2NP | 19 |
+| `IfcColumn` 1NP → 2NP | 18 |
+| `IfcWall` 3NP → 4NP | 16 |
+| `IfcWasteTerminal` 3NP → 4NP | 8 |
+| `IfcColumn` 2NP → 3NP | 6 |
+| `IfcWall` 4NP → 5NP | 4 |
+| `IfcCovering` 1NP → 2NP | 1 |
+| `IfcWasteTerminal` 1NP → 2NP | 1 |
+| **spolu** | **117** |
+
+Plus **226 nadbytočných `IfcRelReferencedInSpatialStructure`** — referencií
+na to isté podlažie, v ktorom je prvok kontajnovaný. Spec hovorí, že
+referencia je *„in addition to those levels …, but **not primarily
+contained**"*, takže referencia na vlastný kontajner nehovorí nič.
+
+### Čo pravidlo zámerne neurobilo
+
+Prah presunu je 20 percentuálnych bodov a nie je zvolený od oka:
+
+* prvky, ktoré presunúť treba, vyhrávajú aspoň o **23 bodov** —
+  najtesnejšia je vpusť `OV04.01.197`, 38 % v 3NP proti 62 % v 4NP;
+* prvky, ktoré cez rozhranie idú **zámerne**, vyhrávajú najviac o 6 —
+  stena schodiska `SN02.03.0013` (49/51) a schodisko `ZV04.01.0001`
+  (47/53). Obe zostali, kde boli, a majú referenciu na druhé podlažie.
+  To je presne prípad z dokumentácie: *„A curtain wall might span through
+  several stories, in this case it can be contained within the ground
+  floor, but it would be referenced by all additional stories it spans."*
+
+Skript sa zároveň kontroluje na tom, čo **nesmie** pokaziť. Skladba
+podlahy `PD02.44.01` má rozsah `4850…5000`, teda leží celá pod
+`Elevation` 2NP, a do 2NP patrí správne — naivné pásmo by ju presunulo do
+1NP. Po behu je takých 0.
+
+### Brána
+
+| inv | výsledok |
+|---|---|
+| 1 geometria | 0 zmenených bboxov |
+| 2 EXPRESS | 0 hlásení |
+| 4–7 | OK |
+| 8 priestorové zaradenie | 13 porušení — skladby podlahy v priestoroch, rieši fáza 20 |
+
+Idempotencia overená: druhý beh hlási 0 presunov a 0 nadbytočných
+referencií.
+
+---
+
+## 40. Fáza 20 — #BD, dvere a stĺpy do miestností
+
+`out/ASR_v26.ifc` → `out/ASR_v27.ifc`, `src/39_room_binding.py`.
+
+### Čo na to hovorí schéma
+
+Samuelova otázka znela „čo IFC schéma, kde to má byť priradené". Schéma
+má na priestorové zaradenie **tri vzťahy** a každý odpovedá na inú otázku:
+
+| vzťah | otázka | kardinalita |
+|---|---|---|
+| `IfcRelContainedInSpatialStructure` | v čom prvok **primárne** je | práve jeden kontajner |
+| `IfcRelReferencedInSpatialStructure` | kam patrí **okrem toho** | ľubovoľne veľa |
+| `IfcRelSpaceBoundary` | čo miestnosť **uzatvára** | z pohľadu miestnosti |
+
+Doslovne: *„The containment relationship of an element within a spatial
+structure has to be a hierarchical relationship; an element can only be
+contained within a single spatial structure element."* a *„Any element
+can be referenced to zero, one or several levels of the spatial
+structure … the `IfcRelReferencedInSpatialStructure` is not restricted to
+be hierarchical."*
+
+Kontajnerom smie byť ktorýkoľvek `IfcSpatialElement`, teda aj `IfcSpace`;
+§4.1.5.13 hovorí len *„with `IfcBuildingStorey` being the **default**
+container"* — predvolený, nie predpísaný. Zároveň *„The question, which
+level is relevant for which type of element, can only be answered within
+the context of a particular project."*
+
+**Rozhodnutie 24 sa tým mení.** Znelo „dvere a steny do miestností nie,
+lebo kontajnment je exkluzívny". Exkluzivita platí, ale záver z nej
+nevyplýva: schéma sa pýta na **primárnu** miestnosť, nie na žiadnu. Nová
+formulácia je v BEP §2.7.
+
+### Dvere
+
+Krídlo nie je vnútri žiadneho priestoru — sedí v otvore steny. Sonda
+preto strieľa body **po normále dverí** na obe strany (0,3 / 0,6 / 0,9 m,
+vo výške 1 m nad prahom). Normála je +Y ich `ObjectPlacement`, ako určuje
+spec: *„the door opening direction (by the positive y-axis of the
+`ObjectPlacement`)"*.
+
+Z nájdených miestností sa vyberá **obsluhovaná**: komunikačné priestory
+(chodba, schodisko, CHÚC, lobby, openspace — rozoznané z `LongName`, teda
+z názvoslovia projektanta) ustúpia, pri zhode rozhodne menšia plocha.
+Zvyšné miestnosti dostanú referenciu. To je Samuelovo zadanie doslova:
+*„nemusia byť priradené ku chodbe, ale do tej priamej miestnosti áno."*
+
+| | ks |
+|---|--:|
+| kontajnment do obsluhovanej miestnosti | 84 |
+| agregované v LOP — len referencia (invariant 7) | 8 |
+| bez priestoru na oboch stranách — ostávajú na podlaží | 5 |
+
+Kontrola na vzorke: `DD01.05.08` → `1.14` WC bezbariérové ženy, referencia
+`1.18` chodba hygienického zázemia. `DD03.04.02` → `3.11` kuchynka,
+referencia `3.02` openspace. `DD02.04.03` → `2.03` zasadačka, referencia
+`2.02` openspace. Kabínkové dvere WC, ktoré majú miestnosť po oboch
+stranách, skončili v tej miestnosti.
+
+### Stĺpy
+
+Obal `IfcSpace` je okolo stĺpa **vykrojený**, takže stred stĺpa nie je
+v žiadnom priestore a test „bod vnútri" nefunguje — vracia prázdno pre
+všetkých 52. Sonda preto stĺp **obchádza po obvode**, 150 mm od plášťa,
+v troch výškach.
+
+| | ks |
+|---|--:|
+| obklopený jednou miestnosťou → kontajnment do nej | 35 |
+| na rozhraní dvoch miestností → ostáva na podlaží, referencie na obe | 17 |
+
+Sedemnásť stĺpov stojí v priečke medzi dvomi miestnosťami — `SL02.01.0003`
+má z jednej strany `1.01`, z druhej `1.02`. Ktorá z nich by mala byť tá
+primárna, sa povedať nedá, a kontajnment je exkluzívny; vynútiť ho by
+znamenalo polovicu si vymyslieť. Podlažie je pre ne správna odpoveď —
+a väzbu na obe miestnosti nesie referencia a `IfcRelSpaceBoundary`, ktorý
+majú všetky od fázy 6b.
+
+### Skladby podlahy a podhľady
+
+Invariant 8 pri prvom behu ukázal ďalších 13 prvkov — a tie odhalili
+staršiu vadu. Fáza 6a hľadala priľahlú miestnosť s toleranciou 300 mm na
+obe strany, lenže **nosná doska má 250 mm**, takže tolerancia ju
+preskočila: skladba podlahy 3NP `9050…9200` sa dala miestnosti **pod ňou**
+ako podhľad. Smer teraz určuje `PredefinedType`, teda schéma:
+
+* `FLOORING` patrí miestnosti **nad** sebou,
+* `CEILING` miestnosti **pod** sebou.
+
+Presunutých 18 `FLOORING` a 4 `CEILING`. Napr. `PD02.31.01` bola
+v openspace `2.01`, patrí do `2.06` WC muži; `PH01.20.0010` bola v `3.02`,
+patrí do `3.07`. Štyri prvky nad sebou ani pod sebou miestnosť nemajú
+(sú pod prístreškom) a zostali na podlaží — vypísané menovite.
+
+### Podlahové vpuste a hranice
+
+Dve podlahové vpuste (`OV01.01.228`, `OV01.01.233`) fáza 6a nenašla,
+lebo ich telo sedí v skladbe podlahy, teda **pod** obalom priestoru.
+Sonda nahor ich dala do `2.14` a `1.05` — obe technické miestnosti, presne
+kde podlahová vpusť býva.
+
+Doplnených **48 `IfcRelSpaceBoundary1stLevel`** pre dvere, ktoré lúč
+fázy 6b minul (47 `INTERNAL`, 1 `EXTERNAL`). Bez jedinej hranice zostali
+4 dvere, ktoré nemajú priestor ani z jednej strany: `DD01.06.08`,
+`DD04.07.02` a dvoje výťahových dverí na 1NP, kde šachta ako priestor
+modelovaná nie je.
+
+### Výsledok
+
+| | pred (`v25`) | po (`v27`) |
+|---|--:|--:|
+| prvkov kontajnovaných v miestnosti | 136 | **260** |
+| prvkov na podlaží | 398 | 274 |
+| referencií na priestor | 0 | **99** |
+| `IfcRelSpaceBoundary` | 649 | 697 |
+
+### Brána
+
+| inv | výsledok |
+|---|---|
+| 1 geometria | 0 zmenených bboxov proti `data/ASR.ifc` |
+| 2 EXPRESS | 0 hlásení |
+| 4–7 | OK |
+| 8 priestorové zaradenie | **0 porušení** |
+
+**Zlyhalo 0 z 8.** Idempotencia overená: druhý beh hlási 0 presunov,
+0 nových hraníc.
+
+---
+
+## 41. Invariant 8 — aby sa to už nestalo
+
+Táto trojica vád nebola nájdená invariantom, ale okom nad stromom
+v prehliadači. To je to, čo treba zmeniť. Invariant 8
+(`tests/test_invariants.py::inv8_spatial_fit`) kontroluje dve veci:
+
+**a · prvok leží v pásme podlažia, v ktorom je zaradený.** Aspoň polovicou
+svojej výšky. Prvok zámerne rozkročený cez rozhranie výnimku dostane —
+ale len ak v pásme má aspoň 20 % **a zároveň** má na druhé podlažie
+`IfcRelReferencedInSpatialStructure`. Bez tej druhej podmienky by
+kontrolu obišlo práve tých 24 stĺpov: mali 4 % v podlaží, v ktorom viseli,
+a referenciu na to, v ktorom naozaj stoja — referencia by zakryla zlé
+zaradenie namiesto toho, aby priznala rozkročenie.
+
+**b · geometricky zhodné prvky sú v jednom podlaží.** Rovnaká trieda,
+rovnaký typ, rovnaký Z-rozsah (na 50 mm) — a predsa dve podlažia. Táto
+kontrola by pôvodnú vadu chytila aj bez pásiem a bez znalosti dosiek,
+lebo netvrdí, ktoré podlažie je správne, len že obe naraz správne byť
+nemôžu.
+
+Merané na oboch koncoch:
+
+| súbor | porušení inv 8 |
+|---|--:|
+| `ASR_final_v2.ifc` (základňa) | 161 |
+| `ASR_v25.ifc` (pred fázou 19) | 161 |
+| `ASR_v26.ifc` (po fáze 19) | 13 |
+| `ASR_v27.ifc` (po fáze 20) | **0** |
+
+Test `test_inv8_catches_the_defect_it_was_written_for` beží proti
+základni a **vyžaduje**, aby kontrola vadu našla. Kontrola, ktorá prejde
+len na opravenom modeli, nedokazuje nič — to je poučenie z pôvodného
+handoveru, ktorý meral zámer namiesto výsledku.
+
+### Čo z toho platí všeobecne
+
+1. **Pásmo podlažia nie je `Elevation`.** Vždy sa odvodzuje z geometrie
+   konštrukcie. Konštanta „150 mm" by v tomto modeli minula 5NP.
+2. **Tolerancia nesmie byť väčšia než to, čo má oddeľovať.** 300 mm
+   tolerancia preskočila 250 mm dosku a dala podlahu 3NP miestnosti na
+   2NP. Ak tolerancia rozhoduje o smere, smer musí povedať dáta —
+   `PredefinedType`, nie vzdialenosť.
+3. **Bbox nie je teleso.** Bbox kuchynky prekrýva bbox openspace, bbox
+   openspace obsahuje pôdorys každého WC. Každé pravidlo postavené na
+   pôdorysnom prekryve bboxu v tomto modeli niečo pomýlilo — fáza 6a
+   podlahy, fáza 6b hranice. Otázka „je bod v miestnosti" sa odpovedá
+   lúčom cez trojuholníky obalu (`src/spatial.py`).
+4. **Rovnaké prvky musia skončiť rovnako.** Najlacnejšia kontrola
+   priestorových vzťahov je porovnať súrodencov medzi sebou; nepotrebuje
+   vedieť, čo je správne.
+5. **Exkluzívny vzťah nie je dôvod nepriradiť nič.** Keď sa prvok týka
+   dvoch miestností, schéma má na to referenciu — nie mlčanie.
+

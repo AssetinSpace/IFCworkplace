@@ -141,6 +141,67 @@ prechádza. Tvar sa preberá z otvoru a oreže na pásmo podlažia; výťahové
 
 ---
 
+### 2.7 Priestorové zaradenie prvkov — kontajnment, referencia, hranica
+
+Model priraďuje prvky **do miestností**, nie len na podlažia. Kto ho
+preberá, musí vedieť, ktorý vzťah nesie ktorú informáciu — schéma ich má
+tri a nie sú zameniteľné.
+
+| vzťah | čo znamená | koľko ich prvok má |
+|---|---|---|
+| `IfcRelContainedInSpatialStructure` | v čom prvok **primárne** je | práve jeden |
+| `IfcRelReferencedInSpatialStructure` | kam patrí **okrem toho** | ľubovoľne veľa |
+| `IfcRelSpaceBoundary1stLevel` | čo miestnosť **uzatvára** | z pohľadu miestnosti |
+
+Opora, doslovne: *„The containment relationship of an element within a
+spatial structure has to be a hierarchical relationship; an element can
+only be contained within a single spatial structure element."* a *„Any
+element can be referenced to zero, one or several levels of the spatial
+structure … not restricted to be hierarchical."* Kontajnerom smie byť
+ktorýkoľvek `IfcSpatialElement`, teda aj `IfcSpace`; §4.1.5.13 uvádza
+`IfcBuildingStorey` len ako **predvolený** kontajner, a dodáva, že *„The
+question, which level is relevant for which type of element, can only be
+answered within the context of a particular project."*
+
+**Pravidlá tohto projektu**
+
+| prvok | kontajner | referencie |
+|---|---|---|
+| dvere medzi dvomi miestnosťami | **obsluhovaná** miestnosť — komunikačný priestor ustúpi | druhá miestnosť |
+| dvere agregované v LOP | žiadny (celok ich viaže) | všetky dotknuté miestnosti |
+| stĺp obklopený jednou miestnosťou | tá miestnosť | — |
+| stĺp v priečke medzi dvomi | podlažie | obe miestnosti |
+| skladba podlahy (`FLOORING`) | miestnosť **nad** ňou | — |
+| podhľad (`CEILING`) | miestnosť **pod** ním | — |
+| zariaďovací predmet, vpusť, zábradlie | miestnosť, v ktorej stojí | — |
+| stena, doska, fasáda | podlažie | podlažia, cez ktoré prechádza |
+
+Komunikačné priestory sa rozoznávajú z `LongName`: chodba, schodiskový
+priestor, CHÚC, lobby, výťahová lobby, openspace. Nie je to odhad — je to
+názvoslovie z výkresov `D.1.1.01`–`.03`.
+
+**Prečo dvere práve takto.** Kontajnment je exkluzívny, takže dvere medzi
+chodbou a kanceláriou sa musia prikloniť k jednej. Prikláňajú sa
+k miestnosti, do ktorej sa nimi **vstupuje** — chodba je cesta, nie cieľ.
+Väzbu na chodbu nesie referencia a `IfcRelSpaceBoundary`, takže sa
+nestráca. Zadanie Samuela: *„nemusia byť priradené ku chodbe, ale do tej
+priamej miestnosti áno."*
+
+**Prečo stĺpy nie všetky.** Sedemnásť z 52 stĺpov stojí v priečke medzi
+dvomi miestnosťami. Ktorá z nich je tá primárna, sa povedať nedá; vynútiť
+kontajnment by znamenalo polovicu si vymyslieť. Ostávajú na podlaží —
+čo je schémou predvolený kontajner — a väzbu na obe miestnosti nesú
+referencie a hranice.
+
+**Pásmo podlažia sa počíta z nosnej dosky, nie z `Elevation`.**
+`Elevation` je čistá podlaha; prvky toho istého podlažia začínajú na
+vrchu nosnej dosky, o 150 mm nižšie (na 5NP o 204 mm). Pásmo podlažia N
+je preto ⟨vrch dosky pod `Elevation(N)`, vrch dosky pod
+`Elevation(N+1)`). Kto model rozširuje, musí toto pravidlo dodržať —
+inak sa prvky rozsypú medzi dve podlažia. Stráži to invariant 8.
+
+---
+
 ## 3. Rozhodnutia o triede a type, ktoré nemá excel
 
 SNIM excel `MOC_BEP_05` neexistuje, takže autoritou je dokumentácia
