@@ -21,7 +21,11 @@ import sys
 import ifcopenshell
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from tests.test_invariants import parse_snim, snim_occurrences  # noqa: E402
+from tests.test_invariants import (  # noqa: E402
+    SKLADBA_PARENT,
+    parse_snim,
+    snim_occurrences,
+)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 IN = os.path.join(ROOT, "out", "ASR_v16.ifc")
@@ -114,6 +118,26 @@ def main() -> int:
     riadok("IfcZone / IfcSystem / IfcGroup",
            "%d / %d / %d" % (len(m.by_type("IfcZone")), len(m.by_type("IfcSystem")),
                              len(m.by_type("IfcGroup"))))
+
+    # ---- skladby ---------------------------------------------------------
+    # Po fáze 21 sú skupiny dvojúrovňové. Bez rozlíšenia by počet skupín
+    # vyskočil z 8 na 23 a vyzeralo by to ako strata prehľadu.
+    print("\nSKLADBY")
+    predpisy = [g for g in m.by_type("IfcGroup")
+                if g.is_a() == "IfcGroup" and SKLADBA_PARENT.match(g.Name or "")]
+    vyskyty, clenstiev, rozlozene = [], 0, 0
+    for g in sorted(predpisy, key=lambda x: int(x.Name[1:])):
+        deti = [x for rel in (g.IsDecomposedBy or ())
+                for x in rel.RelatedObjects if x.is_a("IfcGroup")]
+        vyskyty.extend(deti)
+        rozlozene += 1 if deti else 0
+        clenstiev += sum(len(rel.RelatedObjects)
+                         for d in deti for rel in (d.IsGroupedBy or ()))
+    riadok("predpisov skladieb (S1–S9)", len(predpisy))
+    riadok("z toho rozložených na výskyty", "%d / %d" % (rozlozene, len(predpisy)))
+    riadok("výskytov skladieb (S<n>.<NN>)", len(vyskyty))
+    riadok("členstiev vo výskytoch", clenstiev,
+           "prvok smie byť vo viacerých skladbách naraz")
 
     # ---- psety a materiály ----------------------------------------------
     print("\nPSETY A MATERIÁLY")

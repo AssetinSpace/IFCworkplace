@@ -21,9 +21,10 @@ ASR.ifc
  14–37 fázy 1–18                   → ASR_v3.ifc … ASR_v25.ifc
  38    fáza 19  #BC                → ASR_v26.ifc
  39    fáza 20  #BD                → ASR_v27.ifc
+ 40    fáza 21  výskyty skladieb   → ASR_v28.ifc
 ```
 
-Aktuálny výstup je **`out/ASR_v27.ifc`**.
+Aktuálny výstup je **`out/ASR_v28.ifc`**.
 
 ## Štruktúra repozitára
 
@@ -64,13 +65,20 @@ Toto je jadro. Pôvodný handover tvrdil 0 osirelých entít a konvertovaný
    zhodné prvky sú v jednom podlaží. Pásmo podlažia sa počíta z **vrchu
    nosnej dosky**, nie z `Elevation` — `Elevation` je čistá podlaha, prvky
    podlažia začínajú 150 mm pod ňou. Pribudol po fáze 19; AUDIT.md §41.
+9. **Rozklad skladby je partícia** — skladba `S1` je predpis podľa
+   `D.1.1.09`, `S1.01` a `S1.02` sú jej výskyty na konkrétnych nosičoch.
+   Rodič s výskytmi nemá vlastných členov, výskyty sa navzájom
+   neprekrývajú a každý má aspoň jeden prvok. Prekryv **medzi** skladbami
+   sa nekontroluje a nesmie — 26 dosiek patrí do `S1` aj `S2`. Pribudol
+   po fáze 21; AUDIT.md §43.
 
 Invariant 6 dnes **zámerne zlyháva** na `DD01.05.01` a `.02`. Nechaj ho zlyhať;
 opraví sa vo fáze 4. Invariant 7 bude najviac namáhaný po fázach 1, 6 a 7.
 
 Testy 1, 2, 4, 5 a 8 v CI. Test 1 na 2564 tvarov trvá jednotky minút,
 test 8 počíta obálky všetkých kontajnovaných prvkov — obidva nech bežia
-na merge, nie na každý commit.
+na merge, nie na každý commit. Test 9 geometriu nepočíta, je to čistá
+množinová aritmetika — patrí medzi rýchle.
 
 ## Pravidlá pre skripty
 

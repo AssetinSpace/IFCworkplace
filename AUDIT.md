@@ -105,6 +105,7 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 | — | skladby | `IfcMaterialLayerSet` **na typoch**; `IfcMaterialLayerSetUsage` len tam, kde hrúbka sedí | „Usage je pre prvky s konštantnou hrúbkou"; „`TotalThickness` musí byť rovná hrúbke prvku" |
 | — | agregácia vrstiev | **len pri fyzicky zviazaných vrstvách** (viď test §4) | agregácia je vzťah celok–časť |
 | — | kódy S1–S9 | **`IfcGroup`** + `IfcRelAssignsToGroup`. Nie `IfcRelAssociatesDocument`, nie `IfcClassification` | Samuel |
+| — | skladba vs jej výskyt | **dvojúrovňovo**: `S1` je predpis, `S1.01` a `S1.02` výskyty na nosičoch. Väzba `IfcRelAggregates`, členstvo **len na výskytoch**. Nie `IfcRelDefinesByType` — typ skupiny v schéme neexistuje | Samuel + spec, §43 |
 | — | vzduchová medzera | nemodeluje sa; `IsVentilated` platí len vnútri jedného prvku. Rozdiel v súčte hrúbok sa dokumentuje | schéma |
 | — | fyzika materiálov (λ, ρ, c, μ) | samostatná fáza neskôr | Samuel |
 
@@ -200,6 +201,8 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 | AS | **H** | ~~materiál „Výchozí" ako dutinová podlaha v `PD03.*`~~ — fáza 8, §22: štyri vrstvy `PD03.*` nesú `IsVentilated` a materiál nemajú, ako žiada `IfcMaterialLayer` §8.10.3.6.1. Overené na `ASR_v21.ifc`: 0 vrstiev s materiálom „Výchozí". Riadok registra zostal omylom na **O**, hoci §23 ho medzi uzavretými uvádza |
 | BB | **H** | **fyzika materiálu platí pre jednu skladbu, materiál ju nesie pre všetky.** IFC vlastnosti visia na `IfcMaterial`, nie na vrstve, takže `Izolace XPS` nesie λ=0,036 z `FS01.11` aj v `FS03.01`, `ST01.32` a `PD02.11` — a tie tri **výpis `D.1.1.09` neuvádza vôbec**. To isté pri `Izolace minerální` (doložené `FS01.10/.12/.20`, použité aj v `TI06.01`) a `Izolace EPS` (doložené `PD02`). **Rozhodnuté** (Samuel, 10. 8.): *„ber to tak, že majú rovnaké vlastnosti všetky XPS."* Materiál sa nerozdeľuje; to isté sa uplatňuje na minerálnu izoláciu a EPS. Zistené vo fáze 17 |
 | AT | **H** | ~~λ, ρ, c, μ z výpisu nie sú v `Pset_Material*`~~ — fáza 17, §36. Deväť materiálov, 15 `IfcMaterialProperties`, plus tri chýbajúce odvodené jednotky do `IfcUnitAssignment` |
+| BF | **H** | ~~skladby striech sú jedna skupina na veľkej aj malej streche~~ — fáza 21, §43. `S1` sa rozdelila na `S1.01` (4NP, 38 prvkov) a `S1.02` (5NP, 7), `S2` na `S2.01` (48) a `S2.02` (5). Všetkých osem skladieb je dvojúrovňových: 8 predpisov, 15 výskytov, 193 členstiev. Stráži invariant 9 |
+| BE | **O** | **`S3` obsahuje 22 prvkov mimo 1NP.** Skladba sa volá „Skladba základovej dosky a podlahy v 1NP", ale rozklad fázy 21 ju delí na 1NP 32, 2NP 9, 3NP 9, 4NP 4. Základová doska je len na 1NP; podlahy vyšších podlaží ležia na stropných doskách `SD02`. Členstvo prišlo z fázy 8 pravidlom „všetky prvky kódu" (`PD02.*`, `IH01.01`, `DZ01.01`, `ZD02.01`), čo odpovedá na inú otázku než „patrí do tejto skladby". Zúženie na 1NP je zmena rozsahu skladby — potrebuje `D.1.1.09` a rozhodnutie, nie geometriu. Rozklad vadu zviditeľňuje, neopravuje: nesú ju `S3.02`–`S3.04` |
 
 ### Zdokumentovať, neopraviť
 | # | | vec |
@@ -236,6 +239,12 @@ Test: **je časť fyzicky zviazaná s celkom a bez neho neexistuje?**
 Nezviazané vrstvy sa spájajú do `IfcGroup` pomenovanej `S1`…`S9` cez
 `IfcRelAssignsToGroup`. Skupina a agregácia sa nevylučujú — prvok môže byť
 časťou agregátu a zároveň členom skupiny.
+
+**Agregujú sa aj skupiny, a to je iná os.** Od fázy 21 je `S1` predpis
+a `S1.01` s `S1.02` sú jeho výskyty, zavesené cez `IfcRelAggregates`
+(§43). Tabuľka vyššie sa týka prvkov — otázka „je časť fyzicky zviazaná
+s celkom" na skupiny nesadá, lebo skupina teleso nemá. Tam rozhoduje
+`Decomposes : SET [0:1]`: výskyt patrí práve jednej skladbe.
 
 **Vrstva nie je podprvok.** `IfcWall` agregujúci `IfcWall` ako „vrstvy" je zlý
 vzor — vrstvy sú `IfcMaterialLayerSet`, podprvky sú pre panelizované
@@ -1205,7 +1214,7 @@ kódu z §3.
 | BA | `C1-J` vo výkrese `D.1.1.08` chýba |
 | Q2 | `PZ01`–`PZ10` nereferencujú ani jeden prvok |
 | — | 7× `FS03.01` bez priradenej steny |
-| — | `S1`, `S2`, `S6` — skupiny skladieb so zdieľanými kódmi |
+| — | ~~`S1`, `S2`, `S6` — skupiny skladieb so zdieľanými kódmi~~ — založené vo fáze 8b (§28), rozdelené na výskyty vo fáze 21 (§43) |
 | — | okenné hranice, otvorí ich delenie fasády na polia |
 
 **Trvalá medzera:** `data/ASR.ifc` v repe nie je, takže invariant 1 sa
@@ -2520,3 +2529,204 @@ zaradí strom, informácia sa v žiadnom nestráca:
 **Rozhodnutie Samuela (12. 8.): `room`.** Model zostáva ako po fáze 20.
 Odchýlka je priznaná v BEP §2.7 aj s citáciou predvoľby, aby ten, kto
 model preberá, vedel, že podlažie je alternatíva na jeden prepínač.
+
+---
+
+## 43. Fáza 21 — skladby dvojúrovňovo: predpis a výskyt
+
+`out/ASR_v27.ifc` → `out/ASR_v28.ifc`, `src/40_skladby_vyskyty.py`.
+
+Podnet Samuela: *„skladby striech sú jedna grupa aj na streche veľkej aj
+na streche malej a ideálne by bolo keby je to rozdelené ako S1.01
+a S1.02… zas je to niečo na štýl že type a occurrence."*
+
+Skupina `S1` naozaj obsahovala 45 prvkov, z ktorých 38 patrí veľkej
+streche na 4NP a 7 malej na 5NP. Skupina teda nezodpovedala žiadnej
+skutočnej konštrukcii — bolo to zjednotenie dvoch nezávislých súvrství
+s rovnakým predpisom.
+
+### Čo hovorí schéma
+
+**Type a occurrence to nie je.** `IfcRelDefinesByType` by formálne prešlo:
+`RelatedObjects : SET [1:?] OF IfcObject`, `IfcGroup` **je** `IfcObject`,
+`IfcTypeObject` nie je `ABSTRACT` a jediné jeho WHERE sú `NameRequired`
+a `UniquePropertySetNames`. Lenže sémantika typu je o zdieľaných psetoch
+a zdieľanom tvare medzi **produktmi**, a jediné podtypy `IfcTypeObject`
+sú `IfcTypeProduct`, `IfcTypeProcess` a `IfcTypeResource` — **typ skupiny
+v schéme neexistuje**. Bolo by to legálne, ale bez MVD opory a žiadny
+prehliadač to nezobrazí.
+
+**`IfcMaterialLayerSet` tiež nie**, hoci na prvý pohľad sedí: schéma
+hovorí *„The IfcMaterialLayerSet, referenced by ForLayerSet, can however
+be shared among several occurrence objects"* a `IfcMaterialLayerSetUsage`
+je vždy na jednom výskyte. To je správny type/occurrence pár pre skladbu
+**jedného prvku**. Tu je skladba rozprestretá cez viac prvkov (`ST01.20`
+krytina + `ST01.10` izolácia + `SD02` doska + `PH01` podhľad), z ktorých
+každý nesie vlastný layer set. Preto `IfcGroup` — rozhodnutie §2 platí.
+
+**Vzťah `S1` ↔ `S1.01` je celok a časť**, a na to má schéma dve cesty:
+
+| mechanizmus | kardinalita | opora v dokumentácii |
+|---|---|---|
+| `IfcRelAssignsToGroup` rekurzívne | many-to-many | *„It allows for grouping arbitrary objects within a group, including other groups. The grouping relationship can be applied in a recursive manner."* |
+| `IfcRelAggregates` | `Decomposes : SET [0:1]` → strom | `IfcBuiltSystem`: *„From IfcObjectDefinition it inherits IsDecomposedBy pointing to IfcRelAggregates. **It provides the hierarchy between the separate (partial) building systems.**"* |
+
+**Zvolená agregácia** (Samuel, 12. 8.). `Decomposes : SET [0:1]` schémou
+vynúti, že `S1.01` patrí práve jednej skladbe — omyl „to isté dieťa pod
+`S1` aj `S2`" sa nedá zapísať. `IfcRelAggregates` má v EXPRESS jediné
+pravidlo `NoSelfReference` a v dokumentácii **žiadne informal
+propositions**, takže agregácia skupín je bez výhrad legálna.
+
+Overené na minimálnom modeli (`IfcGroup` agregujúca dve `IfcGroup`,
+členstvo na deťoch): `validate(express_rules=True)` dá **0 hlásení**,
+`Decomposes` aj `IsDecomposedBy` sa naplnia. `IfcGroup` navyše **nemá
+atribút `ContainedInStructure`** (`hasattr` = False), takže invariant 7
+sa na skupinách nemá o čo zaseknúť.
+
+**Členstvo je len na deťoch** (Samuel, 12. 8.). Rodič svoj pôvodný
+`IfcRelAssignsToGroup` stráca. Prázdny vzťah by porušil invariant 5, tak
+sa maže celý; `IfcGroup.IsGroupedBy : SET [0:?]` prázdnu množinu dovoľuje.
+Cena je, že prehliadač, ktorý agregáciu nerozbaľuje, ukáže `S1` prázdnu.
+Získa sa tým, že sčítanie prvkov naprieč výpisom dá správne číslo — pri
+ponechaní členov aj na rodičovi by sa každý prvok zarátal dvakrát.
+
+### Pravidlo nosiča
+
+**Výskyt = (skladba, podlažie nosiča).** Nosič kotviaceho prvku je koreň
+jeho agregácie, ak je agregovaný, inak prvok sám.
+
+Nosič robí dve veci: dá výskytu podlažie a pomenuje ho. Podlažie sa berie
+z nosiča, nie z prvku — podhľady `PH01` sú kontajnované v miestnostiach
+3NP, hoci patria k streche nad 4NP, takže podľa vlastného podlažia by sa
+súvrstvie roztrhalo.
+
+Prečo nie jemnejšie: nosičom `S4` sú štyri steny, ale tvoria dva výlezy —
+po stenách by to bolo rozdrobenie. Prečo nie hrubšie: podlažie samotné by
+pri `S1` fungovalo len náhodou, lebo obe strechy zhodou okolností ležia
+na rôznych podlažiach.
+
+Číslovanie `.01`, `.02` … podľa `Elevation` podlažia — ten istý smer, akým
+`18_snim_inst.py` prideľuje `INST`. Pri `S1` tak `.01` vyjde veľká strecha
+(4NP, 13400) a `.02` malá (5NP, 16954).
+
+### Výsledok
+
+| skladba | výskyt | nosič | prvkov | rodič |
+|---|---|---|--:|--:|
+| `S1` vegetácia | `S1.01` | `IfcRoof ST01.0001` Strešné súvrstvie 4NP | 38 | |
+| | `S1.02` | `IfcRoof ST01.0002` Strešné súvrstvie 5NP | 7 | **45** |
+| `S2` kačírek | `S2.01` | `IfcRoof ST01.0001` | 48 | |
+| | `S2.02` | `IfcRoof ST01.0002` | 5 | **53** |
+| `S3` doska a podlaha | `S3.01` … `S3.04` | 1NP / 2NP / 3NP / 4NP | 32 / 9 / 9 / 4 | **54** |
+| `S4` ETICS plocha výlezu | `S4.01` | steny `SN02.02.0035`, `.0041` 4NP | 4 | |
+| | `S4.02` | steny `SN02.01.0004`, `.0007` 5NP | 4 | **8** |
+| `S5` ETICS sokol výlezu | `S5.01` | štyri steny `SN02.02` 4NP | 8 | **8** |
+| `S6` kancelárie | `S6.01` | `PD03.30.01` 2NP | 8 | |
+| | `S6.02` | `PD03.30.02` 3NP | 9 | **17** |
+| `S8` ETICS odpad. hosp. | `S8.01` | stena `SN05.01.0005` 1NP | 2 | **2** |
+| `S9` ETICS odpad. hosp. | `S9.01` | tri steny `SN05.01` 1NP | 6 | **6** |
+
+Osem predpisov, **15 výskytov, 193 členstiev**. Súčty sedia na kus
+a zjednotenia sú disjunktné — žiadny člen sa nestratil ani nezdvojil.
+Zmena je rafinácia existujúcich skupín, nie ich preskupenie, a presne to
+si krok pred zápisom overuje: pri nezhode o jediný prvok zastane.
+
+Kotviace prvky sú agregované správne — všetkých 18 `ST01.20` (16 + 2)
+aj 25 `ST01.21` (24 + 1). Jediný chybne agregovaný prvok `ST01.10.0012`
+(izolácia malej strechy visiaca v agregáte veľkej, §39) kotviaci nie je
+a priraďuje sa geometricky, takže rozklad neovplyvnil.
+
+### Hĺbka pásma je pripnutá, nie zvolená
+
+Fáza 8b vybrala `HLBKA = 2000` z citlivostnej skúšky ako hodnotu vnútri
+stabilného pásma. Tu je silnejší dôkaz: kontrola úplnosti ju **pripne**.
+
+| hĺbka | výsledok |
+|--:|---|
+| 1200 | `S1`, `S2` stratia po 2 prvkoch, `S6` tiež → **STOP** |
+| 1500 | každá po 1 prvku → **STOP** |
+| **2000** | **úplný a disjunktný rozklad všetkých ôsmich** |
+| 3000 | rovnaké čísla ako 2000 |
+
+Pod 2000 mm sa rozklad rozíde s rodičom a krok odmietne zapísať; nad ním
+sa už nič nemení. Skúšku vie ktokoľvek zopakovať cez `--hlbka`.
+
+### Čo rozklad odhalil a neopravuje — `#BE`
+
+`S3` sa volá *„Skladba základovej dosky a podlahy v 1NP"*, ale rozkladá sa
+na štyri podlažia: 1NP 32, 2NP 9, 3NP 9, 4NP 4. Základová doska je pritom
+len na 1NP — podlahy vyšších podlaží ležia na stropných doskách `SD02`.
+Členstvo prišlo z fázy 8 pravidlom „všetky prvky kódu" (`PD02.*`,
+`IH01.01`, `DZ01.01`, `ZD02.01`), čo odpovedá na inú otázku než „patrí do
+tejto skladby".
+
+Rozklad sa napriek tomu urobil celý. Nie preto, že by 2NP–4NP bolo
+správne, ale preto, že ich **zviditeľní**: doteraz to bolo skryté v jednom
+čísle 54, teraz je to v strome ako `S3.02`, `S3.03` a `S3.04`. Zúžiť `S3`
+na 1NP by znamenalo odobrať 22 prvkov zo skupiny — to je zmena rozsahu
+skladby, na ktorú treba `D.1.1.09` a rozhodnutie, nie geometriu.
+
+### Brána `ASR_v28.ifc`
+
+`python src/gate.py out/ASR_v28.ifc --reference out/ASR_v27.ifc
+--allow-file out/ASR_v28.ifc.allowlist.json`
+
+| # | výsledok |
+|---|---|
+| 1 geometria | **OK** — krok sa nedotkol ani jedného `IfcProduct` |
+| 2 EXPRESS | **OK**, 0 hlásení vrátane agregácie skupín |
+| 3 GUID | **OK** — 38 nových (15 `IfcGroup`, 15 `IfcRelAssignsToGroup`, 8 `IfcRelAggregates`), 8 zmazaných `IfcRelAssignsToGroup`, všetky v allowliste |
+| 4 osirelé | **OK**, 0 |
+| 5 prázdne SET | **OK** |
+| 6 jednoznačnosť | **OK** — `S1.01` sa SNIM kontroly netýka, tá iteruje `IfcProduct` |
+| 7 kontajnment vs agregácia | **OK** — `IfcGroup` `ContainedInStructure` nemá |
+| 8 priestorové zaradenie | **OK** |
+| 9 rozklad skladieb | **OK**, nový |
+
+**Zlyhalo 0 z 9.** Idempotencia overená: druhý beh ohlási osem rozložených
+skladieb a skončí bez zápisu.
+
+`pytest` sa proti medzivýstupu na účtovníctvo GUID púšťať nedá a nikdy
+nedalo: `test_inv3_guid_accounting` allowlist neprijíma, takže na
+`ASR_v28.ifc` ohlási 46 zmien — presne tak, ako ohlási 46 aj na `v27`
+proti `v26` a na `v26` proti `v25`. Je to zámer, ktorý test popisuje vo
+vlastnom docstringu: *„účtovníctvo tohto repa… robí brána každého kroku
+cez `--allow-file`"*. CI preto púšťa `pytest` bez `IFC_REFERENCE`, teda
+proti základni, a účtovníctvo necháva bráne.
+
+`IfcGroup` (vrátane podtypov) 24 → 39, `IfcRelAggregates` +8. Počet
+occurrences, `IfcRelContainedInSpatialStructure` a všetky bboxy nezmenené.
+
+---
+
+## 44. Invariant 9 — rozklad musí byť partícia
+
+`inv9_skladby_rozklad` v `tests/test_invariants.py`. Kontroluje štvoro:
+
+1. rodič s výskytmi **nemá vlastných priamych členov** — inak sa prvky pri
+   sčítaní rátajú dvakrát;
+2. **výskyty tej istej skladby sa neprekrývajú** — toto je tá kontrola,
+   ktorá by pôvodnú vadu chytila;
+3. každý výskyt má aspoň jedného člena;
+4. výskyt visí práve na jednom rodičovi.
+
+**Prekryv medzi skladbami sa nekontroluje a nesmie.** 26 izolačných dosiek
+patrí do `S1` aj `S2` naraz, lebo kačírkový pás je 600 mm okraj tej istej
+strešnej plochy, pod ktorou je vegetácia (§28). Kontrola je vždy vnútri
+jednej skladby.
+
+**Rozsah je úzky zámerne.** Naivná definícia „skupina, ktorá má medzi
+členmi skupinu, je partícia" by okamžite zlyhala na `IfcZone`
+„Pronajmutelné" z fázy 5c: má 10 priestorov **plus** vnorenú zónu
+„Nájomné priestory 3NP" s ďalšími 11. Rekurzívne zoskupenie je v IFC bežné
+a partíciou byť nemusí. Rozsah preto drží `SKLADBA_PARENT` — presne
+`IfcGroup` s menom `S<číslo>` — a `test_inv9_ignores_nested_zones` to
+zafixuje, aby to niekto neskôr nerozšíril a nerozbil zóny.
+
+Úplnosť voči pôvodným počtom v invariante **nie je**: to je akceptačné
+kritérium kroku 40, a po ňom už niet s čím porovnávať. Že kontrola vadu
+naozaj chytí, overuje `test_inv9_catches_the_defect_it_was_written_for` na
+modeli postavenom v pamäti — rodič, ktorý si nechal členov, a dva výskyty
+zdieľajúce prvok.
+
+Invariant geometriu nepočíta, takže patrí do CI joba `rychle`.

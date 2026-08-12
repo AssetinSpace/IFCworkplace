@@ -1,7 +1,8 @@
 """Invarianty modelu OCB.
 
-Osem invariantov. Sedem podľa ``CLAUDE_CODE_START.md`` § „Invarianty po
-každom kroku", ôsmy pribudol po fáze 19 (viď :func:`inv8_spatial_fit`).
+Deväť invariantov. Sedem podľa ``CLAUDE_CODE_START.md`` § „Invarianty po
+každom kroku", ôsmy pribudol po fáze 19 (viď :func:`inv8_spatial_fit`)
+a deviaty po fáze 21 (viď :func:`inv9_skladby_rozklad`).
 
 Konvencia (zámerná, viď AUDIT.md §8 „každý skript overí, čo tvrdí"):
 
@@ -619,6 +620,89 @@ def inv8_spatial_fit(subject, allowlist: Iterable[str] = ()) -> list[Violation]:
 
 
 # --------------------------------------------------------------------------
+# 9 — rozklad skladby na výskyty
+# --------------------------------------------------------------------------
+
+#: Rodičovská skupina skladby — presne ``S`` a číslo. Výskyty sú ``S1.01``.
+#: Konštanta je tu, nie v kroku, aby ju krok aj invariant brali z jedného
+#: miesta; ``src/40_skladby_vyskyty.py`` ju importuje. Rozsah je zámerne
+#: úzky: pravidlo „rodič nemá vlastných členov" je konvencia skladieb,
+#: nie schémy, a na `IfcZone` alebo `IfcSystem` by neplatilo.
+SKLADBA_PARENT = re.compile(r"^S\d+$")
+
+
+def inv9_skladby_rozklad(subject, allowlist: Iterable[str] = ()) -> list[Violation]:
+    """Rozklad skladby na výskyty je úplný a disjunktný.
+
+    ``S1`` je predpis podľa `D.1.1.09`, ``S1.01`` a ``S1.02`` sú jeho
+    výskyty na konkrétnych nosičoch (fáza 21). Väzbou je
+    ``IfcRelAggregates``, ktorej ``Decomposes : SET [0:1]`` schémou vynúti,
+    že výskyt patrí práve jednej skladbe.
+
+    Kontroluje sa štvoro:
+
+    **a** rodič s výskytmi nemá vlastných priamych členov — členstvo je
+    len na výskytoch, inak sa prvky pri sčítaní zarátajú dvakrát;
+
+    **b** výskyty tej istej skladby sa neprekrývajú. Toto je tá kontrola,
+    ktorá by pôvodnú vadu chytila: ``S1`` mala v jednej skupine súvrstvie
+    veľkej aj malej strechy;
+
+    **c** každý výskyt má aspoň jedného člena;
+
+    **d** výskyt visí práve na jednom rodičovi.
+
+    Prekryv **medzi** skladbami sa nekontroluje a nesmie — 26 izolačných
+    dosiek patrí do ``S1`` aj ``S2`` naraz, lebo kačírkový pás je 600 mm
+    okraj tej istej strešnej plochy, pod ktorou je vegetácia (AUDIT.md §28).
+
+    Úplnosť voči pôvodným počtom tu nie je: to je akceptačné kritérium
+    kroku, ktorý rozklad robí, a po ňom už niet s čím porovnávať.
+    """
+    sub = _model(subject)
+    out: list[Violation] = []
+
+    for parent in sub.by_type("IfcGroup"):
+        if parent.is_a() != "IfcGroup" or not SKLADBA_PARENT.match(parent.Name or ""):
+            continue
+        deti = [x for rel in (parent.IsDecomposedBy or ())
+                for x in rel.RelatedObjects if x.is_a("IfcGroup")]
+        if not deti:
+            continue
+
+        priami = [e for rel in (parent.IsGroupedBy or ()) for e in rel.RelatedObjects]
+        if priami:
+            out.append(Violation(
+                9, parent.GlobalId, parent.is_a(),
+                "%r má %d vlastných členov aj %d výskytov — členstvo patrí "
+                "na výskyty, inak sa prvky rátajú dvakrát"
+                % (parent.Name, len(priami), len(deti))))
+
+        kde: dict[int, str] = {}
+        for d in deti:
+            cleny = [e for rel in (d.IsGroupedBy or ()) for e in rel.RelatedObjects]
+            if not cleny:
+                out.append(Violation(
+                    9, d.GlobalId, d.is_a(),
+                    "výskyt %r nemá ani jedného člena" % d.Name))
+            if len(d.Decomposes or ()) != 1:
+                out.append(Violation(
+                    9, d.GlobalId, d.is_a(),
+                    "výskyt %r visí na %d rodičoch, má práve na jednom"
+                    % (d.Name, len(d.Decomposes or ()))))
+            for e in cleny:
+                if e.id() in kde:
+                    out.append(Violation(
+                        9, e.GlobalId, e.is_a(),
+                        "%r je vo výskyte %r aj %r tej istej skladby %r"
+                        % (e.Name, kde[e.id()], d.Name, parent.Name)))
+                else:
+                    kde[e.id()] = d.Name
+
+    return _filter(out, allowlist)
+
+
+# --------------------------------------------------------------------------
 # register
 # --------------------------------------------------------------------------
 
@@ -631,6 +715,7 @@ ALL = {
     6: inv6_uniqueness,
     7: inv7_containment_vs_aggregation,
     8: inv8_spatial_fit,
+    9: inv9_skladby_rozklad,
 }
 
 
@@ -664,6 +749,8 @@ def run_all(
         res[6] = inv6_uniqueness(model, allowlist)
     if 7 not in skip:
         res[7] = inv7_containment_vs_aggregation(model, allowlist)
+    if 9 not in skip:
+        res[9] = inv9_skladby_rozklad(model, allowlist)
     return res
 
 
@@ -800,6 +887,63 @@ def test_inv8_catches_the_defect_it_was_written_for():
     assert "IfcColumn" in triedy
     assert {"IfcFlowTerminal", "IfcWasteTerminal"} & triedy
     assert any("rozdelené medzi podlažia" in v.detail for v in found)
+
+
+def test_inv9_skladby_rozklad(model):
+    """Rozložená skladba nesmie mať prekrývajúce sa výskyty.
+
+    Na modeli pred fázou 21 prejde prázdno — skupiny ešte deti nemajú,
+    takže niet čo kontrolovať. Že kontrola naozaj funguje, overuje
+    `test_inv9_catches_the_defect_it_was_written_for`.
+    """
+    assert inv9_skladby_rozklad(model) == []
+
+
+def test_inv9_catches_the_defect_it_was_written_for():
+    """Kontrola musí vadu naozaj chytiť, nie len prejsť na opravenom modeli.
+
+    Pôvodnú vadu — `S1` so súvrstvím veľkej aj malej strechy v jednej
+    skupine — nevie inv9 na základni ukázať, lebo tam skupina výskyty
+    ešte nemá a kontrola ju preskočí. Vada sa preto postaví: rodič, ktorý
+    si nechal vlastných členov, a dva výskyty zdieľajúce jeden prvok.
+    """
+    m = ifcopenshell.file(schema="IFC4X3_ADD2")
+    guid = __import__("ifcopenshell.guid", fromlist=["guid"]).new
+    a = m.create_entity("IfcSlab", GlobalId=guid(), Name="ST01.10.0001")
+    b = m.create_entity("IfcSlab", GlobalId=guid(), Name="ST01.20.0001")
+    rodic = m.create_entity("IfcGroup", GlobalId=guid(), Name="S1")
+    d1 = m.create_entity("IfcGroup", GlobalId=guid(), Name="S1.01")
+    d2 = m.create_entity("IfcGroup", GlobalId=guid(), Name="S1.02")
+    m.create_entity("IfcRelAggregates", GlobalId=guid(),
+                    RelatingObject=rodic, RelatedObjects=(d1, d2))
+    m.create_entity("IfcRelAssignsToGroup", GlobalId=guid(),
+                    RelatedObjects=(a, b), RelatingGroup=d1)
+    m.create_entity("IfcRelAssignsToGroup", GlobalId=guid(),
+                    RelatedObjects=(a,), RelatingGroup=d2)   # ← prekryv
+    m.create_entity("IfcRelAssignsToGroup", GlobalId=guid(),
+                    RelatedObjects=(a, b), RelatingGroup=rodic)  # ← členstvo na rodičovi
+
+    found = inv9_skladby_rozklad(m)
+    detaily = " | ".join(v.detail for v in found)
+    assert "vlastných členov" in detaily
+    assert "ST01.10.0001" in detaily and "'S1.01'" in detaily and "'S1.02'" in detaily
+    assert len(found) == 2
+
+
+@pytest.mark.skipif(SUBJECT == BASELINE, reason="vnorená zóna vzniká vo fáze 5c")
+def test_inv9_ignores_nested_zones(model):
+    """Vnorená `IfcZone` je tiež skupina v skupine, ale rozklad to nie je.
+
+    `Pronajmutelné` má 10 priestorov **plus** vnorenú zónu „Nájomné
+    priestory 3NP" s ďalšími 11 (fáza 5c, #Q). Keby sa rozsah invariantu
+    určoval tvarom vzťahu a nie menom skladby, nahlásil by tu prebytky
+    aj diery — a pritom je to legitímny model. Rozsah preto drží
+    `SKLADBA_PARENT` a táto kontrola to zafixuje.
+    """
+    zony = [z for z in model.by_type("IfcZone") if z.IsGroupedBy]
+    assert any(any(x.is_a("IfcZone") for x in rel.RelatedObjects)
+               for z in zony for rel in z.IsGroupedBy), "vnorená zóna z #Q chýba"
+    assert [v for v in inv9_skladby_rozklad(model) if v.entity == "IfcZone"] == []
 
 
 def test_two_level_codes_cover_csv():
