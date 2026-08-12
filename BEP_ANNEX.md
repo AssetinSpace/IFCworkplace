@@ -227,6 +227,62 @@ inak sa prvky rozsypú medzi dve podlažia. Stráži to invariant 8.
 
 ---
 
+### 2.8 Skladby dvojúrovňovo — predpis a výskyt
+
+Skladba sa v modeli vyskytuje viackrát. Vegetačná strecha `S1` je aj na
+veľkej streche nad 4NP, aj na malej nad 5NP; ETICS `S4` je na dvoch
+výlezoch. Jedna skupina na skladbu by tieto výskyty zlievala, takže
+`S1`–`S9` sú **predpisy** a `S1.01`, `S3.04`… sú ich **výskyty**.
+
+**Toto nie je type a occurrence.** `IfcRelDefinesByType` by formálne
+prešlo — `IfcGroup` je `IfcObject` a `IfcTypeObject` nie je `ABSTRACT` —
+ale typ v IFC je o zdieľaných psetoch a tvare medzi **produktmi**
+a jediné podtypy `IfcTypeObject` sú `IfcTypeProduct`, `IfcTypeProcess`
+a `IfcTypeResource`. Typ skupiny v schéme neexistuje. `S1` a `S1.01` sú
+celok a časť.
+
+**Väzba je `IfcRelAggregates`.** Schéma to pripúšťa bez výhrad —
+`RelatingObject` aj `RelatedObjects` sú `IfcObjectDefinition`, jediné
+pravidlo je `NoSelfReference` a informal propositions žiadne. Pre systémy
+je to dokonca odporúčaný vzor (`IfcBuiltSystem`: *„inherits
+IsDecomposedBy pointing to IfcRelAggregates. It provides the hierarchy
+between the separate (partial) building systems"*). `Decomposes : SET
+[0:1]` navyše schémou vynúti, že výskyt patrí práve jednej skladbe.
+
+**Odchýlka, ktorú musí preberajúca strana vedieť: členstvo je len na
+výskytoch.** `S1.IsGroupedBy` je **prázdne**; prvky nesú `S1.01`
+a `S1.02`. Prehliadač, ktorý agregáciu nerozbaľuje, ukáže predpis ako
+prázdnu skupinu. Je to zámer — pri ponechaní členov aj na predpise by
+sčítanie prvkov naprieč výpisom každý prvok zarátalo dvakrát. Cesta
+k prvkom vedie cez `IsDecomposedBy → RelatedObjects → IsGroupedBy`.
+
+**Výskyty sú partíciou predpisu**, garantovanou invariantom 9: predpis
+nemá vlastných členov, výskyty sa neprekrývajú a každý má aspoň jeden
+prvok. **Medzi** skladbami prekryv naopak je a má byť — 26 izolačných
+dosiek patrí do `S1` aj `S2`, lebo kačírkový pás je okraj tej istej
+strešnej plochy, pod ktorou je vegetácia.
+
+Nosičom výskytu je koreň agregácie kotviaceho prvku, inak prvok sám;
+výskyt je daný jeho podlažím a čísluje sa podľa `Elevation`.
+
+| predpis | výskytov | nosiče |
+|---|--:|---|
+| `S1` vegetačná strecha | 2 | `IfcRoof ST01.0001` 4NP (38 prvkov), `ST01.0002` 5NP (7) |
+| `S2` kačírková strecha | 2 | tie isté dve strechy (48 a 5) |
+| `S3` doska a podlaha | 4 | 1NP (32), 2NP (9), 3NP (9), 4NP (4) |
+| `S4` ETICS plocha výlezu | 2 | steny 4NP (4), steny 5NP (4) |
+| `S5` ETICS sokol výlezu | 1 | štyri steny `SN02.02` 4NP (8) |
+| `S6` podlaha a strop kancelárií | 2 | `PD03.30.01` 2NP (8), `PD03.30.02` 3NP (9) |
+| `S8` ETICS odpad. hospodárstvo | 1 | stena `SN05.01.0005` 1NP (2) |
+| `S9` ETICS odpad. hospodárstvo | 1 | tri steny `SN05.01` 1NP (6) |
+
+Spolu 8 predpisov, 15 výskytov, 193 členstiev. Podrobne `AUDIT.md` §43.
+
+`S3` má výskyty na 2NP–4NP, hoci sa volá „…v 1NP" — to je otvorená
+položka registra `#BE`, nie chyba rozkladu.
+
+---
+
 ## 3. Rozhodnutia o triede a type, ktoré nemá excel
 
 SNIM excel `MOC_BEP_05` neexistuje, takže autoritou je dokumentácia
@@ -293,8 +349,14 @@ prvku, čo `IfcMaterialLayerSetUsage` nedovoľuje.
 **Skladby ako `IfcGroup`.** Kódy S1–S9 nesie `IfcGroup` +
 `IfcRelAssignsToGroup`, nie `IfcRelAssociatesDocument` ani
 `IfcClassification`. Výpis `D.1.1.09` má **osem** skladieb, S7 v ňom nie
-je. Založených päť (`S3`, `S4`, `S5`, `S8`, `S9`) — ostatné zdieľajú
-kódy s inými skladbami a priradenie podľa kódu by bolo nesprávne.
+je, a **všetkých osem je založených**. Päť (`S3`, `S4`, `S5`, `S8`, `S9`)
+stojí na jednoznačných kódoch a na agregácii krytiny do substrátu;
+`S1`, `S2` a `S6` zdieľajú kódy `ST01.10`, `SD02` a `PH01` s inými
+skladbami, takže ich členstvo je priradené z geometrie — prvok patrí do
+skladby, ak pôdorysne prekrýva jej značkovú vrstvu a leží v jej súvrství.
+Podrobne `AUDIT.md` §28.
+
+Ich vnútorná stavba je dvojúrovňová — viď §2.8.
 
 ---
 
@@ -360,5 +422,8 @@ Nájdené pri práci; model ich nekopíruje, ale ani neopravuje ticho.
 | žiadne osirelé entity | invariant 4 = 0 |
 | kontajnment je exkluzívny | invariant 7 = 0 |
 | plný SNIM kód je jedinečný | invariant 6 = 0 |
+| rozklad skladieb je úplný a disjunktný | invariant 9 = 0. 8 predpisov, 15 výskytov, 193 členstiev; zjednotenie výskytov sa rovná pôvodnému členstvu predpisu pri všetkých ôsmich |
 
 Brána po každej fáze proti výstupu predošlej: **zlyhalo 0 zo 7** vo fázach 11, 12, 13 aj 14. `pytest` 8 z 8 (deviaty je pomalý test geometrie, beží na merge).
+
+Od fázy 19 má brána osem invariantov a od fázy 21 deväť. Na `ASR_v28.ifc` proti `ASR_v27.ifc`: **zlyhalo 0 z 9**.

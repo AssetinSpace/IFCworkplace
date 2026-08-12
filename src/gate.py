@@ -23,6 +23,7 @@ from tests.test_invariants import (  # noqa: E402
     inv6_uniqueness,
     inv7_containment_vs_aggregation,
     inv8_spatial_fit,
+    inv9_skladby_rozklad,
 )
 import ifcopenshell  # noqa: E402
 
@@ -35,6 +36,7 @@ NAMES = {
     6: "jednoznačnosť",
     7: "kontajnment vs agregácia",
     8: "priestorové zaradenie",
+    9: "rozklad skladieb",
 }
 
 
@@ -99,6 +101,8 @@ def main() -> int:
         results[7] = inv7_containment_vs_aggregation(model, allow)
     if 8 not in skip:
         results[8] = inv8_spatial_fit(args.subject, allow)
+    if 9 not in skip:
+        results[9] = inv9_skladby_rozklad(model, allow)
 
     failed = 0
     for n in sorted(results):

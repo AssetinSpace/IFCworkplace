@@ -14,7 +14,7 @@ on:
 
 jobs:
   rychle:
-    name: rýchle invarianty (3, 5, 6, 7 a jednotkové)
+    name: rýchle invarianty (3, 5, 6, 7, 9 a jednotkové)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -54,6 +54,6 @@ jobs:
         # Referenciou je vstup poslednej fázy — tak sa brána púšťa pri
         # každom kroku pipeline a tak sú aj písané allowlisty.
         run: |
-          python src/gate.py out/ASR_v27.ifc \
-            --reference out/ASR_v26.ifc \
-            --allow-file out/ASR_v27.ifc.allowlist.json
+          python src/gate.py out/ASR_v28.ifc \
+            --reference out/ASR_v27.ifc \
+            --allow-file out/ASR_v28.ifc.allowlist.json
