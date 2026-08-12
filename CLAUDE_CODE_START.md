@@ -22,9 +22,10 @@ ASR.ifc
  38    fáza 19  #BC                → ASR_v26.ifc
  39    fáza 20  #BD                → ASR_v27.ifc
  40    fáza 21  výskyty skladieb   → ASR_v28.ifc
+ 41    fáza 22  #BE                → ASR_v29.ifc
 ```
 
-Aktuálny výstup je **`out/ASR_v28.ifc`**.
+Aktuálny výstup je **`out/ASR_v29.ifc`**.
 
 ## Štruktúra repozitára
 
