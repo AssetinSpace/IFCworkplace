@@ -1,0 +1,8386 @@
+{
+ "subject": "/home/user/IFCworkplace/out/ASR_v25.ifc",
+ "docs": "/workspace/bs-output/IFC/RELEASE/IFC4_3",
+ "sablon": 760,
+ "dvojic": 9872,
+ "psd_vs_lexical_nezhoda": 0,
+ "porusenia": [
+  {
+   "bod": 2,
+   "pset": "Qto_SpaceBaseQuantities",
+   "owner_gid": "0wmnLQi6117RTBpHQh7S5a",
+   "owner_class": "IfcSpatialZone",
+   "owner_name": "PZ01",
+   "applicable": [
+    "IfcSpace",
+    "IfcSpaceType"
+   ],
+   "members": [
+    "Height",
+    "GrossPerimeter",
+    "GrossFloorArea",
+    "NetFloorArea",
+    "GrossCeilingArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SpaceBaseQuantities",
+   "owner_gid": "2ALMAHJDP3IewpgZC3cIZB",
+   "owner_class": "IfcSpatialZone",
+   "owner_name": "PZ02",
+   "applicable": [
+    "IfcSpace",
+    "IfcSpaceType"
+   ],
+   "members": [
+    "Height",
+    "GrossPerimeter",
+    "GrossFloorArea",
+    "NetFloorArea",
+    "GrossCeilingArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SpaceBaseQuantities",
+   "owner_gid": "2ALMAHJDP3IewpgZC3cItA",
+   "owner_class": "IfcSpatialZone",
+   "owner_name": "PZ03",
+   "applicable": [
+    "IfcSpace",
+    "IfcSpaceType"
+   ],
+   "members": [
+    "Height",
+    "GrossPerimeter",
+    "GrossFloorArea",
+    "NetFloorArea",
+    "GrossCeilingArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SpaceBaseQuantities",
+   "owner_gid": "0dOJ62WRv3KB1WErSEj_dE",
+   "owner_class": "IfcSpatialZone",
+   "owner_name": "PZ04",
+   "applicable": [
+    "IfcSpace",
+    "IfcSpaceType"
+   ],
+   "members": [
+    "Height",
+    "GrossPerimeter",
+    "GrossFloorArea",
+    "NetFloorArea",
+    "GrossCeilingArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SpaceBaseQuantities",
+   "owner_gid": "0dOJ62WRv3KB1WErSEj_d0",
+   "owner_class": "IfcSpatialZone",
+   "owner_name": "PZ05",
+   "applicable": [
+    "IfcSpace",
+    "IfcSpaceType"
+   ],
+   "members": [
+    "Height",
+    "GrossPerimeter",
+    "GrossFloorArea",
+    "NetFloorArea",
+    "GrossCeilingArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SpaceBaseQuantities",
+   "owner_gid": "0dOJ62WRv3KB1WErSEj_d2",
+   "owner_class": "IfcSpatialZone",
+   "owner_name": "PZ06",
+   "applicable": [
+    "IfcSpace",
+    "IfcSpaceType"
+   ],
+   "members": [
+    "Height",
+    "GrossPerimeter",
+    "GrossFloorArea",
+    "NetFloorArea",
+    "GrossCeilingArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SpaceBaseQuantities",
+   "owner_gid": "0dOJ62WRv3KB1WErSEj_am",
+   "owner_class": "IfcSpatialZone",
+   "owner_name": "PZ07",
+   "applicable": [
+    "IfcSpace",
+    "IfcSpaceType"
+   ],
+   "members": [
+    "Height",
+    "GrossPerimeter",
+    "GrossFloorArea",
+    "NetFloorArea",
+    "GrossCeilingArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SpaceBaseQuantities",
+   "owner_gid": "0dOJ62WRv3KB1WErSEj_ao",
+   "owner_class": "IfcSpatialZone",
+   "owner_name": "PZ08",
+   "applicable": [
+    "IfcSpace",
+    "IfcSpaceType"
+   ],
+   "members": [
+    "Height",
+    "GrossPerimeter",
+    "GrossFloorArea",
+    "NetFloorArea",
+    "GrossCeilingArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SpaceBaseQuantities",
+   "owner_gid": "0dOJ62WRv3KB1WErSEj_Q2",
+   "owner_class": "IfcSpatialZone",
+   "owner_name": "PZ09",
+   "applicable": [
+    "IfcSpace",
+    "IfcSpaceType"
+   ],
+   "members": [
+    "Height",
+    "GrossPerimeter",
+    "GrossFloorArea",
+    "NetFloorArea",
+    "GrossCeilingArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SpaceBaseQuantities",
+   "owner_gid": "2qCePmuo99aRRjIX1VGSIo",
+   "owner_class": "IfcSpatialZone",
+   "owner_name": "PZ10",
+   "applicable": [
+    "IfcSpace",
+    "IfcSpaceType"
+   ],
+   "members": [
+    "Height",
+    "GrossPerimeter",
+    "GrossFloorArea",
+    "NetFloorArea",
+    "GrossCeilingArea"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0MJFXziqDE$gGyPWwro9fJ",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.04.0005",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0MJFXziqDE$gGyPWwro9fL",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.03.0003",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0MJFXziqDE$gGyPWwro9fK",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.02.0021",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0MJFXziqDE$gGyPWwro9fN",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.02.0015",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0MJFXziqDE$gGyPWwro9fO",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.05.0003",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0MJFXziqDE$gGyPWwro9fT",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.03.0001",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0MJFXziqDE$gGyPWwro9fV",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.05.0005",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0MJFXziqDE$gGyPWwro9f1",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.05.0001",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0MJFXziqDE$gGyPWwro9f0",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.04.0003",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0MJFXziqDE$gGyPWwro9fx",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.02.0023",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0MJFXziqDE$gGyPWwro9gJ",
+   "owner_class": "IfcWall",
+   "owner_name": "SN11.02.0007",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0MJFXziqDE$gGyPWwro9gR",
+   "owner_class": "IfcWall",
+   "owner_name": "SN11.02.0003",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0MJFXziqDE$gGyPWwro9qJ",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.01.0011",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0MJFXziqDE$gGyPWwro9qK",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.01.0003",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0MJFXziqDE$gGyPWwro9rG",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.01.0007",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0MJFXziqDE$gGyPWwro9tZ",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.02.0011",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0MJFXziqDE$gGyPWwro9tb",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.02.0015",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0MJFXziqDE$gGyPWwro9td",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.02.0019",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "35vC1QoBf6vAsMUpDg6l5P",
+   "owner_class": "IfcWall",
+   "owner_name": "SN05.01.0003",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "1S8wzmifPDk9BAYd4D1Vad",
+   "owner_class": "IfcWall",
+   "owner_name": "SN11.01.0002",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "3ldVap7qvFI8fMbeobNJ7S",
+   "owner_class": "IfcWall",
+   "owner_name": "SN11.01.0001",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0DbmKv6zrDPgCS4QKtmUvp",
+   "owner_class": "IfcWall",
+   "owner_name": "SN05.01.0001",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2meO4VEMX6zeduoKYmw8ab",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.02.0008",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "3KbvCHlxPANemcN2bON$gI",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.01.0008",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "3KbvCHlxPANemcN2bON$gL",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.01.0005",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "3KbvCHlxPANemcN2bON$gK",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.01.0001",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "3KbvCHlxPANemcN2bON$gN",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.01.0006",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "3TaT1PYLD4$uGdkqQBdiAj",
+   "owner_class": "IfcWall",
+   "owner_name": "SN05.01.0004",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "22p8xqsWHBphZbXYvmfB$O",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.02.0014",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "22p8xqsWHBphZbXYvmfB$P",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.02.0013",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "22p8xqsWHBphZbXYvmfB$M",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.02.0010",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "22p8xqsWHBphZbXYvmfB$J",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.01.0013",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0Eryr$ovXEeA3cFkDiZ0rF",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.02.0017",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0t3OSyCJT1lA6BOPskqrKA",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.02.0005",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0t3OSyCJT1lA6BOPskqrK9",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.02.0003",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0t3OSyCJT1lA6BOPskqqcG",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.02.0002",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0t3OSyCJT1lA6BOPskqqcV",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.02.0005",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0t3OSyCJT1lA6BOPskqqcT",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.02.0001",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0t3OSyCJT1lA6BOPskqqd_",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.01.0002",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0t3OSyCJT1lA6BOPskqqdz",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.01.0005",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0t3OSyCJT1lA6BOPskqqdw",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.01.0004",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0t3OSyCJT1lA6BOPskqqW6",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.01.0008",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0t3OSyCJT1lA6BOPskqqW3",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.01.0009",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "1neFXf7G52YxjQzuWj8jD2",
+   "owner_class": "IfcWall",
+   "owner_name": "SN05.01.0006",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "3Hkf$25L924A1Oqxpuwn4o",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.02.0007",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "3Hkf$25L924A1Oqxpuwn4q",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.02.0011",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "3Hkf$25L924A1Oqxpuwn4r",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.02.0012",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "3Hkf$25L924A1Oqxpuwn4s",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.02.0009",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "3Hkf$25L924A1Oqxpuwn4h",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.01.0012",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "32FZRaXBnESwvWlVf9RjWw",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.02.0012",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "32FZRaXBnESwvWlVf9RjWy",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.02.0016",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "32FZRaXBnESwvWlVf9RjW0",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.02.0021",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "32FZRaXBnESwvWlVf9RjW4",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.02.0006",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "32FZRaXBnESwvWlVf9RjW7",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.02.0004",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2FpefD9I5Buv_zm_bVZ4fu",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.02.0004",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2FpefD9I5Buv_zm_bVZ4l7",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.02.0003",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2_5TX$Sf52LeOWRms56ede",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.03.0003",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2Mn51MwEP7nOwaGy9ujzwo",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.04.0006",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2Mn51MwEP7nOwaGy9ujzwq",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.03.0004",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2Mn51MwEP7nOwaGy9ujzwr",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.02.0022",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2Mn51MwEP7nOwaGy9ujzws",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.02.0016",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2Mn51MwEP7nOwaGy9ujzwv",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.05.0004",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2Mn51MwEP7nOwaGy9ujzwy",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.03.0002",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2Mn51MwEP7nOwaGy9ujzw_",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.05.0006",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2Mn51MwEP7nOwaGy9ujzx0",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.05.0002",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2Mn51MwEP7nOwaGy9ujzx1",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.04.0004",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2Mn51MwEP7nOwaGy9ujzxQ",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.02.0024",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2Mn51MwEP7nOwaGy9ujzxo",
+   "owner_class": "IfcWall",
+   "owner_name": "SN11.02.0008",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2Mn51MwEP7nOwaGy9ujzxv",
+   "owner_class": "IfcWall",
+   "owner_name": "SN11.02.0004",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2Mn51MwEP7nOwaGy9ujzbT",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.01.0022",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2Mn51MwEP7nOwaGy9ujzbW",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.01.0016",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2Mn51MwEP7nOwaGy9ujzcO",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.01.0021",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2Mn51MwEP7nOwaGy9ujzcy",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.02.0029",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2Mn51MwEP7nOwaGy9ujzc_",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.02.0031",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2Mn51MwEP7nOwaGy9ujzd1",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.02.0033",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2Mn51MwEP7nOwaGy9ujzd5",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.02.0026",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2Mn51MwEP7nOwaGy9ujzd6",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.02.0025",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2f57PX7Sb6Ixo_GZjpSanV",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.02.0035",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2f57PX7Sb6Ixo_GZjpSanS",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.02.0041",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2f57PX7Sb6Ixo_GZjpSanT",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.02.0046",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2f57PX7Sb6Ixo_GZjpSanI",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.02.0043",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2f57PX7Sb6Ixo_GZjpSanH",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.02.0045",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2f57PX7Sb6Ixo_GZjpSanL",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.02.0037",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2f57PX7Sb6Ixo_GZjpSanA",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.02.0036",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "31fpd5aTDE_w3pAyt0$4QK",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.02.0006",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "3HLLXsMmL7cR8D4mWmuOpv",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.01.0014",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "1gekXVd_D0TQXYbHAq331X",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.01.0007",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "1gekXVd_D0TQXYbHAq333X",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.01.0003",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "1gekXVd_D0TQXYbHAq30_r",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.01.0002",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "258zYNfmb5L9dAIdwvYdIX",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0001",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "258zYNfmb5L9dAIdwvYdIX",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0001",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "2kd0O_fPTC38i39RjSNjNe",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0013",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "2kd0O_fPTC38i39RjSNjNe",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0013",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "1Wxqqhltj9UA4ftoowOoro",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0018",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "1Wxqqhltj9UA4ftoowOoro",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0018",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "1frndDwmv7t9ZKdVSPQIKb",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0012",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "1frndDwmv7t9ZKdVSPQIKb",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0012",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "27FsD0RNz3E9DjpqV0RhmL",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0014",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "IsExternal",
+    "PitchAngle"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "27FsD0RNz3E9DjpqV0RhmL",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0014",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "27FsD0RNz3E9DjpqV0RhmL",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0014",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "27FsD0RNz3E9DjpqV0RhmL",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0014",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "27FsD0RNz3E9DjpqN0Rhsb",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0020",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "27FsD0RNz3E9DjpqN0Rhsb",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0020",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "1PcDKhasX3wPVgDuJXqagg",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0015",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "IsExternal",
+    "PitchAngle"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "1PcDKhasX3wPVgDuJXqagg",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0015",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "1PcDKhasX3wPVgDuJXqagg",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0015",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "1PcDKhasX3wPVgDuJXqagg",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0015",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "1PcDKhasX3wPVgDuRXqaJe",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0021",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "1PcDKhasX3wPVgDuRXqaJe",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0021",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "1OmZiHFSbC1f1YAM0DnqtL",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0015",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "PitchAngle",
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "1OmZiHFSbC1f1YAM0DnqtL",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0015",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "1OmZiHFSbC1f1YAM0DnqtL",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0015",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "1OmZiHFSbC1f1YAM0DnqtL",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0015",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "1OmZiHFSbC1f1YAM8Dnqqg",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0010",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "1OmZiHFSbC1f1YAM8Dnqqg",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0010",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "1OmZiHFSbC1f1YAM8Dnqqu",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0005",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "1OmZiHFSbC1f1YAM8Dnqqu",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0005",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "1frndDwmv7t9ZKdVKPQJUE",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0004",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "IsExternal",
+    "PitchAngle"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "1frndDwmv7t9ZKdVKPQJUE",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0004",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "1frndDwmv7t9ZKdVKPQJUE",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0004",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "1frndDwmv7t9ZKdVKPQJUE",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0004",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "1frndDwmv7t9ZKdVKPQJV$",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0003",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "IsExternal",
+    "PitchAngle"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "1frndDwmv7t9ZKdVKPQJV$",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0003",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "1frndDwmv7t9ZKdVKPQJV$",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0003",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "1frndDwmv7t9ZKdVKPQJV$",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0003",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "1OmZiHFSbC1f1YAM8Dnqrf",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0004",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "1OmZiHFSbC1f1YAM8Dnqrf",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0004",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "1frndDwmv7t9ZKdVKPQJVU",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0001",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "IsExternal",
+    "PitchAngle"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "1frndDwmv7t9ZKdVKPQJVU",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0001",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "1frndDwmv7t9ZKdVKPQJVU",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0001",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "1frndDwmv7t9ZKdVKPQJVU",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0001",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "1OmZiHFSbC1f1YAM8Dnqrr",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0008",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "1OmZiHFSbC1f1YAM8Dnqrr",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0008",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "1RcJHcjx5DvAtuV3kpAt53",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0011",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "1RcJHcjx5DvAtuV3kpAt53",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0011",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "1RcJHcjx5DvAtuV3kpAt5x",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0007",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "1RcJHcjx5DvAtuV3kpAt5x",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0007",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "1frndDwmv7t9ZKdVSPQJHQ",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0005",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "1frndDwmv7t9ZKdVSPQJHQ",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0005",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "1frndDwmv7t9ZKdVSPQJH3",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0006",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "1frndDwmv7t9ZKdVSPQJH3",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0006",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "1RcJHcjx5DvAtuV3kpAt5a",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0006",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "1RcJHcjx5DvAtuV3kpAt5a",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0006",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "1frndDwmv7t9ZKdVKPQJIs",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0002",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "IsExternal",
+    "PitchAngle"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "1frndDwmv7t9ZKdVKPQJIs",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0002",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "1frndDwmv7t9ZKdVKPQJIs",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0002",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "1frndDwmv7t9ZKdVKPQJIs",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0002",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "1RcJHcjx5DvAtuV3cpAt6N",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0009",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "PitchAngle",
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "1RcJHcjx5DvAtuV3cpAt6N",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0009",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "1RcJHcjx5DvAtuV3cpAt6N",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0009",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "1RcJHcjx5DvAtuV3cpAt6N",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0009",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "1frndDwmv7t9ZKdVSPQGji",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0002",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "1frndDwmv7t9ZKdVSPQGji",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0002",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "1frndDwmv7t9ZKdVSPQGkh",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0003",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "1frndDwmv7t9ZKdVSPQGkh",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0003",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "3m3ZicgtX4shel7DALaKK4",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0014",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "3m3ZicgtX4shel7DALaKK4",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0014",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "3m3ZicgtX4shel7DALaKKF",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0017",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "3m3ZicgtX4shel7DALaKKF",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0017",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "3m3ZicgtX4shel7DALaKLt",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0013",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "3m3ZicgtX4shel7DALaKLt",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0013",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "3m3ZicgtX4shel7DALaKL$",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0011",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "3m3ZicgtX4shel7DALaKL$",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0011",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "3m3ZicgtX4shel7DALaKLa",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0019",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "3m3ZicgtX4shel7DALaKLa",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0019",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "3m3ZicgtX4shel7D2LaKLj",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0016",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "IsExternal",
+    "PitchAngle"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "3m3ZicgtX4shel7D2LaKLj",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0016",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "3m3ZicgtX4shel7D2LaKLj",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0016",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "3m3ZicgtX4shel7D2LaKLj",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0016",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "3m3ZicgtX4shel7D2LaKLL",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0016",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "PitchAngle",
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "3m3ZicgtX4shel7D2LaKLL",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0016",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "3m3ZicgtX4shel7D2LaKLL",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0016",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "3m3ZicgtX4shel7D2LaKLL",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0016",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "3m3ZicgtX4shel7DALaKMI",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0022",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "3m3ZicgtX4shel7DALaKMI",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0022",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "1ZNwOyJrDFKOrxk452ZkMN",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0007",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "1ZNwOyJrDFKOrxk452ZkMN",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0007",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "1ZNwOyJrDFKOrxk452ZkNs",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0010",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "1ZNwOyJrDFKOrxk452ZkNs",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0010",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "1ZNwOyJrDFKOrxk4D2ZkKw",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0008",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "IsExternal",
+    "PitchAngle"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "1ZNwOyJrDFKOrxk4D2ZkKw",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0008",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "1ZNwOyJrDFKOrxk4D2ZkKw",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0008",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "1ZNwOyJrDFKOrxk4D2ZkKw",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0008",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "2V8L6fXe15Wgsbv$EVOWCQ",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0012",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "2V8L6fXe15Wgsbv$EVOWCQ",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0012",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "1UHozpWSfB79FHQ8tFj1Ek",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0014",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "1UHozpWSfB79FHQ8tFj1Ek",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0014",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "1UHozpWSfB79FHQ8tFj10s",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0010",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "1UHozpWSfB79FHQ8tFj10s",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0010",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "2jSJAySMHArhKvyDqhpXbY",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0013",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "IsExternal",
+    "PitchAngle"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "2jSJAySMHArhKvyDqhpXbY",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0013",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "2jSJAySMHArhKvyDqhpXbY",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0013",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "2jSJAySMHArhKvyDqhpXbY",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0013",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "3hJgLiY$z1ZO4MHhJurDf2",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0015",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "IsExternal",
+    "PitchAngle"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "3hJgLiY$z1ZO4MHhJurDf2",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0015",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "3hJgLiY$z1ZO4MHhJurDf2",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0015",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "3hJgLiY$z1ZO4MHhJurDf2",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0015",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "3hJgLiY$z1ZO4MHhJurDlj",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0011",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "IsExternal",
+    "PitchAngle"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "3hJgLiY$z1ZO4MHhJurDlj",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0011",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "3hJgLiY$z1ZO4MHhJurDlj",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0011",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "3hJgLiY$z1ZO4MHhJurDlj",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0011",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "2FCn0COevCWQXY93EXKeVa",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0020",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "PitchAngle",
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "2FCn0COevCWQXY93EXKeVa",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0020",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "2FCn0COevCWQXY93EXKeVa",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0020",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "2FCn0COevCWQXY93EXKeVa",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0020",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "0JjfuOr65BdAFloT9BCU2Q",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0006",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "0JjfuOr65BdAFloT9BCU2Q",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0006",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "0JjfuOr65BdAFloT1BCU1h",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0019",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "PitchAngle",
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "0JjfuOr65BdAFloT1BCU1h",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0019",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "0JjfuOr65BdAFloT1BCU1h",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0019",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "0JjfuOr65BdAFloT1BCU1h",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0019",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "0JjfuOr65BdAFloT9BCU1S",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0005",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "0JjfuOr65BdAFloT9BCU1S",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0005",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "3DqK5w90f5guMCohG9HNDv",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0021",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "IsExternal",
+    "PitchAngle"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "3DqK5w90f5guMCohG9HNDv",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0021",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "3DqK5w90f5guMCohG9HNDv",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0021",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "3DqK5w90f5guMCohG9HNDv",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0021",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "1hI6vlqq1D3fFFmGJRAtZx",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0022",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "IsExternal",
+    "PitchAngle"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "1hI6vlqq1D3fFFmGJRAtZx",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0022",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "1hI6vlqq1D3fFFmGJRAtZx",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0022",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "1hI6vlqq1D3fFFmGJRAtZx",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0022",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "32Y8_6RKT3BR3aSJPce3vu",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0024",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "IsExternal",
+    "PitchAngle"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "32Y8_6RKT3BR3aSJPce3vu",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0024",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "32Y8_6RKT3BR3aSJPce3vu",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0024",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "32Y8_6RKT3BR3aSJPce3vu",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0024",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "32Y8_6RKT3BR3aSJPce3vB",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0023",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "IsExternal",
+    "PitchAngle"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "32Y8_6RKT3BR3aSJPce3vB",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0023",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "32Y8_6RKT3BR3aSJPce3vB",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0023",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "32Y8_6RKT3BR3aSJPce3vB",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0023",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "32Y8_6RKT3BR3aSJPce3tz",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0001",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "IsExternal",
+    "PitchAngle"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "32Y8_6RKT3BR3aSJPce3tz",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0001",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "32Y8_6RKT3BR3aSJPce3tz",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0001",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "32Y8_6RKT3BR3aSJPce3tz",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0001",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "32Y8_6RKT3BR3aSJPce3tm",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0002",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "IsExternal",
+    "PitchAngle"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "32Y8_6RKT3BR3aSJPce3tm",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0002",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "32Y8_6RKT3BR3aSJPce3tm",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0002",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "32Y8_6RKT3BR3aSJPce3tm",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0002",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "32Y8_6RKT3BR3aSJPce3t3",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0004",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "IsExternal",
+    "PitchAngle"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "32Y8_6RKT3BR3aSJPce3t3",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0004",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "32Y8_6RKT3BR3aSJPce3t3",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0004",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "32Y8_6RKT3BR3aSJPce3t3",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0004",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "32Y8_6RKT3BR3aSJPce3tR",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0003",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "IsExternal",
+    "PitchAngle"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "32Y8_6RKT3BR3aSJPce3tR",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0003",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "32Y8_6RKT3BR3aSJPce3tR",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0003",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "32Y8_6RKT3BR3aSJPce3tR",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0003",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "0SJKeQBtbFL8mRR$AWeHi3",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0012",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "0SJKeQBtbFL8mRR$AWeHi3",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0012",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "250qYpnUb5Ru1U74GXTZEe",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.30.0002",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "250qYpnUb5Ru1U74GXTZEe",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.30.0002",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "2fXLrYShbEjOQQSaGD7Dan",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0008",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "2fXLrYShbEjOQQSaGD7Dan",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0008",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "0WFSbYdGvC1ujSvaR3sO1S",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0009",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "IsExternal",
+    "PitchAngle"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "0WFSbYdGvC1ujSvaR3sO1S",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0009",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "0WFSbYdGvC1ujSvaR3sO1S",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0009",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "0WFSbYdGvC1ujSvaR3sO1S",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0009",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "0WFSbYdGvC1ujSvaJ3sO1I",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0016",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "0WFSbYdGvC1ujSvaJ3sO1I",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0016",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "0WFSbYdGvC1ujSvaR3sOFd",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0007",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "IsExternal",
+    "PitchAngle"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "0WFSbYdGvC1ujSvaR3sOFd",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0007",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "0WFSbYdGvC1ujSvaR3sOFd",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0007",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "0WFSbYdGvC1ujSvaR3sOFd",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0007",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "3lOli1RET1hfFfUMQQsyjF",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0009",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "3lOli1RET1hfFfUMQQsyjF",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0009",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "3lOli1RET1hfFfUMIQsyt_",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0018",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "IsExternal",
+    "PitchAngle"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "3lOli1RET1hfFfUMIQsyt_",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0018",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "3lOli1RET1hfFfUMIQsyt_",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0018",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "3lOli1RET1hfFfUMIQsyt_",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0018",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "3lOli1RET1hfFfUMQQsyu9",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0017",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "3lOli1RET1hfFfUMQQsyu9",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0017",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "0G1IuLMkj4qQqVAsFkrgAl",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.30.0004",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "0G1IuLMkj4qQqVAsFkrgAl",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.30.0004",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "0G1IuLMkj4qQqVAsFkrg5H",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.30.0001",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "0G1IuLMkj4qQqVAsFkrg5H",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.30.0001",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "0G1IuLMkj4qQqVAsFkrg6o",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.30.0003",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "0G1IuLMkj4qQqVAsFkrg6o",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.30.0003",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "0G1IuLMkj4qQqVAs7krg7e",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.31.0008",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "IsExternal",
+    "PitchAngle"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "0G1IuLMkj4qQqVAs7krg7e",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.31.0008",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "0G1IuLMkj4qQqVAs7krg7e",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.31.0008",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "0G1IuLMkj4qQqVAs7krg7e",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.31.0008",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "0G1IuLMkj4qQqVAs7krg0v",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.31.0001",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "IsExternal",
+    "PitchAngle"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "0G1IuLMkj4qQqVAs7krg0v",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.31.0001",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "0G1IuLMkj4qQqVAs7krg0v",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.31.0001",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "0G1IuLMkj4qQqVAs7krg0v",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.31.0001",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "0G1IuLMkj4qQqVAs7krg1_",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.31.0006",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "IsExternal",
+    "PitchAngle"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "0G1IuLMkj4qQqVAs7krg1_",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.31.0006",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "0G1IuLMkj4qQqVAs7krg1_",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.31.0006",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "0G1IuLMkj4qQqVAs7krg1_",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.31.0006",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "0Mg1F$kOr1MhBlok$dxCpE",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.31.0003",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "IsExternal",
+    "PitchAngle"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "0Mg1F$kOr1MhBlok$dxCpE",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.31.0003",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "0Mg1F$kOr1MhBlok$dxCpE",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.31.0003",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "0Mg1F$kOr1MhBlok$dxCpE",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.31.0003",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "3rtOz$7E98YOxVt4kZmF_S",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.30.0008",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "3rtOz$7E98YOxVt4kZmF_S",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.30.0008",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "3rtOz$7E98YOxVt4cZmF$b",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.31.0007",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "IsExternal",
+    "PitchAngle"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "3rtOz$7E98YOxVt4cZmF$b",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.31.0007",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "3rtOz$7E98YOxVt4cZmF$b",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.31.0007",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "3rtOz$7E98YOxVt4cZmF$b",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.31.0007",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "27rw_KeDn0OAssxjTFxlMW",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.30.0005",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "27rw_KeDn0OAssxjTFxlMW",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.30.0005",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "27rw_KeDn0OAssxjLFxlMj",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.31.0002",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "IsExternal",
+    "PitchAngle"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "27rw_KeDn0OAssxjLFxlMj",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.31.0002",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "27rw_KeDn0OAssxjLFxlMj",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.31.0002",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "27rw_KeDn0OAssxjLFxlMj",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.31.0002",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "0zjNw2VVb1FuKKv14glPnA",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.30.0006",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "0zjNw2VVb1FuKKv14glPnA",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.30.0006",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "0zjNw2VVb1FuKKv14glPpR",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.31.0004",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "0zjNw2VVb1FuKKv14glPpR",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.31.0004",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "1u$zYoaKXB7xV9iSTQJI7u",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.01.0004",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "1u$zYoaKXB7xV9iSTQJI7d",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.30.0007",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "1u$zYoaKXB7xV9iSTQJI7d",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.30.0007",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "1u$zYoaKXB7xV9iSLQJI7k",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.31.0005",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "IsExternal",
+    "PitchAngle"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "1u$zYoaKXB7xV9iSLQJI7k",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.31.0005",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "1u$zYoaKXB7xV9iSLQJI7k",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.31.0005",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "1u$zYoaKXB7xV9iSLQJI7k",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.31.0005",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "06SBIZ9Nf59Pnfp$uNKt0m",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0025",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "PitchAngle",
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "06SBIZ9Nf59Pnfp$uNKt0m",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0025",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "06SBIZ9Nf59Pnfp$uNKt0m",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0025",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "06SBIZ9Nf59Pnfp$uNKt0m",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0025",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "06SBIZ9Nf59Pnfp$mNKt2d",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0023",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "06SBIZ9Nf59Pnfp$mNKt2d",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0023",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "06SBIZ9Nf59Pnfp$mNKtVA",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0024",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "06SBIZ9Nf59Pnfp$mNKtVA",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.10.0024",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "06SBIZ9Nf59Pnfp$mNKtin",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0017",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "06SBIZ9Nf59Pnfp$mNKtin",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0017",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "06SBIZ9Nf59Pnfp$mNKtbd",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0018",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_RoofBaseQuantities",
+   "owner_gid": "06SBIZ9Nf59Pnfp$mNKtbd",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.20.0018",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "GrossArea",
+    "NetArea",
+    "ProjectedArea"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "06SBIZ9Nf59Pnfp$uNKtn1",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0025",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "PitchAngle",
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "06SBIZ9Nf59Pnfp$uNKtn1",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0025",
+   "prop": "NetArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_BodyGeometryValidation",
+   "owner_gid": "06SBIZ9Nf59Pnfp$uNKtn1",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0025",
+   "prop": "GrossArea",
+   "sablona": [
+    "GrossSurfaceArea",
+    "GrossVolume",
+    "NetSurfaceArea",
+    "NetVolume",
+    "SurfaceGenusAfterFeatures",
+    "SurfaceGenusBeforeFeatures"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_SlabBaseQuantities",
+   "owner_gid": "06SBIZ9Nf59Pnfp$uNKtn1",
+   "owner_class": "IfcCovering",
+   "owner_name": "ST01.21.0025",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "NetArea",
+    "NetVolume",
+    "GrossArea",
+    "GrossVolume",
+    "Length",
+    "Perimeter"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "3xMu$GSEb6Hx0FsAW8Zj6z",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.03.0013",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "3xMu$GSEb6Hx0FsAW8ZjAi",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.03.0019",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_StairCommon",
+   "owner_gid": "10tYzorxDEYx4n6tQjT5iE",
+   "owner_class": "IfcFooting",
+   "owner_name": "ZD02.05.0001",
+   "applicable": [
+    "IfcStair",
+    "IfcStairType"
+   ],
+   "members": [
+    "IsExternal"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0Ah_rJY9fDmfBwNrU7T88L",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.03.0011",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "3OEv9u3bTCu9kWji6SePT1",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.03.0004",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "1VhhZhh692gO3XtxZbjiDl",
+   "owner_class": "IfcSlab",
+   "owner_name": "ZD02.02.0011",
+   "applicable": [
+    "IfcWall",
+    "IfcWallType"
+   ],
+   "members": [
+    "Height",
+    "Length",
+    "Width",
+    "GrossFootprintArea",
+    "GrossVolume",
+    "GrossSideArea",
+    "NetSideArea",
+    "NetVolume"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "1VhhZhh692gO3XtxZbjiDl",
+   "owner_class": "IfcSlab",
+   "owner_name": "ZD02.02.0011",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "1VhhZhh692gO3XtxZbjiDe",
+   "owner_class": "IfcSlab",
+   "owner_name": "ZD02.02.0008",
+   "applicable": [
+    "IfcWall",
+    "IfcWallType"
+   ],
+   "members": [
+    "Height",
+    "Length",
+    "Width",
+    "GrossFootprintArea",
+    "GrossVolume",
+    "GrossSideArea",
+    "NetSideArea",
+    "NetVolume"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "1VhhZhh692gO3XtxZbjiDe",
+   "owner_class": "IfcSlab",
+   "owner_name": "ZD02.02.0008",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "1VhhZhh692gO3XtxZbjiDf",
+   "owner_class": "IfcSlab",
+   "owner_name": "ZD02.02.0006",
+   "applicable": [
+    "IfcWall",
+    "IfcWallType"
+   ],
+   "members": [
+    "Height",
+    "Length",
+    "Width",
+    "GrossFootprintArea",
+    "GrossVolume",
+    "GrossSideArea",
+    "NetSideArea",
+    "NetVolume"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "1VhhZhh692gO3XtxZbjiDf",
+   "owner_class": "IfcSlab",
+   "owner_name": "ZD02.02.0006",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "1VhhZhh692gO3XtxZbjiDg",
+   "owner_class": "IfcSlab",
+   "owner_name": "ZD02.02.0010",
+   "applicable": [
+    "IfcWall",
+    "IfcWallType"
+   ],
+   "members": [
+    "Height",
+    "Length",
+    "Width",
+    "GrossFootprintArea",
+    "GrossVolume",
+    "GrossSideArea",
+    "NetSideArea",
+    "NetVolume"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "1VhhZhh692gO3XtxZbjiDg",
+   "owner_class": "IfcSlab",
+   "owner_name": "ZD02.02.0010",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "1IbHbUo0b1e9hRZtz_6lAF",
+   "owner_class": "IfcSlab",
+   "owner_name": "ZD02.02.0007",
+   "applicable": [
+    "IfcWall",
+    "IfcWallType"
+   ],
+   "members": [
+    "Height",
+    "Length",
+    "Width",
+    "GrossFootprintArea",
+    "GrossVolume",
+    "GrossSideArea",
+    "NetSideArea",
+    "NetVolume"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "1IbHbUo0b1e9hRZtz_6lAF",
+   "owner_class": "IfcSlab",
+   "owner_name": "ZD02.02.0007",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "1IbHbUo0b1e9hRZtz_6lAE",
+   "owner_class": "IfcSlab",
+   "owner_name": "ZD02.02.0002",
+   "applicable": [
+    "IfcWall",
+    "IfcWallType"
+   ],
+   "members": [
+    "Height",
+    "Length",
+    "Width",
+    "GrossFootprintArea",
+    "GrossVolume",
+    "GrossSideArea",
+    "NetSideArea",
+    "NetVolume"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "1IbHbUo0b1e9hRZtz_6lAE",
+   "owner_class": "IfcSlab",
+   "owner_name": "ZD02.02.0002",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "1IbHbUo0b1e9hRZtz_6lAD",
+   "owner_class": "IfcSlab",
+   "owner_name": "ZD02.02.0001",
+   "applicable": [
+    "IfcWall",
+    "IfcWallType"
+   ],
+   "members": [
+    "Height",
+    "Length",
+    "Width",
+    "GrossFootprintArea",
+    "GrossVolume",
+    "GrossSideArea",
+    "NetSideArea",
+    "NetVolume"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "1IbHbUo0b1e9hRZtz_6lAD",
+   "owner_class": "IfcSlab",
+   "owner_name": "ZD02.02.0001",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "1IbHbUo0b1e9hRZtz_6lAC",
+   "owner_class": "IfcSlab",
+   "owner_name": "ZD02.02.0004",
+   "applicable": [
+    "IfcWall",
+    "IfcWallType"
+   ],
+   "members": [
+    "Height",
+    "Length",
+    "Width",
+    "GrossFootprintArea",
+    "GrossVolume",
+    "GrossSideArea",
+    "NetSideArea",
+    "NetVolume"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "1IbHbUo0b1e9hRZtz_6lAC",
+   "owner_class": "IfcSlab",
+   "owner_name": "ZD02.02.0004",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0GpB4QM2n1TeiZmxJz_GyO",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.03.0005",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0GpB4QM2n1TeiZmxJz_GuR",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.03.0012",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0GpB4QM2n1TeiZmxJz_Gv3",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.03.0017",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2YD$4GtrDDUhf2mi2drQtn",
+   "owner_class": "IfcSlab",
+   "owner_name": "ZD02.02.0005",
+   "applicable": [
+    "IfcWall",
+    "IfcWallType"
+   ],
+   "members": [
+    "Height",
+    "Length",
+    "Width",
+    "GrossFootprintArea",
+    "GrossVolume",
+    "GrossSideArea",
+    "NetSideArea",
+    "NetVolume"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2YD$4GtrDDUhf2mi2drQtn",
+   "owner_class": "IfcSlab",
+   "owner_name": "ZD02.02.0005",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2z4d0TZ7vEtuxYxd$cjWDB",
+   "owner_class": "IfcWall",
+   "owner_name": "DZ02.0005",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2z4d0TZ7vEtuxYxd$cjWDA",
+   "owner_class": "IfcWall",
+   "owner_name": "DZ02.0002",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2z4d0TZ7vEtuxYxd$cjWD9",
+   "owner_class": "IfcWall",
+   "owner_name": "DZ02.0001",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2z4d0TZ7vEtuxYxd$cjWD8",
+   "owner_class": "IfcWall",
+   "owner_name": "DZ02.0003",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2z4d0TZ7vEtuxYxd$cjWEu",
+   "owner_class": "IfcWall",
+   "owner_name": "DZ02.0008",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2z4d0TZ7vEtuxYxd$cjWEt",
+   "owner_class": "IfcWall",
+   "owner_name": "DZ02.0006",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2z4d0TZ7vEtuxYxd$cjWEs",
+   "owner_class": "IfcWall",
+   "owner_name": "DZ02.0004",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2z4d0TZ7vEtuxYxd$cjWEr",
+   "owner_class": "IfcWall",
+   "owner_name": "DZ02.0007",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "3D8felQkv9kgV9AhQEWA_d",
+   "owner_class": "IfcCovering",
+   "owner_name": "IH01.01.0003",
+   "applicable": [
+    "IfcWall",
+    "IfcWallType"
+   ],
+   "members": [
+    "Height",
+    "Length",
+    "Width",
+    "GrossFootprintArea",
+    "GrossVolume",
+    "GrossSideArea",
+    "NetSideArea",
+    "NetVolume"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "3D8felQkv9kgV9AhQEWA_d",
+   "owner_class": "IfcCovering",
+   "owner_name": "IH01.01.0003",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "1oHB09vUPADfEQHLNUBYKb",
+   "owner_class": "IfcCovering",
+   "owner_name": "IH01.01.0004",
+   "applicable": [
+    "IfcWall",
+    "IfcWallType"
+   ],
+   "members": [
+    "Height",
+    "Length",
+    "Width",
+    "GrossFootprintArea",
+    "GrossVolume",
+    "GrossSideArea",
+    "NetSideArea",
+    "NetVolume"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "1oHB09vUPADfEQHLNUBYKb",
+   "owner_class": "IfcCovering",
+   "owner_name": "IH01.01.0004",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2jm4uP8qf14hLTqSXnzis1",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.02.0039",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "1R$sIiLMnDiOz$71ytuEk8",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.03.0007",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2VCwREEInA9QinSaXFMbK8",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.03.0006",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2VCwREEInA9QinSaXFMbMp",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.03.0002",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "2VCwREEInA9QinSaXFMbMu",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.03.0001",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "1NCax4g6n3SANjyVF8z8hj",
+   "owner_class": "IfcWall",
+   "owner_name": "SN07.02.0029",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0MjgW10f1ARRwHScncFUSa",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.03.0014",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0MjgW10f1ARRwHScncFUSb",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.03.0008",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "1qMd$vSvf3mwZSp0jsOiPf",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.03.0016",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "1qMd$vSvf3mwZSp0jsOiPe",
+   "owner_class": "IfcWall",
+   "owner_name": "SN02.03.0018",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "1wxRo1CcH90QMBI8LDDb0q",
+   "owner_class": "IfcCovering",
+   "owner_name": "IH01.01.0002",
+   "applicable": [
+    "IfcWall",
+    "IfcWallType"
+   ],
+   "members": [
+    "Height",
+    "Length",
+    "Width",
+    "GrossFootprintArea",
+    "GrossVolume",
+    "GrossSideArea",
+    "NetSideArea",
+    "NetVolume"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "1wxRo1CcH90QMBI8LDDb0q",
+   "owner_class": "IfcCovering",
+   "owner_name": "IH01.01.0002",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0lCJEfgv91qRPvHk05C77o",
+   "owner_class": "IfcCovering",
+   "owner_name": "IH01.01.0001",
+   "applicable": [
+    "IfcWall",
+    "IfcWallType"
+   ],
+   "members": [
+    "Height",
+    "Length",
+    "Width",
+    "GrossFootprintArea",
+    "GrossVolume",
+    "GrossSideArea",
+    "NetSideArea",
+    "NetVolume"
+   ]
+  },
+  {
+   "bod": 5,
+   "pset": "Qto_WallBaseQuantities",
+   "owner_gid": "0lCJEfgv91qRPvHk05C77o",
+   "owner_class": "IfcCovering",
+   "owner_name": "IH01.01.0001",
+   "prop": "GrossFootprintArea",
+   "sablona": [
+    "GrossFootPrintArea",
+    "GrossSideArea",
+    "GrossVolume",
+    "GrossWeight",
+    "Height",
+    "Length",
+    "NetFootPrintArea",
+    "NetSideArea",
+    "NetVolume",
+    "NetWeight",
+    "Width"
+   ]
+  },
+  {
+   "bod": 1,
+   "pset": "PEnum_AddressType",
+   "owner_gid": "3TZE_vYnr0o83lV2rwT6A3",
+   "owner_class": "IfcActor",
+   "owner_name": null,
+   "carrier": "IfcPropertySet"
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_ReinforcementBarPitchOfWall",
+   "owner_gid": "3czemO$MPBYxuzJj9BjB6v",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "FS01.10",
+   "applicable": [
+    "IfcWall",
+    "IfcWallType"
+   ],
+   "members": [
+    "Description"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_WallCommon",
+   "owner_gid": "3czemO$MPBYxuzJj9BjB6v",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "FS01.10",
+   "applicable": [
+    "IfcWall",
+    "IfcWallType"
+   ],
+   "members": [
+    "ThermalTransmittance"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "258zYNfmb5L9dAIdwvYdId",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "ST01.10b",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "ThermalTransmittance"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "258zYNfmb5L9dAIdwvYdCF",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "ST01.10a",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "ThermalTransmittance"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_ReinforcementBarPitchOfSlab",
+   "owner_gid": "258zYNfmb5L9dAIdwvYdCF",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "ST01.10a",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "Description"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "258zYNfmb5L9dAIdwvYdCF",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "ST01.10a",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "ThermalTransmittance"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "3k1oPSwoP1cwpCvTO1WuKD",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "ST01.20",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "ThermalTransmittance"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_ReinforcementBarPitchOfSlab",
+   "owner_gid": "3k1oPSwoP1cwpCvTO1WuKD",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "ST01.20",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "Description"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "3k1oPSwoP1cwpCvTO1WuKD",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "ST01.20",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "ThermalTransmittance"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_WallCommon",
+   "owner_gid": "3EZo1Bomn0OvbcpQ$Gv0IO",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "ST01.32",
+   "applicable": [
+    "IfcWall",
+    "IfcWallType"
+   ],
+   "members": [
+    "ThermalTransmittance"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_ReinforcementBarPitchOfSlab",
+   "owner_gid": "32dT3rNpD9Q90mtLFOrj$0",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "ST01.21",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "Description"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_ReinforcementBarPitchOfWall",
+   "owner_gid": "0jwaLlSdH9QO4QQEah7Key",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "FS01.11",
+   "applicable": [
+    "IfcWall",
+    "IfcWallType"
+   ],
+   "members": [
+    "Description"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_WallCommon",
+   "owner_gid": "0jwaLlSdH9QO4QQEah7Key",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "FS01.11",
+   "applicable": [
+    "IfcWall",
+    "IfcWallType"
+   ],
+   "members": [
+    "ThermalTransmittance"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_RoofCommon",
+   "owner_gid": "250qYpnUb5Ru1U74GXTZ9u",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "ST01.30",
+   "applicable": [
+    "IfcRoof",
+    "IfcRoofType"
+   ],
+   "members": [
+    "ThermalTransmittance"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_ReinforcementBarPitchOfSlab",
+   "owner_gid": "2IsZQMbSr8lw6zFm4ThCyY",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "ST01.31",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "Description"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_ReinforcementBarPitchOfWall",
+   "owner_gid": "3NSPDWEJz3qA$fONyEr54L",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "FS03.01",
+   "applicable": [
+    "IfcWall",
+    "IfcWallType"
+   ],
+   "members": [
+    "Description"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_WallCommon",
+   "owner_gid": "3NSPDWEJz3qA$fONyEr54L",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "FS03.01",
+   "applicable": [
+    "IfcWall",
+    "IfcWallType"
+   ],
+   "members": [
+    "ThermalTransmittance"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_ReinforcementBarPitchOfSlab",
+   "owner_gid": "2nANp51JP9iwI0IuHs$tlp",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "PD02.41",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "Description"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "2nANp51JP9iwI0IuHs$tlp",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "PD02.41",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "ThermalTransmittance"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_ReinforcementBarPitchOfSlab",
+   "owner_gid": "3WhYcf82T35AP__DFg$dlp",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "PD02.44",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "Description"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "3WhYcf82T35AP__DFg$dlp",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "PD02.44",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "ThermalTransmittance"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_ReinforcementBarPitchOfSlab",
+   "owner_gid": "0ZowRGGo905xJSamZdtwnI",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "PD02.10",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "Description"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "0ZowRGGo905xJSamZdtwnI",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "PD02.10",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "ThermalTransmittance"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_ReinforcementBarPitchOfSlab",
+   "owner_gid": "3QkikMby50aeav2$9t1hbN",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "PD02.40",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "Description"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "3QkikMby50aeav2$9t1hbN",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "PD02.40",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "ThermalTransmittance"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_ReinforcementBarPitchOfSlab",
+   "owner_gid": "1pCYkxF8H7GfotV0FBMlBY",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "PD02.50",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "Description"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "1pCYkxF8H7GfotV0FBMlBY",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "PD02.50",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "ThermalTransmittance"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_ReinforcementBarPitchOfSlab",
+   "owner_gid": "2kg7T74gfCyfpinzyLEG7d",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "PD02.51",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "Description"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "2kg7T74gfCyfpinzyLEG7d",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "PD02.51",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "ThermalTransmittance"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_ReinforcementBarPitchOfSlab",
+   "owner_gid": "2FOhB52UL4OBbbXOmhyAco",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "PD02.60",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "Description"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "2FOhB52UL4OBbbXOmhyAco",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "PD02.60",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "ThermalTransmittance"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_ReinforcementBarPitchOfSlab",
+   "owner_gid": "19OrSHa_b9Iu1vGg2GMfs4",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "PD02.30",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "Description"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "19OrSHa_b9Iu1vGg2GMfs4",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "PD02.30",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "ThermalTransmittance"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_ReinforcementBarPitchOfSlab",
+   "owner_gid": "1Jg5gDIirBD9HXrK_9rsaY",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "PD02.70",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "Description"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "1Jg5gDIirBD9HXrK_9rsaY",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "PD02.70",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "ThermalTransmittance"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_ReinforcementBarPitchOfSlab",
+   "owner_gid": "3SGLsPPzv2uO12ZvDuRW1V",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "PD03.30",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "Description"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_ReinforcementBarPitchOfSlab",
+   "owner_gid": "3SGLsPPzv2uO12ZvDuRWgh",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "PD03.31",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "Description"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_ReinforcementBarPitchOfSlab",
+   "owner_gid": "2tE7JfuoP0tQKWEiqFPbek",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "PD03.70",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "Description"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_ReinforcementBarPitchOfSlab",
+   "owner_gid": "1RBo5euK15zOUaRrzRuFG2",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "PD03.60",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "Description"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_ReinforcementBarPitchOfSlab",
+   "owner_gid": "1dqEZNf9PF7wXsDi_Q11R2",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "PD02.31",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "Description"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "1dqEZNf9PF7wXsDi_Q11R2",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "PD02.31",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "ThermalTransmittance"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_ReinforcementBarPitchOfSlab",
+   "owner_gid": "3JnDuKwVT3JvfiYDOjOQvu",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "PD02.43",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "Description"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "3JnDuKwVT3JvfiYDOjOQvu",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "PD02.43",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "ThermalTransmittance"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_ReinforcementBarPitchOfSlab",
+   "owner_gid": "3WhYcf82T35AP__DFg$dlJ",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "PD02.53",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "Description"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "3WhYcf82T35AP__DFg$dlJ",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "PD02.53",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "ThermalTransmittance"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_ReinforcementBarPitchOfSlab",
+   "owner_gid": "3WhYcf82T35AP__DFg$djg",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "PD02.52",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "Description"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "3WhYcf82T35AP__DFg$djg",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "PD02.52",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "ThermalTransmittance"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_ReinforcementBarPitchOfWall",
+   "owner_gid": "3D8felQkv9kgV9AhQEWB1M",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "IH01",
+   "applicable": [
+    "IfcWall",
+    "IfcWallType"
+   ],
+   "members": [
+    "Description"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_ReinforcementBarPitchOfWall",
+   "owner_gid": "2Yq5Lnmz56s8w$XU4Kkc8$",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "FS01.12",
+   "applicable": [
+    "IfcWall",
+    "IfcWallType"
+   ],
+   "members": [
+    "Description"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_WallCommon",
+   "owner_gid": "2Yq5Lnmz56s8w$XU4Kkc8$",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "FS01.12",
+   "applicable": [
+    "IfcWall",
+    "IfcWallType"
+   ],
+   "members": [
+    "ThermalTransmittance"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_ReinforcementBarPitchOfSlab",
+   "owner_gid": "2xk3t0RWH37BPxsBzAE87e",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "FS02.01",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "Description"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "2xk3t0RWH37BPxsBzAE87e",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "FS02.01",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "ThermalTransmittance"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_ReinforcementBarPitchOfSlab",
+   "owner_gid": "2avayIhuXARwpOM7Eukbvx",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "PD02.54",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "Description"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "2avayIhuXARwpOM7Eukbvx",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "PD02.54",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "ThermalTransmittance"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_ReinforcementBarPitchOfSlab",
+   "owner_gid": "20LJnowsXBd9YCm6vWXc9A",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "PD02.11",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "Description"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "20LJnowsXBd9YCm6vWXc9A",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "PD02.11",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "ThermalTransmittance"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_ReinforcementBarPitchOfSlab",
+   "owner_gid": "1uFZesM9X9bvdVyx8QXgrc",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "FS01.20",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "Description"
+   ]
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_SlabCommon",
+   "owner_gid": "1uFZesM9X9bvdVyx8QXgrc",
+   "owner_class": "IfcCoveringType",
+   "owner_name": "FS01.20",
+   "applicable": [
+    "IfcSlab",
+    "IfcSlabType"
+   ],
+   "members": [
+    "ThermalTransmittance"
+   ]
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "3NxNyt71zKxJxjMj_vhkqE",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD02.05",
+   "prop": "PanelOperation",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "3NxNyt71zKxJxjMj_vhkqE",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD02.05",
+   "prop": "PanelPosition",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "0WHTytz8$BHy9jrewre9Rv",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD02.04",
+   "prop": "PanelOperation",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "0WHTytz8$BHy9jrewre9Rv",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD02.04",
+   "prop": "PanelPosition",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "3zxzvkBGq3NCJ5iy$OWD7L",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD01.04",
+   "prop": "PanelOperation",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "3zxzvkBGq3NCJ5iy$OWD7L",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD01.04",
+   "prop": "PanelPosition",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "1qsq5bKnCOUIgEgA_V2Xr7",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD01.07",
+   "prop": "PanelOperation",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "1qsq5bKnCOUIgEgA_V2Xr7",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD01.07",
+   "prop": "PanelPosition",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "3Cjnigkw86kF$VH$Jci5QG",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD01.02",
+   "prop": "PanelOperation",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "3Cjnigkw86kF$VH$Jci5QG",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD01.02",
+   "prop": "PanelPosition",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "0SYTCTtEewtf9mL6kAER$Z",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD01.05",
+   "prop": "PanelOperation",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "0SYTCTtEewtf9mL6kAER$Z",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD01.05",
+   "prop": "PanelPosition",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "3pBibECKNuZ$vA_S1yYCEP",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD01.02",
+   "prop": "PanelOperation",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "3pBibECKNuZ$vA_S1yYCEP",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD01.02",
+   "prop": "PanelPosition",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "3wR9dB8uLSjPkdXUunMAIE",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD02.03",
+   "prop": "PanelOperation",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "3wR9dB8uLSjPkdXUunMAIE",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD02.03",
+   "prop": "PanelPosition",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "2NDeboeldWugy9pDCqV3UX",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD02.01",
+   "prop": "PanelOperation",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "2NDeboeldWugy9pDCqV3UX",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD02.01",
+   "prop": "PanelPosition",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "0nZqXJVn0ymVIEarldrcAO",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD02.03",
+   "prop": "PanelOperation",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "0nZqXJVn0ymVIEarldrcAO",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD02.03",
+   "prop": "PanelPosition",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "2JR4HDoG_oHmhmiQXS0_UE",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD04.06",
+   "prop": "PanelOperation",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "2JR4HDoG_oHmhmiQXS0_UE",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD04.06",
+   "prop": "PanelPosition",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "0CIPzJZMu92W43LSeZco3S",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD01.06",
+   "prop": "PanelOperation",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "0CIPzJZMu92W43LSeZco3S",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD01.06",
+   "prop": "PanelPosition",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "3xXccuaxdu_m3AUD0TMeMY",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD01.06",
+   "prop": "PanelOperation",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "3xXccuaxdu_m3AUD0TMeMY",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD01.06",
+   "prop": "PanelPosition",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "1Gf5pe2PPc8Mmv26Vp$8gX",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD01.06",
+   "prop": "PanelOperation",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "1Gf5pe2PPc8Mmv26Vp$8gX",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD01.06",
+   "prop": "PanelPosition",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "0pMLJyQBZXQMic6dscnvF8",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD01.08",
+   "prop": "PanelOperation",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "0pMLJyQBZXQMic6dscnvF8",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD01.08",
+   "prop": "PanelPosition",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "2LEirMJAdozqZu9mp41OjF",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD02.02",
+   "prop": "PanelOperation",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "2LEirMJAdozqZu9mp41OjF",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD02.02",
+   "prop": "PanelPosition",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "0xxQS140bYJGvcOqoJ2v1K",
+   "owner_class": "IfcDoorType",
+   "owner_name": "VT01.02",
+   "prop": "PanelOperation",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "0xxQS140bYJGvcOqoJ2v1K",
+   "owner_class": "IfcDoorType",
+   "owner_name": "VT01.02",
+   "prop": "PanelPosition",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "3iuLPg0ykLbuNQJrjSq6zC",
+   "owner_class": "IfcDoorType",
+   "owner_name": "VT01.01",
+   "prop": "PanelOperation",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "3iuLPg0ykLbuNQJrjSq6zC",
+   "owner_class": "IfcDoorType",
+   "owner_name": "VT01.01",
+   "prop": "PanelPosition",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "0BO8jnfk8qjCG8j9q6UdO1",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD01.03",
+   "prop": "PanelOperation",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "0BO8jnfk8qjCG8j9q6UdO1",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD01.03",
+   "prop": "PanelPosition",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "3DjuVuRksj24u2lV5LOW87",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD03.05",
+   "prop": "PanelOperation",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "3DjuVuRksj24u2lV5LOW87",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD03.05",
+   "prop": "PanelPosition",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "0eQYOg$CtOklOe9scDZO62",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD03.04",
+   "prop": "PanelOperation",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "0eQYOg$CtOklOe9scDZO62",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD03.04",
+   "prop": "PanelPosition",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "1v70FrpxIDj60B9yLgQs2H",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD03.03",
+   "prop": "PanelOperation",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "1v70FrpxIDj60B9yLgQs2H",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD03.03",
+   "prop": "PanelPosition",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "2qu20ioygbKuLpOOtCeah2",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD03.01",
+   "prop": "PanelOperation",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "2qu20ioygbKuLpOOtCeah2",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD03.01",
+   "prop": "PanelPosition",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "2QPJsUpa5jec7g9HyduoV9",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD03.03",
+   "prop": "PanelOperation",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "2QPJsUpa5jec7g9HyduoV9",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD03.03",
+   "prop": "PanelPosition",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "0YWIQfwo2$xevFeI0RLkdq",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD03.02",
+   "prop": "PanelOperation",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "0YWIQfwo2$xevFeI0RLkdq",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD03.02",
+   "prop": "PanelPosition",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "2Ttr7WqDnQoyuSZQ840IlP",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD04.03",
+   "prop": "PanelOperation",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "2Ttr7WqDnQoyuSZQ840IlP",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD04.03",
+   "prop": "PanelPosition",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "3FAmHZ_TKLalwT9bycXsko",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD04.03",
+   "prop": "PanelOperation",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "3FAmHZ_TKLalwT9bycXsko",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD04.03",
+   "prop": "PanelPosition",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "1q3wLkrX4FF7z5DgMuQ8xE",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD04.07",
+   "prop": "PanelOperation",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_DoorPanelProperties",
+   "owner_gid": "1q3wLkrX4FF7z5DgMuQ8xE",
+   "owner_class": "IfcDoorType",
+   "owner_name": "DD04.07",
+   "prop": "PanelPosition",
+   "have": "IfcPropertySingleValue",
+   "want": "IfcPropertyEnumeratedValue"
+  },
+  {
+   "bod": 2,
+   "pset": "Pset_StairCommon",
+   "owner_gid": "10tYzorxDEYx4n6tQjT5iC",
+   "owner_class": "IfcFootingType",
+   "owner_name": "ZD02.05",
+   "applicable": [
+    "IfcStair",
+    "IfcStairType"
+   ],
+   "members": [
+    "NosingLength",
+    "NumberOfRiser",
+    "NumberOfTreads"
+   ]
+  },
+  {
+   "bod": 6,
+   "pset": "Pset_MaterialCommon",
+   "owner_gid": null,
+   "owner_class": "IfcMaterial",
+   "owner_name": "Izolace EPS spadove kliny",
+   "prop": "MassDensity",
+   "have": "IfcPropertyBoundedValue",
+   "want": "IfcPropertySingleValue"
+  }
+ ]
+}
