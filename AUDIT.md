@@ -202,7 +202,7 @@ Overené, nerobiť znova: EXPRESS validácia 0 hlásení; geometria nedotknutá
 | BB | **H** | **fyzika materiálu platí pre jednu skladbu, materiál ju nesie pre všetky.** IFC vlastnosti visia na `IfcMaterial`, nie na vrstve, takže `Izolace XPS` nesie λ=0,036 z `FS01.11` aj v `FS03.01`, `ST01.32` a `PD02.11` — a tie tri **výpis `D.1.1.09` neuvádza vôbec**. To isté pri `Izolace minerální` (doložené `FS01.10/.12/.20`, použité aj v `TI06.01`) a `Izolace EPS` (doložené `PD02`). **Rozhodnuté** (Samuel, 10. 8.): *„ber to tak, že majú rovnaké vlastnosti všetky XPS."* Materiál sa nerozdeľuje; to isté sa uplatňuje na minerálnu izoláciu a EPS. Zistené vo fáze 17 |
 | AT | **H** | ~~λ, ρ, c, μ z výpisu nie sú v `Pset_Material*`~~ — fáza 17, §36. Deväť materiálov, 15 `IfcMaterialProperties`, plus tri chýbajúce odvodené jednotky do `IfcUnitAssignment` |
 | BF | **H** | ~~skladby striech sú jedna skupina na veľkej aj malej streche~~ — fáza 21, §43. `S1` sa rozdelila na `S1.01` (4NP, 38 prvkov) a `S1.02` (5NP, 7), `S2` na `S2.01` (48) a `S2.02` (5). Všetkých osem skladieb je dvojúrovňových: 8 predpisov, 15 výskytov, 193 členstiev. Stráži invariant 9 |
-| BE | **O** | **`S3` obsahuje 22 prvkov mimo 1NP.** Skladba sa volá „Skladba základovej dosky a podlahy v 1NP", ale rozklad fázy 21 ju delí na 1NP 32, 2NP 9, 3NP 9, 4NP 4. Základová doska je len na 1NP; podlahy vyšších podlaží ležia na stropných doskách `SD02`. Členstvo prišlo z fázy 8 pravidlom „všetky prvky kódu" (`PD02.*`, `IH01.01`, `DZ01.01`, `ZD02.01`), čo odpovedá na inú otázku než „patrí do tejto skladby". Zúženie na 1NP je zmena rozsahu skladby — potrebuje `D.1.1.09` a rozhodnutie, nie geometriu. Rozklad vadu zviditeľňuje, neopravuje: nesú ju `S3.02`–`S3.04` |
+| BE | **H** | ~~`S3` obsahuje 22 prvkov mimo 1NP~~ — fáza 22, §45. Skladba sa volá „Skladba základovej dosky a podlahy v 1NP", ale fáza 21 ju rozložila na 1NP 32, 2NP 9, 3NP 9, 4NP 4. Členstvo prišlo z fázy 8 pravidlom „všetky prvky kódu", čo odpovedá na inú otázku než „patrí do tejto skladby". **Podklady skontrolované, tri nezávislé doklady:** `PD02` je vo výpise `D.1.1.09` presne raz a je to S3; S3 stojí na základovej doske `ZD02.01` (vrstva 7), ktorá je v modeli jediná a na 1NP, kým podlahy vyšších podlaží ležia na stropných doskách `SD02`; a výpis predpisuje EPS **200 mm**, kým všetkých 22 prvkov na 2NP–4NP má EPS **50 mm**. **Rozhodnutie Samuela (12. 8.):** prvky zo skupiny vypadli a novú skupinu nedostali — výpis pre ne skladbu nemá. `S3` má 32 prvkov a jediný výskyt `S3.01` |
 
 ### Zdokumentovať, neopraviť
 | # | | vec |
@@ -2666,6 +2666,10 @@ správne, ale preto, že ich **zviditeľní**: doteraz to bolo skryté v jednom
 na 1NP by znamenalo odobrať 22 prvkov zo skupiny — to je zmena rozsahu
 skladby, na ktorú treba `D.1.1.09` a rozhodnutie, nie geometriu.
 
+> **Doriešené vo fáze 22 (§45).** Podklady skontrolované, `S3` zúžená na
+> základovú dosku: 32 prvkov a jediný výskyt `S3.01`. Tabuľka a čísla
+> vyššie sú stav po fáze 21; po fáze 22 je to 12 výskytov a 171 členstiev.
+
 ### Brána `ASR_v28.ifc`
 
 `python src/gate.py out/ASR_v28.ifc --reference out/ASR_v27.ifc
@@ -2730,3 +2734,76 @@ modeli postavenom v pamäti — rodič, ktorý si nechal členov, a dva výskyty
 zdieľajúce prvok.
 
 Invariant geometriu nepočíta, takže patrí do CI joba `rychle`.
+
+---
+
+## 45. Fáza 22 — `S3` zúžená na základovú dosku, `#BE` uzavreté
+
+`out/ASR_v28.ifc` → `out/ASR_v29.ifc`, `src/41_s3_rozsah.py`.
+
+Podnet Samuela k nálezu `#BE`: *„PD02 môže byť aj kde neviem v konkrétnej
+skladbe, skontroluj podklady."* Skontrolované. Nemôže.
+
+### Tri nezávislé doklady
+
+**1. `PD02` je vo výpise `D.1.1.09` presne raz.** V S3. Ani S6 ho
+neuvádza — tá má `PD03.30` dutinovú podlahu na `SD02` s podhľadom
+`PH01`. Podlaha na stropnej doske s `PD02` **vo výpise nie je vôbec**.
+
+**2. S3 stojí na základovej doske.** Vrstva 7 je `ZD02.01`
+„Železobetónová základová doska", 500 mm; pod ňou vrstvy 8–10 `IH01`
+hydroizolácia a vrstva 11 `DZ01` podkladný betón. V modeli je `ZD02.01`
+**jedna jediná** doska. Podlahy 2NP–4NP ležia na `SD02` stropných
+doskách, čo je iný substrát.
+
+**3. Sedí to na hrúbke izolácie.** Výpis predpisuje vrstvu 6 „Podlahové
+dosky z EPS 150", hrúbka **200 mm**:
+
+| | izolácia v modeli | ks |
+|---|---|--:|
+| `PD02` na 1NP | EPS 200; výnimky `PD02.11` XPS 150 a `PD02.54` EPS 100 | 24 |
+| `PD02` na 2NP–4NP (`.31`, `.43`, `.44`, `.52`, `.53`) | **EPS 50** | 22 |
+
+Tých 22 teda nie je S3 ani podľa substrátu, ani podľa skladby vrstiev.
+Kritérium rozdelenia je zhodou okolností to isté ako podlažie, ale
+odvodené je z výpisu, nie z názvu podlažia.
+
+### Rozhodnutie
+
+**Samuel (12. 8.): prvky zo skupiny vypadnú a novú skupinu nedostanú.**
+Výpis pre ne skladbu nemá, takže akákoľvek skupina by tvrdila viac, než
+podklad hovorí. Zostáva to ako **chýbajúci podklad**, nie ako vada modelu.
+
+Krok zruší `S3.02`, `S3.03` a `S3.04` aj s ich `IfcRelAssignsToGroup`
+a previaže `IfcRelAggregates` skupiny `S3` na jediné zostávajúce dieťa.
+`S3` má odteraz **32 prvkov a jeden výskyt `S3.01`** — 24 `PD02` na 1NP,
+4 `IH01.01`, 3 `DZ01.01` a `ZD02.01`.
+
+Ktorý výskyt zostane, sa **nevyberá podľa mena podlažia**, ale podľa toho,
+čo skladbu definuje: zostáva ten, ktorý obsahuje `ZD02.01`. Kritérium je
+prevzaté priamo z výpisu, takže sa s ním nemôže rozísť preklepom v názve
+podlažia. Ak by dosku obsahoval viac než jeden výskyt, krok zastane.
+
+### Čo zostáva otvorené a komu patrí
+
+Výpis preskakuje práve jedno číslo — za `S6` ide rovno `S8`. Že chýbajúca
+`S7` je práve táto podlaha na stropnej doske, je pravdepodobné, ale je to
+**domnienka, nie doklad**; potvrdiť ju vie len projektant. Do registra sa
+preto nezapisuje ako skladba, ale ako chýbajúci podklad k `#BE`.
+
+Sem patrí aj už vedená vada legendy: legenda 1NP uvádza `PD02.31`, ktorý
+je v modeli na 2NP a 3NP. Model to má správne, výkres nie — položka §3
+„legenda 1NP: `PD02.31` vs `.30`" je tým doložená druhýkrát.
+
+### Brána `ASR_v29.ifc`
+
+`python src/gate.py out/ASR_v29.ifc --reference out/ASR_v28.ifc
+--allow-file out/ASR_v29.ifc.allowlist.json`
+
+Zrušených 6 `GlobalId` (3 `IfcGroup` + 3 `IfcRelAssignsToGroup`), 0
+nových. Geometria nedotknutá, 0 osirelých, invariant 9 naďalej zelený —
+`S3` má jeden výskyt, žiadnych priamych členov a prekryv nie je s čím
+robiť. Idempotencia overená: druhý beh ohlási, že `S3` už má len výskyt
+so základovou doskou.
+
+Skladby po fáze 22: **8 predpisov, 12 výskytov, 171 členstiev.**

@@ -269,17 +269,23 @@ výskyt je daný jeho podlažím a čísluje sa podľa `Elevation`.
 |---|--:|---|
 | `S1` vegetačná strecha | 2 | `IfcRoof ST01.0001` 4NP (38 prvkov), `ST01.0002` 5NP (7) |
 | `S2` kačírková strecha | 2 | tie isté dve strechy (48 a 5) |
-| `S3` doska a podlaha | 4 | 1NP (32), 2NP (9), 3NP (9), 4NP (4) |
+| `S3` doska a podlaha | 1 | základová doska `ZD02.01` 1NP (32) |
 | `S4` ETICS plocha výlezu | 2 | steny 4NP (4), steny 5NP (4) |
 | `S5` ETICS sokol výlezu | 1 | štyri steny `SN02.02` 4NP (8) |
 | `S6` podlaha a strop kancelárií | 2 | `PD03.30.01` 2NP (8), `PD03.30.02` 3NP (9) |
 | `S8` ETICS odpad. hospodárstvo | 1 | stena `SN05.01.0005` 1NP (2) |
 | `S9` ETICS odpad. hospodárstvo | 1 | tri steny `SN05.01` 1NP (6) |
 
-Spolu 8 predpisov, 15 výskytov, 193 členstiev. Podrobne `AUDIT.md` §43.
+Spolu 8 predpisov, 12 výskytov, 171 členstiev. Podrobne `AUDIT.md` §43.
 
-`S3` má výskyty na 2NP–4NP, hoci sa volá „…v 1NP" — to je otvorená
-položka registra `#BE`, nie chyba rozkladu.
+**Podlahy 2NP–4NP skladbu nemajú a je to zámer.** `S3` mala pôvodne aj 22
+podláh na vyšších podlažiach; fáza 22 ich vyradila. Výpis `D.1.1.09` pre
+ne skladbu neuvádza — `PD02` sa v ňom vyskytuje jediný raz a je to S3,
+ktorá stojí na základovej doske `ZD02.01` a predpisuje EPS 200 mm, kým
+tých 22 leží na stropných doskách `SD02` a má EPS 50 mm. Novú skupinu
+nedostali, lebo by tvrdila viac, než podklad hovorí. Výpis pritom
+preskakuje práve jedno číslo, `S7`; či je to práve táto skladba, vie
+potvrdiť len projektant. `AUDIT.md` §45, register `#BE`.
 
 ---
 
@@ -422,7 +428,7 @@ Nájdené pri práci; model ich nekopíruje, ale ani neopravuje ticho.
 | žiadne osirelé entity | invariant 4 = 0 |
 | kontajnment je exkluzívny | invariant 7 = 0 |
 | plný SNIM kód je jedinečný | invariant 6 = 0 |
-| rozklad skladieb je úplný a disjunktný | invariant 9 = 0. 8 predpisov, 15 výskytov, 193 členstiev; zjednotenie výskytov sa rovná pôvodnému členstvu predpisu pri všetkých ôsmich |
+| rozklad skladieb je úplný a disjunktný | invariant 9 = 0. 8 predpisov, 12 výskytov, 171 členstiev; pri založení rozkladu (fáza 21) sa zjednotenie výskytov rovnalo pôvodnému členstvu predpisu pri všetkých ôsmich |
 
 Brána po každej fáze proti výstupu predošlej: **zlyhalo 0 zo 7** vo fázach 11, 12, 13 aj 14. `pytest` 8 z 8 (deviaty je pomalý test geometrie, beží na merge).
 
