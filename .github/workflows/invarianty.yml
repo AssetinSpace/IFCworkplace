@@ -54,6 +54,6 @@ jobs:
         # Referenciou je vstup poslednej fázy — tak sa brána púšťa pri
         # každom kroku pipeline a tak sú aj písané allowlisty.
         run: |
-          python src/gate.py out/ASR_v16.ifc \
-            --reference out/ASR_v15.ifc \
-            --allow-file out/ASR_v16.ifc.allowlist.json
+          python src/gate.py out/ASR_v27.ifc \
+            --reference out/ASR_v26.ifc \
+            --allow-file out/ASR_v27.ifc.allowlist.json

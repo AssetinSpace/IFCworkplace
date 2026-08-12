@@ -18,8 +18,12 @@ zostáva**, lebo pipeline musí byť reprodukovateľná od `ASR.ifc`.
 ASR.ifc
  1–12  pôvodná pipeline            → ASR_final.ifc
  13    fix_spacetypes.py     #C    → ASR_final_v2.ifc   ✅ hotové
- 14–26 fázy 1–10                   → ASR_v3.ifc … ASR_v11.ifc
+ 14–37 fázy 1–18                   → ASR_v3.ifc … ASR_v25.ifc
+ 38    fáza 19  #BC                → ASR_v26.ifc
+ 39    fáza 20  #BD                → ASR_v27.ifc
 ```
+
+Aktuálny výstup je **`out/ASR_v27.ifc`**.
 
 ## Štruktúra repozitára
 
@@ -55,11 +59,17 @@ Toto je jadro. Pôvodný handover tvrdil 0 osirelých entít a konvertovaný
    `Types : SET [0:1]` na každý typ.
 7. **Kontajnment vs agregácia** — žiadny prvok nie je súčasne `Decomposes`
    aj `ContainedInStructure`.
+8. **Priestorové zaradenie sedí s geometriou** — prvok leží v pásme
+   podlažia, v ktorom je zaradený (aspoň polovicou výšky), a geometricky
+   zhodné prvky sú v jednom podlaží. Pásmo podlažia sa počíta z **vrchu
+   nosnej dosky**, nie z `Elevation` — `Elevation` je čistá podlaha, prvky
+   podlažia začínajú 150 mm pod ňou. Pribudol po fáze 19; AUDIT.md §41.
 
 Invariant 6 dnes **zámerne zlyháva** na `DD01.05.01` a `.02`. Nechaj ho zlyhať;
 opraví sa vo fáze 4. Invariant 7 bude najviac namáhaný po fázach 1, 6 a 7.
 
-Testy 1, 2, 4, 5 v CI. Test 1 na 2564 tvarov trvá jednotky minút — nech beží
+Testy 1, 2, 4, 5 a 8 v CI. Test 1 na 2564 tvarov trvá jednotky minút,
+test 8 počíta obálky všetkých kontajnovaných prvkov — obidva nech bežia
 na merge, nie na každý commit.
 
 ## Pravidlá pre skripty
@@ -78,6 +88,13 @@ na merge, nie na každý commit.
   výsledkom sú nuly a hodnoty rádu `1e260`, nie výnimka
 - `MERGE_IDENTICAL_MAPS` zostáva natrvalo `False`
 - `geom.create_shape` vracia metre, súbor je v milimetroch
+- **bbox nie je teleso.** Bbox kuchynky prekrýva bbox openspace, bbox
+  openspace obsahuje pôdorys každého WC. Otázka „je bod v miestnosti" sa
+  odpovedá lúčom cez trojuholníky obalu — `spatial.point_in_mesh`, nie
+  pôdorysným prekryvom
+- **tolerancia nesmie byť väčšia než to, čo má oddeľovať.** 300 mm
+  tolerancia priľahlosti preskočila 250 mm nosnú dosku a dala skladbu
+  podlahy 3NP miestnosti na 2NP (AUDIT.md §40)
 
 ## Prvý prompt
 
