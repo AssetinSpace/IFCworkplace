@@ -2403,3 +2403,120 @@ handoveru, ktorý meral zámer namiesto výsledku.
 5. **Exkluzívny vzťah nie je dôvod nepriradiť nič.** Keď sa prvok týka
    dvoch miestností, schéma má na to referenciu — nie mlčanie.
 
+---
+
+## 42. Smú byť dvere v miestnosti? — rozbor schémy
+
+Samuelova otázka po fáze 20: *„či tie dvere ale takto vôbec môžu byť,
+alebo majú byť tým `RelBoundary` a majú sa len inak zobrazovať a nie cez
+spatial structure, a je to chyba prehliadača."* Overené proti
+`IFC4X3_ADD2`, nie z pamäte.
+
+### 1 · Platnosť — áno, bez výhrad
+
+```
+ENTITY IfcRelContainedInSpatialStructure
+  RelatedElements   : SET [1:?] OF IfcProduct;
+  RelatingStructure : IfcSpatialElement;
+ WHERE
+  WR31 : SIZEOF(QUERY(temp <* RelatedElements |
+         'IFC4X3_ADD2.IFCSPATIALSTRUCTUREELEMENT' IN TYPEOF(temp))) = 0;
+```
+
+`IfcSpace` **je** `IfcSpatialElement`. Jediné pravidlo obmedzuje
+`RelatedElements` (priestor nesmie byť *obsahom* kontajnmentu — od toho je
+`IfcRelAggregates`), nie kontajner. `validate(express_rules=True)` = 0
+hlásení, invariant 2 to potvrdzuje po každej fáze.
+
+### 2 · Predvoľba je ale iná — a spec ju hovorí po triedach
+
+Prehľadaných všetkých 2469 stránok `lexical` na vetu *„… is the default
+(spatial) container"*. Má ju presne **85 tried**:
+
+| trieda | predvolený kontajner |
+|---|---|
+| `IfcCovering` | **`IfcSpace`** |
+| 83 podtypov `IfcDistributionElement` (`IfcWasteTerminal`, `IfcSanitaryTerminal`, `IfcAirTerminal`, …) | **`IfcSpace`** |
+| `IfcTransportElement` | `IfcBuilding` |
+| `IfcDoor`, `IfcColumn`, `IfcWall`, `IfcSlab`, `IfcStair`, `IfcRailing`, `IfcFurniture` | **nemajú vlastný záznam** |
+
+Kde vlastný záznam nie je, platí generické §4.1.5.13: *„Subtypes of
+`IfcSpatialStructureElement` are valid spatial containers, with
+**`IfcBuildingStorey` being the default container**."*
+
+Z toho plynie rozdelenie, ktoré fáza 20 dodržuje:
+
+* **krytiny a distribučné prvky v miestnostiach nie sú odchýlka** — sú
+  doslova predvoľba spec-u. Fázy 6a a 20 tu robia presne to, čo docs
+  žiadajú;
+* **dvere a stĺpy v miestnostiach odchýlka sú.** Predvoľba je podlažie.
+
+### 3 · Čo `IfcDoor` hovorí o sebe
+
+*„A door can: be a 'free standing' door, contained in an
+`IfcSpatialElement` **such as an `IfcBuildingStorey`**. / fill an opening,
+typically in a wall … `FillsVoids` … / be part of an element assembly,
+typically an `IfcCurtainWall` … `Decomposes`."*
+
+Priestor v tom výpočte nefiguruje. Naše dvere sú prevažne druhý prípad —
+17 má `FillsVoids`, 80 nie (#AZ), 10 je agregovaných v LOP.
+
+### 4 · Prečo to napriek tomu smie byť
+
+§5.4.3.52 nechá úroveň otvorenú výslovne: *„The question, which level is
+relevant for which type of element, can only be answered within the
+context of a particular project and might vary within the various
+regions."* a *„Occurrences of the same element type can be assigned to
+different spatial structure elements depending on the context of the
+occurrence."* K tomu `IfcSpace`: *„It also serves as the spatial container
+for space related elements."*
+
+Predvoľba teda nie je predpis. Odchýlka od nej je legitímna, ale musí byť
+**priznaná** — je v `BEP_ANNEX.md` §2.7.
+
+### 5 · Umiestnenie — vyzerá to ako protiargument, nie je
+
+`IfcLocalPlacement`: *„For `IfcElement` the convention applies that it
+shall be placed relative to the local placement of its container, either
+`IfcSite`, `IfcFacility`, or `IfcFacilityPart` — **it should be the same
+container element** that is referenced by the
+`IfcRelContainedInSpatialStructure` containment relationship."*
+
+`IfcSpace` v tom zozname nie je: je **súrodenec** `IfcFacilityPart` pod
+`IfcSpatialStructureElement`, nie jeho podtyp. Prvok kontajnovaný
+v priestore teda tú vetu splniť **nemôže** — ani vtedy, keď je priestor
+predvoľbou. Overené na dátach: `ASR_v25.ifc` mal 136 prvkov v miestnosti
+a **94 z nich bolo umiestnených voči podlažiu**, z toho 74 krytín, teda
+práve tá trieda, kde je `IfcSpace` predvolený kontajner. Nesúlad je
+teda vlastnosťou reťazca site→building→storey, nie následkom fázy 20.
+
+Pre výplne otvorov má navyše to isté miesto vlastnú vetu: *„for elements
+that fill an opening (such as doors or windows), as expressed by
+`IfcRelFillsElement`"* — a 17 dverí je umiestnených presne takto.
+
+### 6 · Chyba prehliadača? Nie
+
+Priestorový strom je z definície `IfcRelAggregates` (projekt → areál →
+budova → podlažie → priestor) plus `IfcRelContainedInSpatialStructure`.
+Prehliadač, ktorý ukáže dvere pod podlažím, keď sú na podlaží
+kontajnované, sa správa **správne**. Ukázať ich pod miestnosťou bez
+kontajnmentu by znamenalo čítať aj `IfcRelSpaceBoundary`
+a `IfcRelReferencedInSpatialStructure` — to je funkcia navyše, nie oprava.
+
+### 7 · Rozhodnutie
+
+Skript má prepínač `BOUNDING_ELEMENT_CONTAINER` (CLI `--container
+room|storey`). Oba režimy prechádzajú bránou; líšia sa iba tým, kam ich
+zaradí strom, informácia sa v žiadnom nestráca:
+
+| | `room` | `storey` |
+|---|--:|--:|
+| dvere kontajnované v miestnosti / na podlaží | 84 / 3 | 0 / 87 |
+| stĺpy v miestnosti / na podlaží | 35 / 17 | 0 / 52 |
+| `IfcRelReferencedInSpatialStructure` na priestor | 99 | 218 |
+| `IfcRelSpaceBoundary` | 697 | 697 |
+| krytiny a vpuste v miestnostiach | áno | áno |
+
+**Rozhodnutie Samuela (12. 8.): `room`.** Model zostáva ako po fáze 20.
+Odchýlka je priznaná v BEP §2.7 aj s citáciou predvoľby, aby ten, kto
+model preberá, vedel, že podlažie je alternatíva na jeden prepínač.

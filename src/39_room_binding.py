@@ -30,6 +30,14 @@ kontajnment je exkluzívny". Exkluzivita platí, ale záver z nej nevyplýva:
 schéma sa pýta na primárnu miestnosť, nie na žiadnu. Rozhodnutie sa preto
 mení — viď ``AUDIT.md`` §40 a ``BEP_ANNEX.md`` §2.7.
 
+**Predvoľba verzus odchýlka.** Docs uvádzajú predvolený kontajner po
+triedach: `IfcCovering` a 83 podtypov `IfcDistributionElement` majú
+predvolený `IfcSpace`, takže krytiny, vpuste a sanita v miestnostiach
+odchýlka nie sú. `IfcDoor` a `IfcColumn` vlastný záznam nemajú, čiže pre
+ne platí generické §4.1.5.13 s predvoľbou `IfcBuildingStorey` — ich
+kontajnment do miestnosti je **vedomá odchýlka**, prepínateľná cez
+:data:`BOUNDING_ELEMENT_CONTAINER`. Celý rozbor je v ``AUDIT.md`` §42.
+
 Ako sa určí miestnosť
 ---------------------
 **Dvere.** Krídlo nie je vnútri žiadneho priestoru, sedí v otvore steny.
@@ -93,6 +101,27 @@ IN = os.path.join(ROOT, "out", "ASR_v26.ifc")
 OUT = os.path.join(ROOT, "out", "ASR_v27.ifc")
 
 DRY_RUN = True
+
+#: Kam sa má **kontajnovať** stavebný prvok, ktorý miestnosť ohraničuje —
+#: dvere a stĺpy. Obe hodnoty sú schémovo platné, líšia sa v tom, či model
+#: zostáva na dokumentovanej predvoľbe, alebo od nej vedome odchyľuje.
+#:
+#: ``"storey"``  podlažie, ako hovorí §4.1.5.13 *„with IfcBuildingStorey
+#:               being the default container"*. Väzbu na miestnosti nesie
+#:               `IfcRelReferencedInSpatialStructure` a `IfcRelSpaceBoundary`
+#:               — na **všetky** dotknuté miestnosti, teda sa nič nestráca.
+#:               Strom v prehliadači ich ukáže pod podlažím.
+#: ``"room"``    obsluhovaná miestnosť. Tiež platné — EXPRESS pripúšťa
+#:               ktorýkoľvek `IfcSpatialElement` ako `RelatingStructure`
+#:               a §5.4.3.52 hovorí *„The question, which level is relevant
+#:               for which type of element, can only be answered within the
+#:               context of a particular project"*. Je to však **odchýlka
+#:               od predvoľby** a ako taká patrí do BEP.
+#:
+#: Netýka sa krytín ani distribučných prvkov: tam je `IfcSpace` predvolený
+#: kontajner priamo podľa dokumentácie triedy, takže tie idú do miestnosti
+#: v oboch režimoch.
+BOUNDING_ELEMENT_CONTAINER = "room"
 
 #: komunikačné priestory — nie sú cieľom cesty, len ňou vedú. Zoznam je
 #: z `LongName`, teda z názvoslovia projektanta, nie z odhadu.
@@ -263,11 +292,19 @@ def main() -> int:
     ap.add_argument("--in", dest="src", default=IN)
     ap.add_argument("--out", dest="dst", default=OUT)
     ap.add_argument("--show", action="store_true", help="vypíše rozpis po prvkoch")
+    ap.add_argument("--container", choices=("room", "storey"),
+                    default=BOUNDING_ELEMENT_CONTAINER,
+                    help="kam kontajnovať dvere a stĺpy (viď "
+                         "BOUNDING_ELEMENT_CONTAINER)")
     args = ap.parse_args()
     dry = DRY_RUN and not args.apply
+    room_mode = args.container == "room"
 
     print("vstup :", args.src)
     print("výstup:", args.dst, "(DRY-RUN)" if dry else "")
+    print("dvere a stĺpy kontajnovať do:",
+          "miestnosti (odchýlka od predvoľby, BEP §2.7)" if room_mode
+          else "podlažia (dokumentovaná predvoľba §4.1.5.13)")
     print()
 
     m = ifcopenshell.open(args.src)
@@ -298,15 +335,19 @@ def main() -> int:
         primary = served(cand, box)
         extra = [s for s in cand if primary is None or s.id() != primary.id()]
         agg = bool(getattr(d, "Decomposes", None))
+        # agregované dvere kontajnovať nesmú (invariant 7); v režime
+        # „storey" nekontajnuje do miestnosti nič a všetky idú do referencií
+        into_room = (primary if (not agg and room_mode) else None)
+        refs = cand if into_room is None else extra
         if primary is None:
             stat["bez priestoru — ostáva na podlaží"] += 1
         elif agg:
             stat["agregované v LOP — len referencia"] += 1
+        elif into_room is None:
+            stat["podlažie + referencia na miestnosť"] += 1
         else:
             stat["kontajnment do miestnosti"] += 1
-        refs = ([primary] + extra if agg and primary is not None else
-                extra if not agg else extra)
-        bind(m, d, None if agg else primary, refs, added, removed, moves)
+        bind(m, d, into_room, refs, added, removed, moves)
         rows.append((d.Name, agg, primary, extra))
     for k, n in sorted(stat.items(), key=lambda kv: -kv[1]):
         print("    %-40s %3d" % (k, n))
@@ -328,11 +369,13 @@ def main() -> int:
             cstat["bez tvaru"] += 1
             continue
         near = around_column(c, b, spaces, shp, box)
-        one = near[0] if len(near) == 1 else None
+        one = (near[0] if (len(near) == 1 and room_mode) else None)
         cstat["v jednej miestnosti → kontajnment" if one is not None
+              else "v jednej miestnosti → podlažie + referencia"
+              if len(near) == 1
               else ("na rozhraní %d miestností → referencie" % len(near)) if near
               else "mimo miestností — ostáva na podlaží"] += 1
-        bind(m, c, one, near if one is None else [], added, removed, moves)
+        bind(m, c, one, [] if one is not None else near, added, removed, moves)
         crows.append((c.Name, one, near))
     for k, n in sorted(cstat.items(), key=lambda kv: -kv[1]):
         print("    %-40s %3d" % (k, n))

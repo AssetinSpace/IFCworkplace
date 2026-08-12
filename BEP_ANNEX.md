@@ -163,6 +163,31 @@ ktorýkoľvek `IfcSpatialElement`, teda aj `IfcSpace`; §4.1.5.13 uvádza
 question, which level is relevant for which type of element, can only be
 answered within the context of a particular project."*
 
+**Čo je predvoľba a čo odchýlka**
+
+Docs uvádzajú predvolený kontajner **po triedach**; vetu *„… is the
+default (spatial) container"* má 85 tried. `IfcCovering` a 83 podtypov
+`IfcDistributionElement` majú predvolený **`IfcSpace`** — krytiny,
+vpuste a sanita v miestnostiach teda odchýlka nie sú, je to predvoľba.
+`IfcDoor` ani `IfcColumn` vlastný záznam nemajú, takže pre ne platí
+generické §4.1.5.13: *„Subtypes of `IfcSpatialStructureElement` are valid
+spatial containers, with **`IfcBuildingStorey` being the default
+container**."*
+
+**Dvere a stĺpy kontajnované v miestnosti sú preto vedomá odchýlka od
+predvoľby.** Nie je to porušenie schémy — `RelatingStructure` je
+`IfcSpatialElement` a `IfcSpace` ním je, EXPRESS validácia dáva 0
+hlásení — a §5.4.3.52 voľbu úrovne výslovne necháva na projekt: *„The
+question, which level is relevant for which type of element, can only be
+answered within the context of a particular project and might vary within
+the various regions."* Rozhodnutie Samuela z 12. 8.; rozbor v `AUDIT.md`
+§42.
+
+Odchýlka je **vratná jedným prepínačom**: `src/39_room_binding.py
+--container storey` vráti dvere a stĺpy na podlažie a väzbu na miestnosti
+ponechá na referenciách (99 → 218) a hraniciach (697, nemenné). Žiadna
+informácia nie je viazaná len na kontajnment.
+
 **Pravidlá tohto projektu**
 
 | prvok | kontajner | referencie |
